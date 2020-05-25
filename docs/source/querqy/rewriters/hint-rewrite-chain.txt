@@ -1,0 +1,4 @@
+----
+
+.. hint:: See :ref:`configuring-and-applying-a-rewriter` for instructions how
+   to add a rewriter to the rewrite chain.
