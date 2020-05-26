@@ -38,8 +38,8 @@ Docker image. :ref:`Get started here <chorus-index>`!
 **Further quick links:**
 
 * Setting up SMUI (requires Querqy)
-* Querqy :ref:`'Common Rules Rewriter' <querqy-rewriters-common-rules>` (synonyms,
-  boostings, filters etc.)
+* Querqy :ref:`'Common Rules Rewriter' <querqy-rewriters-common-rules>`
+  (synonyms, boostings, filters etc.)
 
 
 
@@ -51,8 +51,8 @@ Docker image. :ref:`Get started here <chorus-index>`!
    :hidden:
 
    querqy/index
-   querqy/making-queries
    querqy/rewriters
+   querqy/more-about-queries
 
 .. toctree::
    :glob:

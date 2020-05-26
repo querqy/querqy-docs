@@ -87,11 +87,11 @@ We can now apply one or more rewriters to a query:
    }
 
 The rewriters are added to the
-:ref:`minimal query that we constructed earlier <querqy-minimal-query-elasticsearch>`
-using a list of named :code:`rewriters` (line #8). This list contains the
-rewrite chain - the list of rewriters in the order in which they will be applied
-and in which they will manipulate the query. The above example contains only a
-single rewriter.
+:ref:`minimal query that we constructed earlier <querqy-making-queries>` using a
+list of named :code:`rewriters` (line #8). This list contains the rewrite chain
+- the list of rewriters in the order in which they will be applied and in which
+they will manipulate the query. The above example contains only a single
+rewriter.
 
 Rewriters are referenced in the :code:`rewriters` element either just by their
 name or by the :code:`name` property of an object which allows to pass request
