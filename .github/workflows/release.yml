@@ -25,3 +25,13 @@ jobs:
       run: |
         cd docs
         make html
+    - name: Deploy-Action
+      uses: SamKirkland/FTP-Deploy-Action@2.0.0
+      env:
+        FTP_SERVER: ${{ secrets.SFTP_HOST }}
+        FTP_USERNAME: ${{ secrets.SFTP_USER }}
+        FTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+        LOCAL_DIR: docs/build/html
+        METHOD: sftp
+        PORT: 22
+        ARGS: --delete    
