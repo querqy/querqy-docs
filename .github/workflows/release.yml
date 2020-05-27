@@ -23,4 +23,5 @@ jobs:
         pip install -r requirements.txt
     - name: Build sphinx documentation
       run: |
+        cd docs
         make html
