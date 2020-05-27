@@ -302,6 +302,46 @@ boosting_queries.rewritten_queries.positive_query_weight / .negative_query_weigh
 
   Default: ``1.0``
 
+boosting_queries.phrase_boosts.full / .bigram / .trigram / .tie_breaker`
+  Unlike 'rewritten_queries', ``phrase_boosts`` can be applied regardless of
+  query   rewriting. If enabled, a boost query will be created from phrases
+  which are derived from the query string. Documents matching this boost query
+  will be promoted to towards the top of the search result.
+
+  The parameter objects ``full``, ``bigram`` and ``trigram`` control how phrase
+  boost queries will be formed:
+
+  - ``full``: boosts documents that contain the entire input query as a phrase
+  - ``bigram``: creates phrase queries for boosting from pairs of adjacent query
+    tokens
+  - ``trigram``: creates phrase queries for boosting from triples of adjacent
+    query tokens
+
+  The ``fields`` lists under each of these parameters define the fields and
+  their weights in which the phrases will be looked up. The ``slop`` defines the
+  number of positions the phrase tokens are allowed to shift while still
+  counting as a phrase. A 'slop' of two or greater allows for token
+  transposition (compare Elasticsearch's `Match phrase query <https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase.html>`_).
+  The default 'slop' is 0.
+
+  Depending on the number of query tokens, a matching 'full' phrase query can
+  imply one or more 'bigram' and 'trigram' matches. The scores of these matches
+  will be summed up, which can quickly result in a very large score for
+  documents that match a long full query phrase. Setting ``tie_breaker`` for
+  'phrase_boosts' to a low value will reduce this aggregation effect. Querqy
+  will use the highest score amongst 'full', 'bigram' and 'trigram' matches and
+  multiply the score of the other matches with the 'tie_breaker' value. A
+  'tie_breaker' of 0.0 - which is the default value - will only use the highest
+  score.
+
+  The concept of phrase boosting is very similar to the pf/pf2/pf3/ps/ps2/ps3
+  parameters of Solr's `Extended DisMax <https://lucene.apache.org/solr/guide/the-extended-dismax-query-parser.html>`_ / `DisMax <https://lucene.apache.org/solr/guide/the-dismax-query-parser.html#the-dismax-query-parser>`_
+  query parsers. However, Querqy adds control over the aggregation of the scores
+  from the different phrase boost types using the 'tie_breaker'.
+
+  The score produced by 'phrase_boosts' is added to the boost of the
+  'matching_query'.
+
 
 .. [#] This approach follows the ideas described in: J. Kim & W.B. Croft: *A Probabilistic Retrieval Model for Semi-structured Data*, 2009.
 
