@@ -169,6 +169,12 @@ Reference
 
 .. rubric:: Global parameters and matching query
 
+query_field
+  The list of fields in which to search for query terms. A field weight can be
+  appended to the field name using the ``^``\-symbol. Field weights are positive
+  integer or decimal numbers. The default field weight is ``1.0``
+
+  Required
 
 minimum_should_match
   *The minimum number of query clauses that must match for a document to be
@@ -245,7 +251,7 @@ matching_query.weight
   A weight that is multiplied with the score that is produced by the matching
   query before the score of the boosting queries is added.
 
-  Default value: ``1.0``
+  Default: ``1.0``
 
 .. rubric::  Boosting queries
 
@@ -341,6 +347,32 @@ boosting_queries.phrase_boosts.full / .bigram / .trigram / .tie_breaker`
 
   The score produced by 'phrase_boosts' is added to the boost of the
   'matching_query'.
+
+
+.. rubric:: Generated query parts
+
+generated.query_fields
+  The list of fields and their weights for matching generated query terms like
+  synonyms or boost queries. If no 'query_fields' are specified for the
+  generated query parts, the global 'query_fields' will be used.
+
+  Default: copy from global 'query_fields'
+
+
+generated.field_boost_factor
+  A factor that is multiplied with the field weights of the generated query
+  terms. This factor can be used to apply a penalty to all terms that were not
+  entered by the user but inserted as part of the query rewriting, for example,
+  to give synonyms a smaller weight compared to the original term.
+
+  This factor is applied regardless of where the 'query_fields' for generated
+  terms are defined, i.e. in the 'query_fields' of the 'generated' object or
+  globally.
+
+  Default: ``1.0``
+
+
+
 
 
 .. [#] This approach follows the ideas described in: J. Kim & W.B. Croft: *A Probabilistic Retrieval Model for Semi-structured Data*, 2009.
