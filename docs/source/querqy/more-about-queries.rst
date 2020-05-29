@@ -164,10 +164,18 @@ Reference
       }
    }
 
+.. raw:: html
 
+ </div>
 
 
 .. rubric:: Global parameters and matching query
+
+.. rst-class:: elasticsearch
+
+.. raw:: html
+
+ <div>
 
 query_field
   The list of fields in which to search for query terms. A field weight can be
@@ -214,7 +222,7 @@ field_boost_model
     the query 'apple iphone black' with query fields 'brand', 'category' and
     'color', the term 'apple' will in most data sets have a greater probability
     and weight for the 'brand' field compared to 'category' and 'color', whereas
-    'black' will have the greatest probability in the 'color' field. [#]_
+    'black' will have the greatest probability in the 'color' field. [1]_
 
     Field weights specified in 'query_fields' will be ignored if
     'field_boost_model' is set to 'prms'.
@@ -253,7 +261,115 @@ matching_query.weight
 
   Default: ``1.0``
 
+.. raw:: html
+
+ </div>
+
+.. rst-class:: solr
+
+.. raw:: html
+
+   <div>
+
+qf (query fields)
+  The list of fields in which to search for query terms. A field weight can be
+  appended to the field name using  the ``^``\-symbol. Field weights are
+  positive integer or decimal numbers. The default field weight is ``1.0``. See
+  Solr Documentation for parameter value syntax. [2]_
+
+  Example: ``qf=title^3 brand^2.1 shortDescription^0.2``
+
+  Required
+
+mm (minimum should match)
+  The minimum number of optional query clauses that must match for a document
+  to be  returned.
+
+  The minimum number of query clauses is counted across fields. For example,
+  if the query ``a b`` is searched in ``qf=f1 f2`` with ``mm=100%``, the two
+  terms need not match in the same field so that a document matching ``f1:a``
+  and ``f2:b`` will be included in the result set. See Solr Documentation
+  for value syntax. [2]_
+
+  Example: ``mm=100% 2<-1``
+
+  Default: ``1``
+
+tie (tie breaker)
+  When a query term ``a`` is searched across fields (``f1``, ``f2`` and ``f3``),
+  the query is expanded into term queries (``f1:a``, ``f2:a``, ``f3:a``). The
+  expanded query will use as its own score the score of the highest scoring term
+  query plus the sum of the scores of the other term queries multiplied with
+  ``tie``. Let's assume that ``f2:a`` produces the highest score, the
+  resulting score will be
+  ``score(f2:a) + tie * (score(f1:a) + score(f3:a))``. [2]_
+
+  Default: ``0.0``
+
+fbm (field boost model)
+  Values: ``fixed`` ``prms``
+
+  Querqy allows to choose between two approaches for field boosting in scoring:
+
+  * ``fixed``: field boosts are specified at field names in 'query_fields'.
+    The same field weight will be used across all query terms for a given query
+    field.
+  * ``prms``: field boosts are derived from the distribution of the query terms
+    in the index. More specifically, they are derived from the probability that
+    a given query term occurs in a given field in the index. For example, given
+    the query 'apple iphone black' with query fields 'brand', 'category' and
+    'color', the term 'apple' will in most data sets have a greater probability
+    and weight for the 'brand' field compared to 'category' and 'color', whereas
+    'black' will have the greatest probability in the 'color' field. [1]_
+
+    Field weights specified in 'query_fields' will be ignored if
+    'fbm' is set to 'prms'.
+
+  Default: ``fixed``
+
+uq.similarityScore
+  Values: ``dfc`` ``on`` ``off``
+
+  Controls how Lucene's scoring implementation (= *similarity*) is used when an
+  input query term is expanded across fields and when it is expanded during
+  query rewriting:
+
+  * ``dfc``: 'document frequency correction' - use the same document frequency
+    value for all terms that are derived from the same input query term. For
+    example, let 'a b' be the input query and let it be rewritten to
+    '(f1:a \| f2:a \| ((f1:x \| f2:x) \| (f1:y \| f2:x)) (f1:b \| f2:b)` by
+    synonym and field expansion, then
+    '(f1:a \| f2:a \| ((f1:x \| f2:x) \| (f1:y \| f2:x))' (all derived from 'a')
+    will use the same document frequency value. More specifically, Querqy will
+    use the maximum document frequency of these terms as the document frequency
+    value for all of them. Similarily, the maximum  document frequency of
+    '(f1:b | f2:b)' will be used for these two terms.
+  * ``off``: Ignore the output of Lucene's similarity scoring. Only field boosts
+    will be used for scoring.
+  * ``on``: Use Lucene's similarity scoring output. Note that field
+    boosting (normally part of Lucene similarity scoring) is handled outside
+    the similarity in Querqy and that it can be configured using the
+    'fbm' parameter.
+
+  Default: ``dfc``
+
+uq.boost
+  A weight that is multiplied with the score that is produced by the matching
+  query before the score of the boosting queries is added.
+
+  Default: ``1.0``
+
+.. raw:: html
+
+ </div>
+
 .. rubric::  Boosting queries
+
+.. rst-class:: elasticsearch
+
+.. raw:: html
+
+   <div>
 
 boosting_queries
   Controls sub-queries that do not influence the matching of documents but
@@ -310,7 +426,7 @@ boosting_queries.rewritten_queries.positive_query_weight / .negative_query_weigh
 
 boosting_queries.phrase_boosts.full / .bigram / .trigram / .tie_breaker`
   Unlike 'rewritten_queries', ``phrase_boosts`` can be applied regardless of
-  query   rewriting. If enabled, a boost query will be created from phrases
+  query rewriting. If enabled, a boost query will be created from phrases
   which are derived from the query string. Documents matching this boost query
   will be promoted to towards the top of the search result.
 
@@ -335,10 +451,10 @@ boosting_queries.phrase_boosts.full / .bigram / .trigram / .tie_breaker`
   will be summed up, which can quickly result in a very large score for
   documents that match a long full query phrase. Setting ``tie_breaker`` for
   'phrase_boosts' to a low value will reduce this aggregation effect. Querqy
-  will use the highest score amongst 'full', 'bigram' and 'trigram' matches and
-  multiply the score of the other matches with the 'tie_breaker' value. A
-  'tie_breaker' of 0.0 - which is the default value - will only use the highest
-  score.
+  will use the highest score produced by 'full', 'bigram' and 'trigram' matches
+  and multiply the score of the remaining phrase matches with the 'tie_breaker'
+  value. A 'tie_breaker' of 0.0 - which is the default value - will only use the
+  highest score.
 
   The concept of phrase boosting is very similar to the pf/pf2/pf3/ps/ps2/ps3
   parameters of Solr's `Extended DisMax <https://lucene.apache.org/solr/guide/the-extended-dismax-query-parser.html>`_ / `DisMax <https://lucene.apache.org/solr/guide/the-dismax-query-parser.html#the-dismax-query-parser>`_
@@ -348,8 +464,104 @@ boosting_queries.phrase_boosts.full / .bigram / .trigram / .tie_breaker`
   The score produced by 'phrase_boosts' is added to the boost of the
   'matching_query'.
 
+.. raw:: html
+
+ </div>
+
+.. rst-class:: solr
+
+.. raw:: html
+
+   <div>
+
+qboost.fieldBoost
+  Values: ``on`` ``off``
+
+  If ``on``, the scores of the boost queries that are produced by query
+  rewriting will include field weights. A field boost of ``1.0`` will be used
+  otherwise.
+
+  Default: ``on``
+
+
+qboost.similarityScore
+  Values: ``dfc`` ``on`` ``off``
+
+  Controls how Lucene's scoring implementation (= *similarity*) is used when the
+  boosting query is expanded across fields.
+
+  * ``dfc``: 'document frequency correction' - use the same document frequency
+    (df) value for all term queries that are produced from the same boost
+    term. Querqy will use the maximum document frequency of the produced terms
+    as the df value for all of them. If the 'uq.similarityScore' also uses
+    'dfc', the maximum (df) of the matching query will be added to the df of the
+    boosting query terms in order to put the (dfs) of the two query parts on a
+    comparable scale and to avoid giving extremely high weight to very sparse
+    boost terms.
+  * ``off``: Ignore the output of Lucene's similarity scoring.
+  * ``on``: Use Lucene's similarity scoring output.
+
+  Default: ``dfc``
+
+qboost.weight / .negWeight`
+  Query rewriting in Querqy can produce boost queries that either promote
+  matching documents to the top of the search result (positive boost) or that
+  push matching documents to the bottom of the search result list (negative
+  boost).
+
+  Scores of positive boost queries are multiplied with 'qboost.weight'.
+  Scores of negative boost queries are multiplied with `qboost.negWeight`.
+  Both weights must be positive decimal numbers. Note that increasing the value
+  of 'qboost.negWeight' means to demote matching documents more strongly.
+
+  Default: ``1.0``
+
+pf/pf2/pf3/ps/ps2/ps3/qpf.tie (phrase boosts)
+  Phrase boosts can be applied regardless of query rewriting. If enabled, a
+  boost query will be created from phrases which are derived from the query
+  string, either turning using the entire query into as a phrase for boosting
+  (pf/ps), or using bigrams (pf2/ps2) or trigrams (pf3/ps3) as a phrase.
+
+  This works very similar to the same parameters Solr (see Solr's
+  `DisMax <https://lucene.apache.org/solr/guide/8_5/the-dismax-query-parser.html>`__
+  and `eDismax <https://lucene.apache.org/solr/guide/8_5/the-extended-dismax-query-parser.html>`__
+  Query Parsers) but Querqy adds another parameter, ``qpf.tie`` to control how
+  the scores from 'pf', 'pf2' and 'pf3' are combined: a long query that matches
+  as a phrase, will boost the entire query as a phrase and a lot of bigram and
+  trigram sub-query phrases at the same time, producing a very high boost.
+
+  Setting ``qpf.tie`` to a low value will reduce this aggregation
+  effect. Querqy will use the highest score produced by 'pf', 'pf2' and 'pf3'
+  matches and multiply the score of the remaining phrase matches with the
+  'qpf.tie' value. A 'qpf.tie' of 0.0 will only use the highest score.
+
+  Example: ``pf=name^0.8 brand&pf2=brand&ps=2$ps2=0&ppf.tie=0.01``
+
+  Defaults:
+
+    * ``pf``/``pf2``/``pf3``: (empty, no phrase boosting)
+    * ``ps``: ``0.0``
+    * ``ps2/ps3``: value copied from ``ps``
+    * ``qpf.tie``: ``0.0``
+
+bf/bq/boost
+  Additive boost function (``bf``), additive boost query (``bq``) and
+  multiplicative boost query (``boost``). Same as in Solr's `DisMax <https://lucene.apache.org/solr/guide/8_5/the-dismax-query-parser.html>`__
+  and `eDismax <https://lucene.apache.org/solr/guide/8_5/the-extended-dismax-query-parser.html>`__
+  Query Parsers.
+
+.. raw:: html
+
+   </div>
 
 .. rubric:: Generated query parts
+
+.. rst-class:: elasticsearch
+
+.. raw:: html
+
+ <div>
+
 
 generated.query_fields
   The list of fields and their weights for matching generated query terms like
@@ -371,12 +583,45 @@ generated.field_boost_factor
 
   Default: ``1.0``
 
+.. raw:: html
+
+ </div>
+
+.. rst-class:: solr
+
+.. raw:: html
+
+ <div>
+
+gqf (generated query fields)
+  The list of fields and their weights for matching generated query terms like
+  synonyms or boost queries. If no 'generated query fields' are specified, the
+  global value from ``qf`` will be used.
+
+  Example: ``qf=name^3 brand^1.2 ean&gqf=name^2.4 brand^0.9``
+
+  Default: copy from global ``qf``
+
+gbf (generated boost factor)
+  A factor that is multiplied with the field weights of the generated query
+  terms. This factor can be used to apply a penalty to all terms that were not
+  entered by the user but inserted as part of the query rewriting, for example,
+  to give synonyms a smaller weight compared to the original term.
+
+  This factor is applied regardless of where the query fields for generated
+  terms are defined, i.e. in ``gqf`` (generated query fields) or ``qf``
+  (globally).
+
+  Default: ``1.0``
+
+.. raw:: html
+
+  </div>
 
 
 
-
-.. [#] This approach follows the ideas described in: J. Kim & W.B. Croft: *A Probabilistic Retrieval Model for Semi-structured Data*, 2009.
-
+.. [1] This approach follows the ideas described in: J. Kim & W.B. Croft: *A Probabilistic Retrieval Model for Semi-structured Data*, 2009.
+.. [2] Same as in Solr's `DisMax Query Parser <https://lucene.apache.org/solr/guide/8_5/the-dismax-query-parser.html>`_
 .. raw:: html
 
   </div>

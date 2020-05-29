@@ -223,9 +223,14 @@ request parameters to a specific rewriter.
 
 The id and class properties are the only properties that are available for all
 rewriters. Rewriters can have additional properties that will only have a
-meaning for the specific rewriter implementation. In the example, the
-:code:`rules` property specifies the resource that contains rule definitions for
-the 'Common Rules' rewriter.
+meaning for the specific rewriter implementation.
+
+In the example, the ``rules`` property specifies the resource that contains rule
+definitions for the 'Common Rules Rewriter'. Resources are files that are either
+kept in ZooKeeper as part of the configset (SolrCloud) or in the 'conf' folder
+of a Solr core in standalone or master-slave Solr. They can be gzipped, which
+will be auto-detected by Querqy, regardless of the file name. If you keep your
+files in ZooKeeper, remember the maximum file size in ZooKeeper (default: 1 MB).
 
 .. _querqy-list-of-rewriters:
 
