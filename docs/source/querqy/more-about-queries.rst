@@ -1,3 +1,5 @@
+.. _querqy-more-about-queries:
+
 ==================
 More about queries
 ==================

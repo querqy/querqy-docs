@@ -284,9 +284,11 @@ in how scoring works.
 Where to go next
 ================
 
-* Learn how to run a simple search query using Querqy (recommended).
-* If you cannot wait to see query rewriting in action, you can jump directly to
-  the :doc:`rewriter section <rewriters>`.
+* Learn how to :doc:`configure a rewriter <rewriters>`
+* If you cannot wait to see rules for synonyms, boostings and filters, jump
+  directly to the :ref:`Common Rules Rewriter <querqy-rewriters-common-rules>`!
+* Lean more about Querqy queries and see the :ref:`complete list of Querqy query parameters <querqy-more-about-queries>` .
+
 
 
 
