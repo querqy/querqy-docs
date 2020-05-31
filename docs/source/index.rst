@@ -3,9 +3,9 @@ Welcome!
 ========
 
 querqy.org is an umbrella for open source tools and libraries that
-helps you create a powerful e-commerce search platform quickly. It gets you
-started quickly with optimising search relevance beyond the out-of-the-box
-capabilities of the Solr and Elasticsearch search engines.
+helps you create a powerful e-commerce search platform quickly, with a focus on
+optimising search relevance from day one, beyond the out-of-the-box capabilities
+of the Solr and Elasticsearch search engines.
 
 What's included?
 ================
