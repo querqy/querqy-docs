@@ -15,9 +15,10 @@ You might want to ...
 * start with the `installation`_,
 * check out the :ref:`Common Rules Rewriter <querqy-rewriters-common-rules>`...
 * ... and even :ref:`more rewriters <querqy-list-of-rewriters>`,
-* lean more about Querqy's search relevance tuning capabilities beyond rewriters
-  (TODO)
+* learn more about Querqy's search relevance tuning capabilities using
+  `request parameters <querqy-more-about-queries>`_ independent of rewriters
 
+.. _querqy-installation:
 
 Installation
 ============
@@ -108,44 +109,45 @@ The Querqy plugin is installed as a .jar file.
 * Download the Querqy .jar file that matches your Solr version from the table
   below.
 
-  You can also browse the `Central Maven Repository`_
-  and pick `jar-with-dependencies` from the Downloads dropdown of the
-  corresponding Querqy version.
 
 
 
-+----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Solr version   | Querqy version [#]_                                                                                                                                      |
-+================+==========================================================================================================================================================+
-| 8.5.x          | :download:`4.8.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.8.lucene810.0/querqy-solr-4.8.lucene810.0-jar-with-dependencies.jar>` |
-+----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-| 8.3.x          | :download:`4.8.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.8.lucene810.0/querqy-solr-4.8.lucene810.0-jar-with-dependencies.jar>` |
-+----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-| 8.2.x          | :download:`4.8.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.8.lucene810.0/querqy-solr-4.8.lucene810.0-jar-with-dependencies.jar>` |
-+----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-| 8.1.x          | :download:`4.8.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.8.lucene810.0/querqy-solr-4.8.lucene810.0-jar-with-dependencies.jar>` |
-+----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-| 8.0.x          | :download:`4.8.lucene800.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.8.lucene800.0/querqy-solr-4.8.lucene800.0-jar-with-dependencies.jar>` |
-+----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-| 7.7.x          | :download:`4.8.lucene720.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.8.lucene720.0/querqy-solr-4.8.lucene720.0-jar-with-dependencies.jar>` |
-+----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-| 7.6.x          | :download:`4.8.lucene720.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.8.lucene720.0/querqy-solr-4.8.lucene720.0-jar-with-dependencies.jar>` |
-+----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-| 7.5.x          | :download:`4.8.lucene720.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.8.lucene720.0/querqy-solr-4.8.lucene720.0-jar-with-dependencies.jar>` |
-+----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-| 7.4.x          | :download:`4.8.lucene720.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.8.lucene720.0/querqy-solr-4.8.lucene720.0-jar-with-dependencies.jar>` |
-+----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-| 7.3.x          | :download:`4.8.lucene720.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.8.lucene720.0/querqy-solr-4.8.lucene720.0-jar-with-dependencies.jar>` |
-+----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-| 7.2.x          | :download:`4.8.lucene720.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.8.lucene720.0/querqy-solr-4.8.lucene720.0-jar-with-dependencies.jar>` |
-+----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
 
-.. [#] For older Solr versions, please see `here <https://github.com/querqy/querqy/wiki/Older-Querqy-versions>`_.
+  +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+  | Solr version   | Querqy version [#]_                                                                                                                                      |
+  +================+==========================================================================================================================================================+
+  | 8.5.x          | :download:`4.8.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.8.lucene810.0/querqy-solr-4.8.lucene810.0-jar-with-dependencies.jar>` |
+  +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+  | 8.3.x          | :download:`4.8.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.8.lucene810.0/querqy-solr-4.8.lucene810.0-jar-with-dependencies.jar>` |
+  +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+  | 8.2.x          | :download:`4.8.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.8.lucene810.0/querqy-solr-4.8.lucene810.0-jar-with-dependencies.jar>` |
+  +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+  | 8.1.x          | :download:`4.8.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.8.lucene810.0/querqy-solr-4.8.lucene810.0-jar-with-dependencies.jar>` |
+  +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+  | 8.0.x          | :download:`4.8.lucene800.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.8.lucene800.0/querqy-solr-4.8.lucene800.0-jar-with-dependencies.jar>` |
+  +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+  | 7.7.x          | :download:`4.8.lucene720.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.8.lucene720.0/querqy-solr-4.8.lucene720.0-jar-with-dependencies.jar>` |
+  +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+  | 7.6.x          | :download:`4.8.lucene720.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.8.lucene720.0/querqy-solr-4.8.lucene720.0-jar-with-dependencies.jar>` |
+  +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+  | 7.5.x          | :download:`4.8.lucene720.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.8.lucene720.0/querqy-solr-4.8.lucene720.0-jar-with-dependencies.jar>` |
+  +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+  | 7.4.x          | :download:`4.8.lucene720.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.8.lucene720.0/querqy-solr-4.8.lucene720.0-jar-with-dependencies.jar>` |
+  +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+  | 7.3.x          | :download:`4.8.lucene720.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.8.lucene720.0/querqy-solr-4.8.lucene720.0-jar-with-dependencies.jar>` |
+  +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+  | 7.2.x          | :download:`4.8.lucene720.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.8.lucene720.0/querqy-solr-4.8.lucene720.0-jar-with-dependencies.jar>` |
+  +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
 
+  .. [#] For older Solr versions, please see `here <https://github.com/querqy/querqy/wiki/Older-Querqy-versions>`_.
+
+  You can also browse the `Central Maven Repository`_ and pick
+  `jar-with-dependencies` from the Downloads dropdown of the corresponding
+  Querqy version.
 
 * Put the .jar file into `Solr's lib folder`_.
 * Add the Querqy query parser and the Querqy query component to your
-  :code:`solrconfig.xml` file:
+  ``solrconfig.xml`` file:
 
 .. code-block:: xml
 
@@ -186,7 +188,7 @@ Querqy defines its own query builder which can be executed with a rich set of
 parameters. We will walk through these parameters step by step, starting with a
 minimal query, which does not use any rewriter, then adding a 'Common Rules
 Rewriter' and finally explaining the full set of parameters, many of them not
-related to query rewriting but to search relevance tuning in general. TODO
+related to query rewriting but to search relevance tuning in general.
 
 
 .. rubric:: Minimal Query
@@ -247,9 +249,9 @@ If you followed the instructions for installing Querqy, you have configured a
 Querqy query parser in your solrconfig.xml file. This query parser can be used
 with a rich set of parameters. We will walk through these parameters step by
 step, starting with a minimal query, which does not use any rewriter, then
-adding a 'Common Rules' rewriter and finally explaining the full set of
+adding a 'Common Rules Rewriter' and finally explaining the full set of
 parameters, many of them not related to query rewriting but to search relevance
-tuning in general. TODO
+tuning in general.
 
 We will not encode URL parameters in the example for better readability.
 
@@ -274,7 +276,7 @@ have an optional field weight. In the example, the field weight for title is
 3.0. The default field weight is 1.0. Field weights must be positive.
 
 The use of the q and qf parameters resembles Solr's built-in :code:`dismax` and
-:code:`edismax` query parser. We will later see that there are some differences
+:code:`edismax` query parsers. We will later see that there are some differences
 in how scoring works.
 
 .. raw:: html
@@ -287,10 +289,5 @@ Where to go next
 * Learn how to :doc:`configure a rewriter <rewriters>`
 * If you cannot wait to see rules for synonyms, boostings and filters, jump
   directly to the :ref:`Common Rules Rewriter <querqy-rewriters-common-rules>`!
-* Lean more about Querqy queries and see the :ref:`complete list of Querqy query parameters <querqy-more-about-queries>` .
-
-
-
-
-
-.. TODO jump to search relevance params
+* Lean more about tuning search relevance with query parameters and see the
+  :ref:`complete list of parameters <querqy-more-about-queries>` .

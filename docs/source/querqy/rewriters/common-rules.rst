@@ -164,7 +164,7 @@ the input, you have to mark the input boundaries using double quotation marks:
        ....
 
 Each input token is matched exactly except that input matching is
-case-insensitive. (You can make it case-sensitive in the configuration, TODO: ref).
+case-insensitive. (You can make it case-sensitive in the `configuration`_).
 
 There is no stemming or fuzzy matching applied to the input. If you want to make
 'pc' a synonym for both, 'personal computer' and 'personal computers', you will
@@ -320,10 +320,14 @@ UP and DOWN both take boost factors as parameters. The default boost factor is
 1.0. The interpretation of the boost factor is left to the search engine.
 However, UP(10):x and DOWN(10):x should normally equal each other out.
 
-TODO: The right-hand side of UP and DOWN instructions will either be parsed using the
-configured query parser (see The right-hand side of synonym rules), or it will
-be treated as a query in the syntax of the search engine if the right-hand-side
-of the query is prefixed by \*.
+By default, the right-hand side of UP and DOWN instructions will be parsed using
+a simple parser that splits on whitespace and marks tokens prefixed by ``-`` as
+'must not match' and tokens starting with ``+`` as 'must match'. (See
+'querqyParser' in the `configuration` to set a different parser.)
+
+A special case are right-hand side definitions that start with ``*``. The
+string following the \* will be treated as a query in the syntax of the
+search engine.
 
 In the following example we favour a certain price range as an interpretation of
 'cheap' and penalise documents from category 'accessories' using raw Solr
@@ -365,10 +369,12 @@ not 'case':
 	   FILTER: apple
 	   FILTER: -case
 
-TODO: The filter is applied to all fields given in the gqf or qf parameters. In the
-case of a required keyword ('apple') the filter matches if the keyword occurs in
-one or more query fields. The negative filter ('-case') only matches documents
-where the keyword occurs in none of the query fields.
+The filter is applied to all query fields defined in the
+:raw-html:`<span class="elasticsearch">'generated.query_fields' or 'query_fields'</span>
+<span class="solr">'gqf' or 'qf'</span>` :ref:`request parameters <querqy_query_params>`.
+In the case of a required keyword ('apple') the filter matches if the keyword
+occurs in one or more query fields. The negative filter ('-case') only matches
+documents where the keyword occurs in none of the query fields.
 
 The right-hand side of filter instructions accepts raw queries. To completely
 exclude results from category 'accessories' for query 'notebook' you would
@@ -380,7 +386,14 @@ write in Solr:
    notebook =>
 	   FILTER: * -category:accessories
 
-TODO: ES
+The same filter in Elasticsearch:
+
+.. code-block:: Text
+   :linenos:
+
+   notebook =>
+	   FILTER: * {"bool": { "must_not": [ {"term": {"category":"accessories"}}]}}
+
 
 DELETE rules
 ------------
@@ -390,9 +403,8 @@ stopwords. In Querqy keywords are removed before starting the field analysis
 chain. Delete rules are thus field-independent.
 
 It often makes sense to apply delete rules in a separate rewriter in the rewrite
-chain before applying all other rules (TODO see Rule ordering). This helps to
-remove stopwords that could otherwise prevent further Querqy rules from
-matching.
+chain before applying all other rules. This helps to remove stopwords that could
+otherwise prevent further Querqy rules from matching.
 
 The following rule declares that whenever Querqy sees the input 'cheap iphone'
 it should remove keyword 'cheap' from the query and only search for 'iphone':
@@ -579,8 +591,8 @@ Property names can also be put in quotes. Both, single quotes and double quotes,
 are allowed.
 
 Property names starting with ``_`` (like ``_id`` and ``_log``) have
-a special meaning in Querqy (TODO see for example: Advanced configuration:
-Info Logging)
+a special meaning in Querqy (See for example: 'Info logging' in the
+:ref:`Advanced Solr plugin configuration <querqy_solr_info_logging>`)
 
 Both formats can be mixed, however, the multi-line JSON object format must be
 used only once per rule:
@@ -930,7 +942,7 @@ rules
   Default: (empty = no rules)
 
 ignoreCase
-  Ignore case in input matching?
+  Ignore case in input matching for rules?
 
   Default: ``true``
 
@@ -943,6 +955,49 @@ querqyParser
 .. raw:: html
 
    </div>
+
+.. rst-class:: solr
+
+.. raw:: html
+
+ <div>
+
+.. code-block:: xml
+
+   <lst name="rewriter">
+     <str name="class">querqy.solr.SimpleCommonRulesRewriterFactory</str>
+     <str name="rules">rules.txt</str>
+     <bool name="ignoreCase">true</bool>
+     <str name="querqyParser">querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory</str>
+   </lst>
+
+rules
+  The rule definitions file containing the rules for rewriting. The file is kept
+  in the configset of the collection in ZooKeeper (SolrCloud) or in the 'conf'
+  folder of the Solr core in standalone or master-slave Solr.
+
+  Note that the default maximum file size in ZooKeeper is 1 MB. The file can be
+  gzipped. Querqy will auto-detect whether the file is compressed, regardless of
+  the file name.
+
+  Required.
+
+ignoreCase
+  Ignore case in input matching for rules?
+
+  Default: ``true``
+
+querqyParser
+  The querqy.rewrite.commonrules.QuerqyParserFactory to use for parsing strings
+  from the right-hand side of rules into query objects
+
+  Default: ``querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory``
+
+
+.. raw:: html
+
+ </div>
+
 
 Request
 -------

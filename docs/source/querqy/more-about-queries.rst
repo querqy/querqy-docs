@@ -81,8 +81,10 @@ boosting queries. We will say that these additional terms are **generated**.
 Manipulating the matching query not only influences which documents are included
 in the search results but also the scoring will be impacted, regardless of
 boosting queries. The result set can be narrowed down further by **filter
-queries** that are *generated* by a rewriter.
+queries** that are *generated* by a rewriter. These filters do not influence
+scoring.
 
+.. _querqy_query_params:
 
 Reference
 =========

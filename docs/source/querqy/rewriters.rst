@@ -7,7 +7,7 @@ result set by adding alternative tokens, by removing tokens or by adding
 filters. They can also influence the ranking by adding boosting information.
 
 A single query can be rewritten by more than one rewriter. Together they
-form the *rewrite chain*.
+form the **rewrite chain**.
 
 Before you can apply a rewrite chain, you need to configure one or more
 rewriters.
@@ -127,7 +127,7 @@ them with additional parameters:
 
 
 The first rewriter, word_break (line #9), is just referenced by its name (we
-will see a 'word break rewriter' configuration later @TODO). The second rewriter
+will see a 'word break rewriter' configuration later. The second rewriter
 is called in a JSON object. Its :code:`name` property references the rewriter
 definition by the rewriter name, 'common_rules' (#11). The :code:`params` object
 (#12) is passed to the rewriter.
@@ -160,7 +160,7 @@ will delete your common_rules rewriter.
 Rewriter configuration in Solr
 ------------------------------
 
-The rewrite chain is configured in solrconfig.xml:
+The rewrite chain is configured at the Querqy query parser in solrconfig.xml:
 
 .. code-block:: xml
    :linenos:
@@ -218,11 +218,11 @@ Each rewriter is defined in a :code:`rewriter` :code:`lst` element (#11).
 All rewriters must have a :code:`class` property (#15) that specifies a factory
 for creating the rewriter.
 
-The :code:`id` property (#13) is optional. In some cases the id is used to pass
+The :code:`id` property (#13) is optional. In some cases the id is used to route
 request parameters to a specific rewriter.
 
-The id and class properties are the only properties that are available for all
-rewriters. Rewriters can have additional properties that will only have a
+The 'id' and 'class' properties are the only properties that are available for
+all rewriters. Rewriters can have additional properties that will only have a
 meaning for the specific rewriter implementation.
 
 In the example, the ``rules`` property specifies the resource that contains rule
