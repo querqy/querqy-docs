@@ -149,54 +149,34 @@ Configure basic settings
 The following settings can (and should) be overwritten on
 application.conf in your own ``smui-prod.conf`` level:
 
-+----------------------------+-----------------------+-------------------------+
-| config key                 | description           | default                 |
-+============================+=======================+=========================+
-| ``db.default.driver``      | JDBC database driver  | MySQL database on       |
-|                            |                       | localhost for           |
-|                            |                       | smui:smui               |
-+----------------------------+-----------------------+-------------------------+
-| ``db.default.url``         | Database host and     | MySQL database on       |
-|                            | optional connection   | localhost for           |
-|                            | parameters (JDBC      | smui:smui.              |
-|                            | connection string)    |                         |
-+----------------------------+-----------------------+-------------------------+
-| ``db.default.username``    | Database credentials  | MySQL database on       |
-| and                        |                       | localhost for           |
-| ``db.default.password``    |                       | smui:smui.              |
-|                            |                       |                         |
-|                            |                       |                         |
-+----------------------------+-----------------------+-------------------------+
-| ``smui2solr.SRC_TMP_FILE`` | Path to temp file     | local /tmp file in      |
-|                            | (when rules.txt       | docker container        |
-|                            | generation happens)   | (recommended: leave     |
-|                            |                       | default). WARNING:      |
-|                            |                       | Deprecated as of        |
-|                            |                       | v3.4, will be           |
-|                            |                       | replaced soon.          |
-+----------------------------+-----------------------+-------------------------+
-| ``smui2solr                | LIVE ``rules.txt``    | ``/usr/bin/solr/defau   |
-| .DST_CP_FILE_TO``          | destination file for  | ltCore/conf/rules.txt`` |
-|                            | the default           |                         |
-|                            | deployment script.    |                         |
-|                            | See “Details on       |                         |
-|                            | rules.txt deployment” |                         |
-|                            | for more info.        |                         |
-|                            | WARNING: Deprecated   |                         |
-|                            | as of v3.4, will be   |                         |
-|                            | replaced soon.        |                         |
-+----------------------------+-----------------------+-------------------------+
-| ``smui2solr.SOLR_HOST``    | Solr host             | Virtual local Solr      |
-|                            |                       | instance. WARNING:      |
-|                            |                       | Deprecated as of        |
-|                            |                       | v3.4, will be           |
-|                            |                       | replaced soon.          |
-+----------------------------+-----------------------+-------------------------+
-| ``play.http.secret.key``   | Encryption key for    | unsecure default.       |
-|                            | server/client         |                         |
-|                            | communication (Play   |                         |
-|                            | 2.6 standard)         |                         |
-+----------------------------+-----------------------+-------------------------+
+.. list-table:: SMUI basic settings
+   :widths: 20 50 30
+   :header-rows: 1
+
+   * - Config key
+     - Description
+     - Default
+   * - ``db.default.driver``
+     - JDBC database driver
+     - MySQL database on localhost for ``smui:smui``.
+   * - ``db.default.url``
+     - Database host and optional connection parameters (JDBC connection string).
+     - MySQL database on localhost for ``smui:smui``.
+   * - ``db.default.username`` and ``db.default.password``
+     - Database credentials.
+     - MySQL database on localhost for smui:smui.
+   * - ``smui2solr.SRC_TMP_FILE``
+     - Path to temp file (when ``rules.txt`` generation happens)
+     - local /tmp file in docker container (recommended: leave default). WARNING: Deprecated as of v3.4, will be replaced soon.
+   * - ``smui2solr.DST_CP_FILE_TO``
+     - ``/usr/bin/solr/defaultCore/conf/rules.txt``
+     - LIVE ``rules.txt`` destination file for the default deployment script. See “Details on rules.txt deployment” for more info. WARNING: Deprecated as of v3.4, will be replaced soon.
+   * - ``smui2solr.SOLR_HOST``
+     - Solr host
+     - Virtual local Solr instance. WARNING: Deprecated as of v3.4, will be replaced soon.
+   * - ``play.http.secret.key``
+     - Encryption key for server/client communication (Play 2.6 standard)
+     - unsecure default.
 
 Start SMUI (docker) application
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -245,117 +225,55 @@ Configure application behaviour / feature toggles
 Optional. The following settings in the ``application.conf`` define its
 (frontend) behaviour:
 
-+-----------------------+-----------------------+-----------------------+
-| config key            | description           | default               |
-+=======================+=======================+=======================+
-| ``toggle.ui-concept.u | Show UP(+++) fields   | ``true``              |
-| pdown-rules.combined` | instead of separated  |                       |
-| `                     | rule and intensity    |                       |
-|                       | fields.               |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``toggle.ui-concept.a | Offer a separated     | ``true``              |
-| ll-rules.with-solr-fi | “Solr Field” input to |                       |
-| elds``                | the user (UP/DOWN,    |                       |
-|                       | FILTER).              |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``toggle.rule-deploym | With every exported   | ``false``             |
-| ent.log-rule-id``     | search input, add an  |                       |
-|                       | additional @_log line |                       |
-|                       | that identifies the   |                       |
-|                       | ID of the rule (if    |                       |
-|                       | info logging in the   |                       |
-|                       | search-engine / Solr  |                       |
-|                       | for querqy is         |                       |
-|                       | activated, see        |                       |
-|                       | ``querqy.infoLogging= |                       |
-|                       | on``,                 |                       |
-|                       | it is being           |                       |
-|                       | communicated in the   |                       |
-|                       | search-engine’s /     |                       |
-|                       | Solr response).       |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``toggle.rule-deploym | Separate decompound   | ``false``             |
-| ent.split-decompound- | synonyms (SOME\* =>   |                       |
-| rule-txt``            | SOME $1) into an own  |                       |
-|                       | rules.txt file.       |                       |
-|                       | WARNING: Activating   |                       |
-|                       | this results in the   |                       |
-|                       | need of having the    |                       |
-|                       | second                |                       |
-|                       | special-purpose-DST_C |                       |
-|                       | P_FILE_TO             |                       |
-|                       | configured (see       |                       |
-|                       | below). Temp file     |                       |
-|                       | path for this purpose |                       |
-|                       | will be generated by  |                       |
-|                       | adding a ``-2`` to    |                       |
-|                       | ``smui2solr.SRC_TMP_F |                       |
-|                       | ILE``.                |                       |
-|                       | WARNING: Deprecated   |                       |
-|                       | as of v3.4, will be   |                       |
-|                       | replaced soon.        |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``toggle.rule-deploym | Path to productive    | Example content.      |
-| ent.split-decompound- | querqy                | Needs to be adjusted, |
-| rule-txt-DST_CP_FILE_ | decompound-rules.txt  | if split for          |
-| TO``                  | (within Solr          | decompound rules.txt  |
-|                       | context). WARNING:    | has been activated.   |
-|                       | Deprecated as of      |                       |
-|                       | v3.4, will be         |                       |
-|                       | replaced soon.        |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``toggle.rule-deploym | Make separated        | ``false``             |
-| ent.pre-live.present` | deployments PRELIVE   |                       |
-| `                     | vs. LIVE possible     |                       |
-|                       | (and display a button |                       |
-|                       | for that on the       |                       |
-|                       | frontend).            |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``smui2solr.deploy-pr | PRELIVE ``rules.txt`` | ``/usr/bin/solr/defau |
-| elive-fn-rules-txt``  | destination file for  | ltCore/conf/rules.txt |
-|                       | the default           | ``                    |
-|                       | deployment script.    |                       |
-|                       | See “Details on       |                       |
-|                       | rules.txt deployment” |                       |
-|                       | for more info.        |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``smui2solr.deploy-pr | Host and port (e.g.   | Empty. In case core   |
-| elive-solr-host``     | ``localhost:8983``)   | reload on PRELIVE     |
-|                       | of Solr PRELIVE       | deployments should be |
-|                       | instance. If left     | triggered, this needs |
-|                       | empty, the default    | to be set.            |
-|                       | deployment script     |                       |
-|                       | will not trigger a    |                       |
-|                       | core reload after     |                       |
-|                       | deployment.           |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``smui2solr.deploy-pr | Separate decompound   | ``/usr/bin/solr/defau |
-| elive-fn-decompound-t | synonyms for PRELIVE  | ltCore/conf/rules-dec |
-| xt``                  | (see above).          | ompound.txt``         |
-+-----------------------+-----------------------+-----------------------+
-| ``toggle.rule-deploym | If set to ``true``    | ``false``             |
-| ent.custom-script``   | the below custom      |                       |
-|                       | script (path) is used |                       |
-|                       | for deploying the     |                       |
-|                       | rules.txt files.      |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``toggle.rule-deploym | Path to an optional   | Example content.      |
-| ent.custom-script-SMU | custom script (see    | Needs to be adjusted, |
-| I2SOLR-SH_PATH``      | above).               | if a custom           |
-|                       |                       | deployment script is  |
-|                       |                       | activated.            |
-+-----------------------+-----------------------+-----------------------+
-| ``toggle.rule-tagging | Should tagging        | ``false``             |
-| ``                    | feature be activated. |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``toggle.predefined-t | Path to optional      | :literal:`\`smui.auth |
-| ags-file``            | file, that provides   | .ui-concept.simple-lo |
-|                       | pre-defined rule tags | gout-button-target-ur |
-|                       | (see “Configure       | l` | Target URL of si |
-|                       | predefined rule       | mple logout button (s |
-|                       | tags”).               | ee "Configure Authent |
-|                       |                       | ication"). \|`        |
-+-----------------------+-----------------------+-----------------------+
+.. list-table:: SMUI advanced application settings
+   :widths: 20 50 30
+   :header-rows: 1
+
+   * - Config key
+     - Description
+     - Default
+   * - ``toggle.ui-concept.updown-rules.combined``
+     - Show UP(+++) fields instead of separated rule and intensity fields.
+     - ``true``
+   * - ``toggle.ui-concept.all-rules.with-solr-fields``
+     - Offer a separated “Solr Field” input to the user (UP/DOWN, FILTER).
+     - ``true``
+   * - ``toggle.rule-deployment.log-rule-id``
+     - With every exported search input, add an additional ``@_log`` line that identifies the ID of the rule (if info logging in the search-engine / Solr for querqy is activated, see ``querqy.infoLogging= on``, it is being communicated in the search-engine’s / Solr response).
+     - ``false``
+   * - ``toggle.rule-deployment.split-decompound-rule-txt``
+     - Separate decompound synonyms (``SOME\* => SOME $1``) into a separated rules.txt file. WARNING: Activating this results in the need of having the second special-purpose-DST_CP_FILE_TO configured (see below). Temp file path for this purpose will be generated by adding a ``-2`` to ``smui2solr.SRC_TMP_FILE``. WARNING: Deprecated as of v3.4, will be replaced soon.
+     - ``false``
+   * - ``toggle.rule-deployment.split-decompound-rule-txt-DST_CP_FILE_TO``
+     - Path to productive querqy ``decompound-rules.txt`` (within Solr context). WARNING: Deprecated as of v3.4, will be replaced soon.
+     -  Example content, that needs to be adjusted, if split for decompound rules.txt has been activated.
+   * - ``toggle.rule-deployment.pre-live.present``
+     - Make separated deployments PRELIVE vs. LIVE possible (and display a button for that on the frontend).
+     - ``false``
+   * - ``smui2solr.deploy-prelive-fn-rules-txt``
+     - PRELIVE ``rules.txt`` destination file for the default deployment script. See “Details on rules.txt deployment” for more info.
+     -  ``/usr/bin/solr/defaultCore/conf/rules.txt``
+   * - ``smui2solr.deploy-prelive-solr-host``
+     - Host and port (e.g. ``localhost:8983``) of Solr PRELIVE instance. If left empty, the default deployment script will not trigger a core reload after deployment.
+     - Empty. In case core reload on PRELIVE deployments should be triggered, this needs to be set.
+   * - ``smui2solr.deploy-prelive-fn-decompound-txt``
+     - Separate decompound synonyms for PRELIVE (see above).
+     -  ``/usr/bin/solr/defaultCore/conf/rules-decompound.txt``
+   * - ``toggle.rule-deployment.custom-script``
+     - If set to ``true`` the below custom script (path) is used for deploying the rules.txt files.
+     - ``false``
+   * - ``toggle.rule-deployment.custom-script-SMUI2SOLR-SH_PATH``
+     - Path to an optional custom script (see above).
+     - Example content, that needs to be adjusted, if a custom deployment script is activated.
+   * - ``toggle.rule-tagging``
+     - Should tagging feature be activated.
+     - ``false``
+   * - ``toggle.predefined-tags-file``
+     - Path to optional file, that provides pre-defined rule tags (see “Configure predefined rule tags”).
+     -
+   * - ``smui.auth.ui-concept.simple-logout-button-target-url``
+     - Target URL of simple logout button (see "Configure Authentication").
+     -
 
 NOTE: The above described feature toggles are passed to SMUI’s docker
 container using according environment variables. The mappings can be
@@ -475,41 +393,34 @@ JWT Authentication
 
    smui.authAction="controllers.auth.JWTJsonAuthenticatedAction"
 
-+-----------------------+-----------------------+-----------------------+
-| config key            | description           | default               |
-+=======================+=======================+=======================+
-| ``smui.JWTJsonAuthent | The URL to the login  | :literal:`\`smui.JWTJ |
-| icatedAction.login.ur | page                  | sonAuthenticatedActio |
-| l``                   | (e.g. https://loginex | n.cookie.name` | Name |
-|                       | ample.com/login.html? |  of cookie that conta |
-|                       | callback=https://redi | ins the Json Web Toke |
-|                       | recturl.com)"         | n (JWT) | `jwt_token` |
-|                       |                       |  `smui.JWTJsonAuthent |
-|                       |                       | icatedAction.public.k |
-|                       |                       | ey` | The public key  |
-|                       |                       | to verify the token s |
-|                       |                       | ignature \|`          |
-+-----------------------+-----------------------+-----------------------+
-| ``smui.JWTJsonAuthent | The algorithms that   | ``rsa``               |
-| icatedAction.algorith | should be used for    |                       |
-| m``                   | decoding (options:    |                       |
-|                       | ‘rsa’, ‘hmac’,        |                       |
-|                       | ‘asymmetric’,         |                       |
-|                       | ‘ecdsa’)              |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``smui.JWTJsonAuthent | Activation of         | ``false``             |
-| icatedAction.authoriz | authorization check   |                       |
-| ation.active``        |                       |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``smui.JWTJsonAuthent | The JSON path to the  | ``$.roles``           |
-| icatedAction.authoriz | roles saved in the    |                       |
-| ation.json.path``     | JWT                   |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``smui.JWTJsonAuthent | Roles (comma          | ``admin``             |
-| icatedAction.authoriz | separated) of roles   |                       |
-| ation.roles``         | that are authorized   |                       |
-|                       | to access SMUI        |                       |
-+-----------------------+-----------------------+-----------------------+
+.. list-table:: SMUI advanced application settings
+   :widths: 20 50 30
+   :header-rows: 1
+
+   * - Config key
+     - Description
+     - Default
+   * - ``smui.JWTJsonAuthenticatedAction.login.url``
+     - The URL to the login page (e.g. https://loginexample.com/login.html?callback=https://redirecturl.com)
+     -
+   * - ``smui.JWTJsonAuthenticatedAction.cookie.name``
+     - Name of cookie that contains the Json Web Token (JWT)
+     - ``jwt_token``
+   * - ``smui.JWTJsonAuthenticatedAction.public.key``
+     - The public key to verify the token signature.
+     -
+   * - ``smui.JWTJsonAuthenticatedAction.algorithm``
+     - The algorithms that should be used for decoding (options: ‘rsa’, ‘hmac’, ‘asymmetric’, ‘ecdsa’)
+     - ``rsa``
+   * - ``smui.JWTJsonAuthenticatedAction.authorization.active``
+     - Activation of authorization check
+     - ``false``
+   * - ``smui.JWTJsonAuthenticatedAction.authorization.json.path``
+     - The JSON path to the roles saved in the JWT
+     - ``$.roles``
+   * - ``smui.JWTJsonAuthenticatedAction.authorization.roles``
+     - Roles (comma separated) of roles, that are authorized to access SMUI
+     - ``admin``
 
 Example of decoded Json Web Token:
 
