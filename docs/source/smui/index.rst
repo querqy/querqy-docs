@@ -149,54 +149,54 @@ Configure basic settings
 The following settings can (and should) be overwritten on
 application.conf in your own ``smui-prod.conf`` level:
 
-+-----------------------+-----------------------+-----------------------+
-| config key            | description           | default               |
-+=======================+=======================+=======================+
-| ``db.default.driver`` | JDBC database driver  | MySQL database on     |
-|                       |                       | localhost for         |
-|                       |                       | smui:smui             |
-+-----------------------+-----------------------+-----------------------+
-| ``db.default.url``    | Database host and     | MySQL database on     |
-|                       | optional connection   | localhost for         |
-|                       | parameters (JDBC      | smui:smui.            |
-|                       | connection string)    |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``db.default.username | Database credentials  | MySQL database on     |
-| ``                    |                       | localhost for         |
-| and                   |                       | smui:smui.            |
-| ``db.default.password |                       |                       |
-| ``                    |                       |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``smui2solr.SRC_TMP_F | Path to temp file     | local /tmp file in    |
-| ILE``                 | (when rules.txt       | docker container      |
-|                       | generation happens)   | (recommended: leave   |
-|                       |                       | default). WARNING:    |
-|                       |                       | Deprecated as of      |
-|                       |                       | v3.4, will be         |
-|                       |                       | replaced soon.        |
-+-----------------------+-----------------------+-----------------------+
-| ``smui2solr.DST_CP_FI | LIVE ``rules.txt``    | ``/usr/bin/solr/defau |
-| LE_TO``               | destination file for  | ltCore/conf/rules.txt |
-|                       | the default           | ``                    |
-|                       | deployment script.    |                       |
-|                       | See “Details on       |                       |
-|                       | rules.txt deployment” |                       |
-|                       | for more info.        |                       |
-|                       | WARNING: Deprecated   |                       |
-|                       | as of v3.4, will be   |                       |
-|                       | replaced soon.        |                       |
-+-----------------------+-----------------------+-----------------------+
-| ``smui2solr.SOLR_HOST | Solr host             | Virtual local Solr    |
-| ``                    |                       | instance. WARNING:    |
-|                       |                       | Deprecated as of      |
-|                       |                       | v3.4, will be         |
-|                       |                       | replaced soon.        |
-+-----------------------+-----------------------+-----------------------+
-| ``play.http.secret.ke | Encryption key for    | unsecure default.     |
-| y``                   | server/client         |                       |
-|                       | communication (Play   |                       |
-|                       | 2.6 standard)         |                       |
-+-----------------------+-----------------------+-----------------------+
++----------------------------+-----------------------+-------------------------+
+| config key                 | description           | default                 |
++============================+=======================+=========================+
+| ``db.default.driver``      | JDBC database driver  | MySQL database on       |
+|                            |                       | localhost for           |
+|                            |                       | smui:smui               |
++----------------------------+-----------------------+-------------------------+
+| ``db.default.url``         | Database host and     | MySQL database on       |
+|                            | optional connection   | localhost for           |
+|                            | parameters (JDBC      | smui:smui.              |
+|                            | connection string)    |                         |
++----------------------------+-----------------------+-------------------------+
+| ``db.default.username``    | Database credentials  | MySQL database on       |
+| and                        |                       | localhost for           |
+| ``db.default.password``    |                       | smui:smui.              |
+|                            |                       |                         |
+|                            |                       |                         |
++----------------------------+-----------------------+-------------------------+
+| ``smui2solr.SRC_TMP_FILE`` | Path to temp file     | local /tmp file in      |
+|                            | (when rules.txt       | docker container        |
+|                            | generation happens)   | (recommended: leave     |
+|                            |                       | default). WARNING:      |
+|                            |                       | Deprecated as of        |
+|                            |                       | v3.4, will be           |
+|                            |                       | replaced soon.          |
++----------------------------+-----------------------+-------------------------+
+| ``smui2solr                | LIVE ``rules.txt``    | ``/usr/bin/solr/defau   |
+| .DST_CP_FILE_TO``          | destination file for  | ltCore/conf/rules.txt`` |
+|                            | the default           |                         |
+|                            | deployment script.    |                         |
+|                            | See “Details on       |                         |
+|                            | rules.txt deployment” |                         |
+|                            | for more info.        |                         |
+|                            | WARNING: Deprecated   |                         |
+|                            | as of v3.4, will be   |                         |
+|                            | replaced soon.        |                         |
++----------------------------+-----------------------+-------------------------+
+| ``smui2solr.SOLR_HOST``    | Solr host             | Virtual local Solr      |
+|                            |                       | instance. WARNING:      |
+|                            |                       | Deprecated as of        |
+|                            |                       | v3.4, will be           |
+|                            |                       | replaced soon.          |
++----------------------------+-----------------------+-------------------------+
+| ``play.http.secret.key``   | Encryption key for    | unsecure default.       |
+|                            | server/client         |                         |
+|                            | communication (Play   |                         |
+|                            | 2.6 standard)         |                         |
++----------------------------+-----------------------+-------------------------+
 
 Start SMUI (docker) application
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
