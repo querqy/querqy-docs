@@ -43,7 +43,7 @@ As a first step, the Replace Rewriter is configured
 
 .. code-block:: JSON
    :linenos:
-   :emphasize-lines: 4-9
+   :emphasize-lines: 4-7
 
    {
        "class": "querqy.elasticsearch.rewriter.ReplaceRewriterFactory",

@@ -265,7 +265,7 @@ rewriter name to see the documentation.
   (De)compounds query tokens. Splits compound words or creates compounds from
   separate tokens.
 
-:ref:`Number/Unit Rewriter <querqy-rewriters-number-unit>`
+:ref:`Number-Unit Rewriter <querqy-rewriters-number-unit>`
   Recognises numerical values and units of measurement in the query and matches
   them with indexed fields. Allows for range matches and boosting of the exactly
   matching value.
