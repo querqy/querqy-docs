@@ -51,11 +51,16 @@ below and we will generate the install command for you:
 
   <select class="es-url-select"
     onChange="setESURL(this.options[this.selectedIndex].value);">
-    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.1.es760.0/querqy-elasticsearch-1.1.es760.0.zip">Elasticsearch 7.6.0</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.2.es771.0/querqy-elasticsearch-1.2.es771.0.zip">Elasticsearch 7.7.1</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.2.es770.0/querqy-elasticsearch-1.2.es770.0.zip">7.7.0</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.2.es762.0/querqy-elasticsearch-1.2.es762.0.zip">7.6.2</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.2.es761.0/querqy-elasticsearch-1.2.es761.0.zip">7.6.1</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.2.es760.0/querqy-elasticsearch-1.2.es760.0.zip">7.6.0</option>
 
-    <option value="https://dl.bintray.com/renekrie/maven/querqy/querqy-elasticsearch/1.0.es752.0/querqy-elasticsearch-1.0.es752.0.zip">7.5.2</option>
-    <option value="https://dl.bintray.com/renekrie/maven/querqy/querqy-elasticsearch/1.0.es751.0/querqy-elasticsearch-1.0.es751.0.zip">7.5.1</option>
-    <option value="https://dl.bintray.com/renekrie/maven/querqy/querqy-elasticsearch/1.0.es750.0/querqy-elasticsearch-1.0.es750.0.zip">7.5.0</option>
+    <option value="https://dl.bintray.com/renekrie/maven/querqy/querqy-elasticsearch/1.2.es752.0/querqy-elasticsearch-1.2.es752.0.zip">7.5.2</option>
+    <option value="https://dl.bintray.com/renekrie/maven/querqy/querqy-elasticsearch/1.2.es751.0/querqy-elasticsearch-1.2.es751.0.zip">7.5.1</option>
+    <option value="https://dl.bintray.com/renekrie/maven/querqy/querqy-elasticsearch/1.2.es750.0/querqy-elasticsearch-1.2.es750.0.zip">7.5.0</option>
+
     <option value="https://dl.bintray.com/renekrie/maven/querqy/querqy-elasticsearch/1.0.es742.0/querqy-elasticsearch-1.0.es742.0.zip">7.4.2</option>
     <option value="https://dl.bintray.com/renekrie/maven/querqy/querqy-elasticsearch/1.0.es741.0/querqy-elasticsearch-1.0.es741.0.zip">7.4.1</option>
     <option value="https://dl.bintray.com/renekrie/maven/querqy/querqy-elasticsearch/1.0.es740.0/querqy-elasticsearch-1.0.es740.0.zip">7.4.0</option>
@@ -79,7 +84,7 @@ below and we will generate the install command for you:
 
 
   ./bin/elasticsearch-plugin install \
-     "https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.1.es760.0/querqy-elasticsearch-1.1.es760.0.zip"
+     "https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.2.es771.0/querqy-elasticsearch-1.2.es771.0.zip"
 
 
 
