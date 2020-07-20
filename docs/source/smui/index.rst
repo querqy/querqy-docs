@@ -274,6 +274,15 @@ Optional. The following settings in the ``application.conf`` define its
    * - ``smui.auth.ui-concept.simple-logout-button-target-url``
      - Target URL of simple logout button (see "Configure Authentication").
      -
+   * - TODO document ``toggle.activate-spelling``
+     - TODO
+     - TODO
+   * - ``toggle.display-username.default``
+     - Default username for being displayed on the frontend, if no username is available (e.g. for event history).
+     - ``Anonymous Search Manager``
+   * - ``toggle.activate-eventhistory``
+     - Persist an event history for all updates to the search management configuration, and provide an activity log for the search manager. WARNING: If this setting is changed over time (especially from ``true`` to ``false``) events in the history might get lost!
+     - ``false``
 
 NOTE: The above described feature toggles are passed to SMUI’s docker
 container using according environment variables. The mappings can be
