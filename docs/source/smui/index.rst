@@ -18,6 +18,11 @@ Querqy.
 
 RELEASE NOTES
 -------------
+Major changes in v3.8
+~~~~~~~~~~~~~~~~~~~~~
+
+-  Activity Log
+
 Major changes in v3.7
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -303,6 +308,11 @@ Optional. The following settings in the ``application.conf`` define its
    * - ``smui2solr.deploy-prelive-fn-replace-txt``
      - PRELIVE ``replace_rules.txt`` destination file for the default deployment script. See “Details on rules.txt deployment” for more info.
      -  ``/usr/bin/solr/preliveCore/conf/replace-rules.txt``
+   * - ``toggle.display-username.default``
+     - Default username for being displayed on the frontend, if no username is available (e.g. for event history).
+     - ``Anonymous Search Manager``
+   * - ``toggle.activate-eventhistory``
+     - Persist an event history for all updates to the search management configuration, and provide an activity log for the search manager. WARNING: If this setting is changed over time (especially from ``true`` to ``false``) events in the history might get lost!
 
 NOTE: The above described feature toggles are passed to SMUI’s docker
 container using according environment variables. The mappings can be
