@@ -18,6 +18,16 @@ Querqy.
 
 RELEASE NOTES
 -------------
+Major changes in v3.7
+~~~~~~~~~~~~~~~~~~~~~
+
+-  Bump querqy version to *3.7.0*
+-  New flag for list limitation:
+   Limits the visible rule items in the left pane to improve render speed (flag: *toggle.ui-list.limit-items-to*)
+-  New *spelling items*:
+     - Spellings/misspellings can be maintained in SMUI using the querqy replace rewriter (e.g. ``ombile => mobile``)
+     - Replace rules are exported in a seperate rule file that can be configured in the *application.conf*
+- Major refactoring of frontend
 
 Major changes in v3.6
 ~~~~~~~~~~~~~~~~~~~~~
@@ -274,15 +284,25 @@ Optional. The following settings in the ``application.conf`` define its
    * - ``smui.auth.ui-concept.simple-logout-button-target-url``
      - Target URL of simple logout button (see "Configure Authentication").
      -
-   * - TODO document ``toggle.activate-spelling``
-     - TODO
-     - TODO
-   * - ``toggle.display-username.default``
-     - Default username for being displayed on the frontend, if no username is available (e.g. for event history).
-     - ``Anonymous Search Manager``
-   * - ``toggle.activate-eventhistory``
-     - Persist an event history for all updates to the search management configuration, and provide an activity log for the search manager. WARNING: If this setting is changed over time (especially from ``true`` to ``false``) events in the history might get lost!
+   * - ``toggle.activate-spelling``
+     - Activate spelling items:
+       Add spelling items to maintain common misspellings using the querqy replace rewriter.
+       The spelling items are exported in a seperate replace_rules.txt that is uploaded to Solr.
      - ``false``
+   * - ``toggle.ui-list.limit-items-to``
+     - Activate list limitation:
+       Limits the list of visible items to the configured number and shows toggle button (*"show more/less"*).
+       Set value to -1 to deactivate list limitation.
+     - ``-1``
+   * - ``smui2solr.replace-rules-tmp-file``
+     - Path to temp file (when ``replace_rules.txt`` generation happens)
+     - ``/tmp/search-management-ui_replace-rules-txt.tmp``
+   * - ``smui2solr.replace-rules-dst-cp-file-to``
+     - ``/usr/bin/solr/defaultCore/conf/rules.txt``
+     - ``/usr/bin/solr/liveCore/conf/replace-rules.txt``
+   * - ``smui2solr.deploy-prelive-fn-replace-txt``
+     - PRELIVE ``replace_rules.txt`` destination file for the default deployment script. See “Details on rules.txt deployment” for more info.
+     -  ``/usr/bin/solr/preliveCore/conf/replace-rules.txt``
 
 NOTE: The above described feature toggles are passed to SMUI’s docker
 container using according environment variables. The mappings can be
@@ -301,7 +321,7 @@ Details and options for the deployment (``rules.txt``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The default deployment script supports ``cp`` or ``scp`` file transfer
-method to deploy the ``rules.txt`` and triggers a Solr core on the
+method to deploy the ``rules.txt`` and ``replace_rules.txt`` and triggers a Solr core on the
 target system, if configured accordingly. Its behaviour is controlled
 using the config variables above, e.g.:
 
@@ -335,6 +355,11 @@ NOTE: The example above also accounts for
 ``SMUI_TOGGLE_DEPL_DECOMPOUND_DST`` and
 ``SMUI_DEPLOY_PRELIVE_FN_DECOMPOUND_TXT``, when
 ``SMUI_TOGGLE_DEPL_SPLIT_DECOMPOUND`` is set to ``true``.
+
+NOTE: The example above also accounts for
+``SMUI_2SOLR_REPLACE_RULES_DST_CP_FILE_TO`` and
+``SMUI_DEPLOY_PRELIVE_FN_REPLACE_TXT``, when
+``SMUI_TOGGLE_SPELLING`` is set to ``true``.
 
 Deploy rules.txt to a git target
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -530,6 +555,41 @@ cases:
 
 SMUI might as well leverages querqy’s ``@_log`` property to communicate
 SMUI’s rule ID back to the search-engine (Solr) querying instance.
+
+Spelling rules
+~~~~~~~~~~~~~~
+
+Spelling rules are using the querqy REPLACE rewriter to overwrite the input term.
+Following rules can be used to replace the input term:
+
+.. list-table:: SMUI spelling rules
+   :widths: 20 20 20 50
+   :header-rows: 1
+
+   * -
+     - Spelling
+     - Alternative
+     - Description
+   * - **simple rule**
+     - mobile
+     - ombile
+     - ``ombile => mobile``
+       Simple replacement of the alternative with the spelling
+   * - **prefix rule**
+     - cheap
+     - cheap*
+     - ``cheap* => cheap``
+       Can be used to generalize spellings (e.g. cheapest pants => cheap pants). Just one suffix rule is allowed per spelling.
+   * - **suffix rule**
+     - phone
+     - \*phones
+     - ``*phones => phone``
+       Can be used to generalize spellings (e.g. smartphone => phone). Just one suffix rule is allowed per spelling.
+   * - **wildcards**
+     - computer $1
+     - computer*
+     - computer* => computer $1
+       Can be used to generalize and split spellings (e.g. computertable => computer table). Just one suffix rule is allowed per spelling.
 
 Import existing rules (rules.txt)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
