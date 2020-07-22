@@ -290,14 +290,10 @@ Optional. The following settings in the ``application.conf`` define its
      - Target URL of simple logout button (see "Configure Authentication").
      -
    * - ``toggle.activate-spelling``
-     - Activate spelling items:
-       Add spelling items to maintain common misspellings using the querqy replace rewriter.
-       The spelling items are exported in a seperate replace_rules.txt that is uploaded to Solr.
+     - Activate spelling items: Add spelling items to maintain common misspellings using the querqy replace rewriter. The spelling items are exported in a seperate replace_rules.txt that is uploaded to Solr.
      - ``false``
    * - ``toggle.ui-list.limit-items-to``
-     - Activate list limitation:
-       Limits the list of visible items to the configured number and shows toggle button (*"show more/less"*).
-       Set value to -1 to deactivate list limitation.
+     - Activate list limitation: Limits the list of visible items to the configured number and shows toggle button (*"show more/less"*). Set value to -1 to deactivate list limitation.
      - ``-1``
    * - ``smui2solr.replace-rules-tmp-file``
      - Path to temp file (when ``replace_rules.txt`` generation happens)
