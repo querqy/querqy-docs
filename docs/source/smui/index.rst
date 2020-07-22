@@ -309,6 +309,7 @@ Optional. The following settings in the ``application.conf`` define its
      - ``Anonymous Search Manager``
    * - ``toggle.activate-eventhistory``
      - Persist an event history for all updates to the search management configuration, and provide an activity log for the search manager. WARNING: If this setting is changed over time (especially from ``true`` to ``false``) events in the history might get lost!
+     - ``false``
 
 NOTE: The above described feature toggles are passed to SMUI’s docker
 container using according environment variables. The mappings can be
