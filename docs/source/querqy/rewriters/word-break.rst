@@ -79,6 +79,7 @@ Setting up a Word Break Rewriter
      <bool name="lowerCaseInput">true</bool>
      <int name="decompound.maxExpansions">5</int>
      <bool name="decompound.verifyCollation">true</bool>
+     <str name="morphology">GERMAN</str>
      <arr name="reverseCompoundTriggerWords">
        <str>for</str>
      </arr>
@@ -119,11 +120,34 @@ word splits. For example, the word 'action' will not be split into 'act + ion'
 as long as the 'act' and 'ion' do not co-occur in the dictionaryField of a
 document.
 
-The rewriter will create compounds of adjacent query tokens without any further
-configuration.
+.. rst-class:: solr
+
+.. raw:: html
+
+ <div>
+
+By default, it is assumed that words that together form compound word
+were just joined together without changing their form. But in some languages
+words can take a specific form when they are used in compounds. For
+example, when combining 'baumwolle' (cotton) with 'jacke' (jacket) to form
+'baumwolljacke' (cotton jacket) in German, the final -e is removed from the
+modifier word 'baumwolle'. `[S. Langer (1998)] <https://www.cis.uni-muenchen.de/~stef/veroeffentlichungen/konvens1998.pdf>`_.
+mentions 68 different forms that modifier words can take in German compounds.
+The ``morphology`` setting enables language-specific word forms in
+compounds. Currently, the only available morphology implementation is GERMAN,
+which applies the 20 most popular compound forms listed on page 6 in [S. Langer
+(1998)]. The rewriter currently applies the morphology only when splitting
+compounds but not when creating them.
+
+
+ .. raw:: html
+
+  </div>
+
+
 
 ``reverseCompoundTriggerWords``
-(:raw-html:`<span class="elasticsearch">#10</span><span class="solr">#7-9</span>`)
+(:raw-html:`<span class="elasticsearch">#10</span><span class="solr">#8-10</span>`)
 support an additional compound creation strategy that drops the trigger word and
 creates a compound from the left and right tokens in reverse order. In languages
 with very productive compounding, like Dutch and German, this strategy helps to
@@ -131,6 +155,9 @@ map phrases with prepositions like 'for' and 'of' to compounds. For example,
 let's assume we have configured 'voor' (Dutch 'for') in
 'reverseCompoundTriggerWords'. The query 'voer voor honden' ('food for dogs')
 will then trigger a synonym 'hondenvoer' ('dog food') to be added to the query.
+
+The rewriter will create compounds of adjacent query tokens without any further
+configuration.
 
 .. include:: hint-rewrite-chain.txt
 
@@ -216,6 +243,12 @@ decompound.verifyCollation
   a document?
 
   Default: ``false``
+
+morphology
+  Apply language-specific morphology in compound words. Currently only used
+  for compound splitting. Available morphologies: ``DEFAULT``, ``GERMAN``.
+
+  Default: ``DEFAULT``
 
 reverseCompoundTriggerWords
   List of words for which the compound of the left and right neighbour tokens
