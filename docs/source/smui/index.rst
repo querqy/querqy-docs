@@ -21,7 +21,11 @@ RELEASE NOTES
 Major changes in v3.8
 ~~~~~~~~~~~~~~~~~~~~~
 
--  Activity Log
+-  Activity Log & Reporting capabilities: SMUI now logs every activity (rule creations, updates & the like) & offers reports, that grant an overview over changes done in a certain period
+     - Activies for an input are reported in the details sections
+     - SMUI offers a "Report" view, where (a) all Activities / changes in a specific period can be reviewed ("Activity Report"), and where you (b) find an overview of all rules sorted by last modification ("Rules Report")
+     - Activity Logging must be activated for this (see “Configure application behaviour / feature toggles“ for details)
+     - Note: Please install version >= 3.8.3 as the prior v3.8 releases (v3.8.1, v3.8.2) do flawful persistence of Activity event entities (those version have been removed in DockerHub as well)!
 
 Major changes in v3.7
 ~~~~~~~~~~~~~~~~~~~~~
