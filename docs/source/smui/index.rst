@@ -18,13 +18,18 @@ Querqy.
 
 RELEASE NOTES
 -------------
+Major changes in v3.9
+~~~~~~~~~~~~~~~~~~~~~
+
+-  Custom UP/DOWN dropdown mappings for the frontend can be configured. Step sizes for UP/DOWN boost/penalise values are more flexible now.
+
 Major changes in v3.8
 ~~~~~~~~~~~~~~~~~~~~~
 
--  Activity Log & Reporting capabilities: SMUI now logs every activity (rule creations, updates & the like) & offers reports, that grant an overview over changes done in a certain period
-     - Activies for an input are reported in the details sections
+-  Activity Log & Reporting capabilities: SMUI now logs every activity (rule creations, updates & the like) & offers reports, that grant an overview over changes done in a certain period.
+     - Activies for an input are reported in the details sections.
      - SMUI offers a "Report" view, where (a) all Activities / changes in a specific period can be reviewed ("Activity Report"), and where you (b) find an overview of all rules sorted by last modification ("Rules Report")
-     - Activity Logging must be activated for this (see “Configure application behaviour / feature toggles“ for details)
+     - Activity Logging must be activated for this (see “Configure application behaviour / feature toggles“ for details).
      - Note: Please install version >= 3.8.3 as the prior v3.8 releases (v3.8.1, v3.8.2) do flawful persistence of Activity event entities (those version have been removed in DockerHub as well)!
 
 Major changes in v3.7
@@ -129,7 +134,7 @@ its public dockerhub repository, e.g. (command line):
 
 ::
 
-   docker pull pbartusch/smui:latest
+   docker pull querqy/smui:latest
 
 Manually build the SMUI docker container
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -219,7 +224,7 @@ setup as described above) running SMUI on its default port 9000, e.g.
    docker run \
      -p 9000:9000 \
      -v /tmp/smui_deployment_path:/usr/bin/solr/defaultCore/conf \
-     pbartusch/smui
+     querqy/smui
 
 This will deploy a ``rules.txt`` to the ``/tmp/smui_deployment_path`` of
 the host (if user and permission requirements are set accordingly).
@@ -314,6 +319,9 @@ Optional. The following settings in the ``application.conf`` define its
    * - ``toggle.activate-eventhistory``
      - Persist an event history for all updates to the search management configuration, and provide an activity log for the search manager. WARNING: If this setting is changed over time (especially from ``true`` to ``false``) events in the history might get lost!
      - ``false``
+   * - ``toggle.ui-concept.custom.up-down-dropdown-mappings``
+     - Provide custom mapping / step sizes for UP/DOWN boosting/penalising values as JSON (used, if ``toggle.ui-concept.updown-rules.combined`` is set to ``true``). See below for details.
+     - ``null`` (No custom mappings)
 
 NOTE: The above described feature toggles are passed to SMUI’s docker
 container using according environment variables. The mappings can be
@@ -327,6 +335,30 @@ search manager to organise or even adjust the rules exported to the
 rules.txt. See
 `TestPredefinedTags.json <test/resources/TestPredefinedTags.json>`__ for
 structure.
+
+Configure custom UP/DOWN dropdown mappings (optional)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+SMUI makes life easier when dealing with UP/DOWN boosting/penalising intensities. It translates raw values passed to querqy to a more comprehensible format to the search manager working with ``+++`` and ``---`` on the frontend. By default a typical intensity range from ``500`` to ``5`` is covered, which should work with most search engine (e.g. Solr) schema configurations and the according querqy setup.
+
+However, if SMUI's default does not match the specific needs, the default can be adjusted. This can be achieved by passing a JSON object, describing the desired custom UP/DOWN dropdown mappings to SMUI while using the ``toggle.ui-concept.custom.up-down-dropdown-mappings`` configuration. The JSON is passed as a raw string, that is then validated by SMUI.
+
+Note: If for any reason your custom mappings do not apply, check SMUI's (error) logs, as it is likely, that the validation yielded an error.
+
+::
+
+   toggle.ui-concept.custom.up-down-dropdown-mappings="[{\"displayName\":\"UP(+++++)\",\"upDownType\":0,\"boostMalusValue\":750},{\"displayName\":\"UP(++++)\",\"upDownType\":0,\"boostMalusValue\":100},{\"displayName\":\"UP(+++)\",\"upDownType\":0,\"boostMalusValue\":50},{\"displayName\":\"UP(++)\",\"upDownType\":0,\"boostMalusValue\":10},{\"displayName\":\"UP(+)\",\"upDownType\":0,\"boostMalusValue\": 5},{\"displayName\":\"DOWN(-)\",\"upDownType\":1,\"boostMalusValue\": 5},{\"displayName\":\"DOWN(--)\",\"upDownType\":1,\"boostMalusValue\": 10},{\"displayName\":\"DOWN(---)\",\"upDownType\":1,\"boostMalusValue\": 50},{\"displayName\":\"DOWN(----)\",\"upDownType\":1,\"boostMalusValue\": 100},{\"displayName\":\"DOWN(-----)\",\"upDownType\":1,\"boostMalusValue\": 750}]"
+
+Here is Docker example (command line):
+
+::
+
+   docker run \
+   ...
+     -e SMUI_CUSTOM_UPDOWN_MAPPINGS="[{\"displayName\":\"UP(+++++)\",\"upDownType\":0,\"boostMalusValue\":750},{\"displayName\":\"UP(++++)\",\"upDownType\":0,\"boostMalusValue\":100},{\"displayName\":\"UP(+++)\",\"upDownType\":0,\"boostMalusValue\":50},{\"displayName\":\"UP(++)\",\"upDownType\":0,\"boostMalusValue\":10},{\"displayName\":\"UP(+)\",\"upDownType\":0,\"boostMalusValue\": 5},{\"displayName\":\"DOWN(-)\",\"upDownType\":1,\"boostMalusValue\": 5},{\"displayName\":\"DOWN(--)\",\"upDownType\":1,\"boostMalusValue\": 10},{\"displayName\":\"DOWN(---)\",\"upDownType\":1,\"boostMalusValue\": 50},{\"displayName\":\"DOWN(----)\",\"upDownType\":1,\"boostMalusValue\": 100},{\"displayName\":\"DOWN(-----)\",\"upDownType\":1,\"boostMalusValue\": 750}]"
+   ...
+
+Note: Quotations used for JSON attributes/values must be escaped (``\"``) in complete string sequence!
 
 Details and options for the deployment (``rules.txt``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -347,7 +379,7 @@ using the config variables above, e.g.:
      ...
      -v /path/to/prelive/solr/defaultCore/conf:/mnt/prelive_solr_depl
      ...
-     pbartusch/smui
+     querqy/smui
 
 (config parameters are expressed as according environment variable
 names, like applicable in a docker setup, see
@@ -399,7 +431,7 @@ line):
      -e SMUI_2SOLR_DST_CP_FILE_TO=GIT \
      -e SMUI_GIT_REPOSITORY... \
      ...
-     pbartusch/smui
+     querqy/smui
 
 In the docker container the git deployment will be done in the
 ``/tmp/smui-git-repo`` path. You need to make sure, that the SMUI docker
