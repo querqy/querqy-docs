@@ -18,6 +18,17 @@ Querqy.
 
 RELEASE NOTES
 -------------
+Major changes in v3.11
+~~~~~~~~~~~~~~~~~~~~~~
+
+-  Git deployment: Deploy rules.txt files to a git repository using the user you start SMUI with.
+-  NOTE: With v3.11 first JSON payloads exceeding 5K of data were observed in productive environments. Therefore, the data type changed to ``varchar(10000)`` (@see /smui/conf/evolutions/default/6.sql). To avoid database migration trouble, it's strongly recommended to install SMUI version >= 3.11.5. Prior DockerHub versions with Activity Log had been removed!!
+
+Major changes in v3.10
+~~~~~~~~~~~~~~~~~~~~~~
+
+-  Version check: SMUI checks version diff against market standard (on DockerHub) and warns about outdated local setups.
+
 Major changes in v3.9
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -156,7 +167,7 @@ Step 3: Minimum SMUI configuration and start of the application
 SMUI is configured passing environment variables to the docker container
 SMUI runs on. The following section describes all parameters, that you
 can configure SMUI with. Mappings of config keys to environment
-variables can be found in `application.conf <conf/application.conf>`__
+variables can be found in ``application.conf``
 (e.g. ``SMUI_DB_JDBC_DRIVER`` environment variable sets
 ``db.default.driver``).
 
@@ -195,6 +206,12 @@ application.conf in your own ``smui-prod.conf`` level:
    * - ``smui2solr.DST_CP_FILE_TO``
      - ``/usr/bin/solr/defaultCore/conf/rules.txt``
      - LIVE ``rules.txt`` destination file for the default deployment script. See “Details on rules.txt deployment” for more info. WARNING: Deprecated as of v3.4, will be replaced soon.
+   * - ``smui.deployment.git.repo-url``
+     - Needed for git deployment (see “Deploy rules.txt to a git target“).
+     - Empty.
+   * - ``smui2solr.deployment.git.filename.common-rules-txt``
+     - Bare filename of the common ``rules.txt`` file, that should be pushed to the git repository.
+     - ``rules.txt``
    * - ``smui2solr.SOLR_HOST``
      - Solr host
      - Virtual local Solr instance. WARNING: Deprecated as of v3.4, will be replaced soon.
@@ -206,7 +223,7 @@ Start SMUI (docker) application
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Using the config key’s environment variable equivalents (as defined in
-the `application.conf <conf/application.conf>`__), the following start
+the ``application.conf``), the following start
 command can be used to bootstrap the SMUI (docker) application.
 
 NOTE: For security reasons, within the docker container, SMUI is run as
@@ -325,7 +342,7 @@ Optional. The following settings in the ``application.conf`` define its
 
 NOTE: The above described feature toggles are passed to SMUI’s docker
 container using according environment variables. The mappings can be
-found in the `application.conf <conf/application.conf>`__.
+found in the ``application.conf``.
 
 Configure predefined rule tags (optional)
 '''''''''''''''''''''''''''''''''''''''''
@@ -382,8 +399,7 @@ using the config variables above, e.g.:
      querqy/smui
 
 (config parameters are expressed as according environment variable
-names, like applicable in a docker setup, see
-`application.conf <conf/application.conf>`__)
+names, like applicable in a docker setup, see ``application.conf``)
 
 In this particular example, the LIVE instance of Solr runs on
 ``remote_solr_host`` and can be reached by ``remote_user`` on
@@ -407,40 +423,40 @@ NOTE: The example above also accounts for
 Deploy rules.txt to a git target
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Experimental. The SMUI docker container comes with an alternative
+The SMUI docker container comes with an alternative
 deployment script for deployment to git, which is located under
-`conf/smui2git.sh <conf/smui2git.sh>`__. This script uses the following
-additional environment variables:
+``conf/smui2git.sh``.
 
--  ``SMUI_GIT_REPOSITORY``
--  ``SMUI_GIT_PATH`` (optional)
--  ``SMUI_GIT_BRANCH`` (optional)
--  ``SMUI_GIT_COMMIT_MSG`` (optional)
--  ``SMUI_GIT_CLONE_PATH`` (optional)
+NOTE: Your ``rules.txt`` repository needs to be initialised with (at least) the empty files, you would like to get managed by SMUI on the ``master`` branch (or branch you would like SMUI to deploy to).
 
-The `conf/smui2git.sh <smui2solr.sh>`__ main deployment script uses the
+The ``conf/smui2git.sh`` main deployment script uses the
 alternative git deployment script, in case a ``GIT`` deployment target
 is supplied (for the specific target system). You can use the following
 setting to force git deployment for the ``LIVE`` stage, e.g. (command
 line):
 
+In the docker container the git deployment will be done in the
+``/tmp/smui-git-repo`` path. You need to make sure, that identification is provided to the SMUI docker
+environment:
+
+The following example illustrates how to configure SMUI and pass host's identity:
+
 ::
 
    docker run \
      ...
-     -e SMUI_2SOLR_DST_CP_FILE_TO=GIT \
-     -e SMUI_GIT_REPOSITORY... \
+     -v ~/.ssh/id_rsa:/smui/.ssh/id_rsa \
+     -v ~/.gitconfig:/home/smui/.gitconfig \
+     ...
+     -e SMUI_2SOLR_DST_CP_FILE_TO="GIT" \
+     -e SMUI_DEPLOYMENT_GIT_REPO_URL="ssh://git@repo-host.tld/smui_rulestxt_repo.git" \
      ...
      querqy/smui
 
-In the docker container the git deployment will be done in the
-``/tmp/smui-git-repo`` path. You need to make sure, that the SMUI docker
-environment has an authenticated git user (e.g. providing a valid
-``/smui/.ssh/id_rsa``).
+NOTE:
 
-WARNING: As of v3.5, deployment to a git target is experimental and
-still under testing. There might as well be a change in the interface
-soon.
+* When working with remote git locations, it might be necessary to also add your git repo host to SMUI's ``/home/smui/.ssh/known_hosts``.
+* As of v3.11.5 only deployment of the common rules.txt file is supported (neither decompound- nor replace-rules.txt files). Support for that might be added in future releases.
 
 Configuration of authentication
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -823,6 +839,56 @@ Within exemplary ``redirect`` action above, you can work with the
 current location as an absolute URL before the redirect gets executed.
 Through this, it becomes possible for the remote login service to
 redirect back to SMUI once the login has succeeded.
+
+Developing git deployment method
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+SMUI offers the possibility to deploy rules.txt (files) to a git repository. For doing so in a local development setup, it might therefore be necessary to operate a local git instance. The following section describes, how that can be achieved.
+
+Bootstrap a local git server (docker)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For the local git server, the dockerhub image |jkarlos/git-server-docker|:target: https://hub.docker.com/r/jkarlos/git-server-docker/| will be used, see (command line):
+
+::
+
+   # create a private/public (SSH) key
+   # e.g. ssh-keygen -t rsa -C "yourself@YourComputer.local"
+   # create repo folder and provide (public) key
+   mkdir <SMUI_GIT_ROOT>/keys
+   mkdir <SMUI_GIT_ROOT>/repos
+   # TODO better symlink?
+   cp ~/.ssh/id_rsa.pub <SMUI_GIT_ROOT>/keys/
+   # start the container (and provide public key)
+   docker run -d -p 22:22 -v <SMUI_GIT_ROOT>/keys:/git-server/keys -v <SMUI_GIT_ROOT>/repos:/git-server/repos jkarlos/git-server-docker
+   # NOTE: Your local development user must have permission to access information of your local git user (in case they differ)
+
+You can run the following script (preferred as git test user itself) to init the repo (command line):
+
+::
+
+   # from within the git server docker container
+   # NOTE: open shell in container:
+   docker exec -it <CONTAINER_ID> /bin/sh
+   # (docker ps will give you the CONTAINER_ID)
+   cd <SMUI_GIT_ROOT>/repos
+   mkdir smui_rulestxt_repo
+   cd smui_rulestxt_repo
+   git init --shared=true
+   git add .
+   git commit -m "my first commit"
+   cd ..
+   git clone --bare smui_rulestxt_repo smui_rulestxt_repo.git
+   # initial manual checkout (on the host machine)
+   # make sure, there exists an (at least empty) common rules.txt file on the master branch (clone it somewhere and create a master branch)
+   touch rules.txt
+   git add rules.txt
+   git commit -m "empty rules.txt commit"
+   git push
+
+To configure and start SMUI using a git deployment see “Deploy rules.txt to a git target“.
+
+Have fun coding SMUI!!
 
 LICENSE
 =======
