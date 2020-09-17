@@ -192,6 +192,7 @@ Configuration
                 "maxExpansions": 5,
                 "verifyCollation": true
             },
+            "morphology": "GERMAN",
             "reverseCompoundTriggerWords": ["for", "from", "of"],
             "alwaysAddReverseCompounds": true
 
