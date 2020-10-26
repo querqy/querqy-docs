@@ -23,6 +23,7 @@ Major changes in v3.11
 
 -  Git deployment: Deploy rules.txt files to a git repository using the user you start SMUI with.
 -  NOTE: With v3.11 first JSON payloads exceeding 5K of data were observed in productive environments. Therefore, the data type changed to ``varchar(10000)`` (@see /smui/conf/evolutions/default/6.sql). To avoid database migration trouble, it's strongly recommended to install SMUI version >= 3.11.5. Prior DockerHub versions with Activity Log had been removed!!
+-  SMUI explicitly supports operations in a multi instance environment (especially for database migrations, e.g. migration for event history).
 
 Major changes in v3.10
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -707,6 +708,12 @@ Server logs can be watched using ``docker exec``, e.g. (command line):
 ::
 
    docker exec -it <CONTAINER_PS_ID> tail -f /smui/logs/application.log
+
+SMUI operations (multi instance)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-  SMUI supports to be operated in a multi instance setup.
+-  Rolling deployments: SMUI should support rolling deployments, where one instance will be updated, and redundant instances (with prior version) can still be used by the search manager. However, ensuring this behaviour (as of v3.11) this is not scope of the automated tests, and there is a small chance, that some management requests might get lost during a rolling deployment in such a multi instance setup.
 
 DEVELOPMENT SETUP
 -----------------
