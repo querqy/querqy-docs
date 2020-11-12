@@ -51,7 +51,11 @@ below and we will generate the install command for you:
 
   <select class="es-url-select"
     onChange="setESURL(this.options[this.selectedIndex].value);">
-    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.3.es790.0/querqy-elasticsearch-1.3.es790.0.zip">Elasticsearch 7.9.0</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.3.es7100.0/querqy-elasticsearch-1.3.es7100.0.zip">Elasticsearch 7.10.0</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.3.es793.0/querqy-elasticsearch-1.3.es793.0.zip">7.9.3</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.3.es792.0/querqy-elasticsearch-1.3.es792.0.zip">7.9.2</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.3.es791.0/querqy-elasticsearch-1.3.es791.0.zip">7.9.1</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.3.es790.0/querqy-elasticsearch-1.3.es790.0.zip">7.9.0</option>
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.3.es781.0/querqy-elasticsearch-1.3.es781.0.zip">7.8.1</option>
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.3.es780.0/querqy-elasticsearch-1.3.es780.0.zip">7.8.0</option>
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.3.es771.0/querqy-elasticsearch-1.3.es771.0.zip">7.7.1</option>
@@ -87,7 +91,7 @@ below and we will generate the install command for you:
 
 
   ./bin/elasticsearch-plugin install \
-     "https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.3.es790.0/querqy-elasticsearch-1.3.es790.0.zip"
+     "https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.3.es7100.0/querqy-elasticsearch-1.3.es7100.0.zip"
 
 
 
@@ -124,17 +128,17 @@ The Querqy plugin is installed as a .jar file.
   +----------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------+
   | Solr version   | Querqy version [#]_                                                                                                                                         |
   +================+=============================================================================================================================================================+
-  | 8.6.x          | :download:`4.10.lucene810.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.10.lucene810.1/querqy-solr-4.10.lucene810.1-jar-with-dependencies.jar>` |
+  | 8.6.x          | :download:`4.10.lucene810.2<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.10.lucene810.2/querqy-solr-4.10.lucene810.2-jar-with-dependencies.jar>` |
   +----------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 8.5.x          | :download:`4.10.lucene810.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.10.lucene810.1/querqy-solr-4.10.lucene810.1-jar-with-dependencies.jar>` |
+  | 8.5.x          | :download:`4.10.lucene810.2<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.10.lucene810.2/querqy-solr-4.10.lucene810.2-jar-with-dependencies.jar>` |
   +----------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 8.4.x          | :download:`4.10.lucene810.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.10.lucene810.1/querqy-solr-4.10.lucene810.1-jar-with-dependencies.jar>` |
+  | 8.4.x          | :download:`4.10.lucene810.2<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.10.lucene810.2/querqy-solr-4.10.lucene810.2-jar-with-dependencies.jar>` |
   +----------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 8.3.x          | :download:`4.10.lucene810.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.10.lucene810.1/querqy-solr-4.10.lucene810.1-jar-with-dependencies.jar>` |
+  | 8.3.x          | :download:`4.10.lucene810.2<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.10.lucene810.2/querqy-solr-4.10.lucene810.2-jar-with-dependencies.jar>` |
   +----------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 8.2.x          | :download:`4.10.lucene810.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.10.lucene810.1/querqy-solr-4.10.lucene810.1-jar-with-dependencies.jar>` |
+  | 8.2.x          | :download:`4.10.lucene810.2<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.10.lucene810.2/querqy-solr-4.10.lucene810.2-jar-with-dependencies.jar>` |
   +----------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 8.1.x          | :download:`4.10.lucene810.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.10.lucene810.1/querqy-solr-4.10.lucene810.1-jar-with-dependencies.jar>` |
+  | 8.1.x          | :download:`4.10.lucene810.2<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.10.lucene810.2/querqy-solr-4.10.lucene810.2-jar-with-dependencies.jar>` |
   +----------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------+
   | 8.0.x          | :download:`4.10.lucene800.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/4.10.lucene800.1/querqy-solr-4.10.lucene800.1-jar-with-dependencies.jar>` |
   +----------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------+
