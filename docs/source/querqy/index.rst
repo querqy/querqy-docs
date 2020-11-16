@@ -16,7 +16,7 @@ You might want to ...
 * check out the :ref:`Common Rules Rewriter <querqy-rewriters-common-rules>`...
 * ... and even :ref:`more rewriters <querqy-list-of-rewriters>`,
 * learn more about Querqy's search relevance tuning capabilities using
-  `request parameters <querqy-more-about-queries>`_ independent of rewriters
+  :ref:`request parameters <querqy-more-about-queries>` independent of rewriters
 
 .. _querqy-installation:
 
