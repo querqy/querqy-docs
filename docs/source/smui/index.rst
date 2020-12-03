@@ -458,6 +458,7 @@ NOTE:
 
 * When working with remote git locations, it might be necessary to also add your git repo host to SMUI's ``/home/smui/.ssh/known_hosts``.
 * As of v3.11.5 only deployment of the common rules.txt file is supported (neither decompound- nor replace-rules.txt files). Support for that might be added in future releases.
+* Currently only git deployment to the LIVE instance is possibe.
 
 Configuration of authentication
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
