@@ -18,6 +18,12 @@ Querqy.
 
 RELEASE NOTES
 -------------
+Major changes in v3.12
+~~~~~~~~~~~~~~~~~~~~~~
+
+-  Optimised development setup.
+-  Removed RPM build. SMUI is now Docker only.
+
 Major changes in v3.11
 ~~~~~~~~~~~~~~~~~~~~~~
 
