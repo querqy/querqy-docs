@@ -60,10 +60,16 @@ Docker image. :ref:`Get started here <chorus-index>`!
 .. toctree::
    :glob:
    :maxdepth: 4
-   :caption: SMUI
+   :caption: Search Management UI (SMUI)
    :hidden:
 
-   smui/*
+   smui/index
+   smui/quickstart
+   smui/install-config
+   smui/using-smui
+   smui/dev-setup
+   smui/release-notes
+   smui/contributors
 
 .. toctree::
    :glob:
