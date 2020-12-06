@@ -27,24 +27,3 @@ You can also query the resulting rules.txt file via SMUI's REST interface:
 ::
 
    curl http://localhost:9000/TODO/rules.txt
-
-
-
-
-
-
-XXX
-Introduction to SMUI
-
-XXXQuickstart SMUI
-
-XXXInstallation and full configuration guide
-
-XXXUsing SMUI: operations guide
-
-XXXDevelopment setup for SMUI
-
-XXXRelease notes
-
-Contributors
-XXX

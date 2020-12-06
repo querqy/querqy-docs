@@ -2,8 +2,9 @@
 
 |SMUI Build Status (on Travis CI)|
 
-Search Management UI (SMUI)
-===========================
+====================
+Introduction to SMUI
+====================
 
 .. figure:: 20190103_screenshot_SMUI_v1-5-0.png
    :alt: SMUI v1.5.0 screenshot
