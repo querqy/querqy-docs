@@ -12,9 +12,9 @@ Introduction to SMUI
    SMUI v1.5.0 screenshot
 
 SMUI is a tool for managing Solr-based onsite search. It provides a web
-user interface for maintaining rules for query rewriting based on the
+user interface for maintaining and deploying rules for query rewriting based on the
 Querqy Solr plugin for query rewriting. Please see
-`querqy <https://github.com/renekrie/querqy>`__ for the installation of
+`Querqy <https://github.com/renekrie/querqy>`__ for the installation of
 Querqy.
 
 .. |SMUI Build Status (on Travis CI)| image:: https://travis-ci.org/querqy/smui.svg?branch=master
