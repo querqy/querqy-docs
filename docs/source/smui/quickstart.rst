@@ -4,7 +4,7 @@
 Quickstart SMUI
 ===============
 
-* Have a DBMS (MySQL) up & running (e.g. spin up a docker container).
+* Have MySQL up & running on its default port 3306 (e.g. spin up a docker container).
 * There should exist a database ``smui`` with a user ``smui`` and the password ``smui`` (default setup for SMUI).
 * Run SMUI:
 
@@ -22,8 +22,6 @@ The latest SMUI is now up & running locally.
    curl -S -X PUT -H "Content-Type: application/json" -d '{"name":"ecommerce", "description":"Ecommerce Demo"}' http://localhost:9000/api/v1/solr-index
 
 It is all set up and you are ready to use SMUI now.
-
-Note: SMUI will return the ID of that new deployment channel in the field ``returnId``.
 
 * Maintain search inputs and rules.
 * You can also download the resulting rules.txt file via SMUI's REST interface:
