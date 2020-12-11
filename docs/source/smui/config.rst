@@ -1,185 +1,141 @@
-.. _smui-install-config:
+.. _smui-config:
 
-=========================================
-Installation and full configuration guide
-=========================================
+=============
+Configuration
+=============
 
-Create and configure database
------------------------------
+Database connection
+-------------------
 
 SMUI needs a database backend in order to manage and store search
 management rules.
 
-Supported (tested) databases:
+Supported databases
+~~~~~~~~~~~~~~~~~~~
 
-Generally SMUI database connection implementation is based on JDBC and
+Generally, SMUI database connection implementation is based on JDBC and
 only standard SQL is used, so technically every database management
-system supported by JDBC should feasible when using SMUI. However as
-database management systems potentially come with specific features,
-SMUI explicity is tested (and/or productively used) only with the
-following database management systems:
+system supported by JDBC should work when using SMUI. However, database
+management systems come with specific features which potentially could
+impact SMUI operation. SMUI has been explicitly tested (and/or productively used)
+with the following database management systems:
 
 -  MySQL & MariaDB
 -  PostgreSQL
 -  SQLite
 -  HSQLDB
 
-You can decide, where your database backend application should be run
-and host its data. In an productive environment, e.g. you could run a
-docker based database application (e.g.
-`https://hub.docker.com/_/mariadb <official%20dockerhub%20MariaDB%20image>`__)
-within the same (docker) network like SMUI. However, for the sake of
-simplicity, the following sections assumes you have a local (MariaDB)
-database application running on the host environment.
+Where your database backend application runs, e.g. in a production
+environment, depends on your specific setup. Refer to the :ref:`basic configuration <smui-basic-settings>`
+section on how to configure your database connection.
 
-Create SMUI database, user and assign according permissions. Example
-script (SQL, MariaDB / MySQL):
+For the sake of simplicity, the following sections assume you have a local MariaDB
+database application running on your localhost (using the default port ``3306``)
 
-::
+.. _mariadb: https://hub.docker.com/_/mariadb
 
-   CREATE USER 'smui'@'localhost' IDENTIFIED BY 'smui';
-   CREATE DATABASE smui;
-   GRANT ALL PRIVILEGES ON smui.* TO 'smui'@'localhost' WITH GRANT OPTION;
+Once the database connection has been configured, SMUI will initialize the
+database on first startup.
 
-Migrate pre-v2 SMUI databases
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Migrating pre-v2 SMUI databases
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As of version 3.3 it has become possible to migrate prior version’s
 search management input and rules via the ``rules.txt`` file. See
-“Import existing rules.txt” for details.
+:ref:`Import existing rules.txt<smui-import-existing-rules>` for details.
 
-Install SMUI application (using docker image or Docker Hub repository)
-----------------------------------------------------------------------
-
-Use SMUI docker image from Docker Hub (recommended)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-SMUI is also integrated into a Travis CI build pipeline, that provides a
-Docker Hub SMUI image. You can pull the latest SMUI (master branch) from
-its public dockerhub repository, e.g. (command line):
-
-::
-
-   docker pull querqy/smui:latest
-
-Manually build the SMUI docker container
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-SMUI provides a `Makefile <Makefile>`__ to help you with the manual
-docker build process. You can use ``make`` to build as a docker
-container, e.g. (command line):
-
-::
-
-   make docker-build-only
-
-NOTE: If you are not having ``make`` available, you can manually
-reproduce the according ``docker build`` command.
-
-Minimum SMUI configuration and start of the application
--------------------------------------------------------
-
-SMUI is configured passing environment variables to the docker container
-SMUI runs on. The following section describes all parameters, that you
-can configure SMUI with. Mappings of config keys to environment
-variables can be found in ``application.conf``
-(e.g. ``SMUI_DB_JDBC_DRIVER`` environment variable sets
-``db.default.driver``).
+SMUI may be configured by passing environment variables to the docker
+container SMUI runs on. The following section describes all configuration
+parameters.
 
 NOTE: Environment variables are the preferred way to configure your
-production environment. In contrast, while developing (outside a docker
-environment) it is possible to use a local ``smui-dev.conf`` file (see
-“DEVELOPMENT SETUP”).
+production environment. During development (i.e. outside a docker
+environment) it is possible to use a local ``smui-dev.conf`` file
+(see the :ref:`development setup <smui-dev-setup>` documentation).
 
 The following sections describe application configs in more detail.
 
-Configure basic settings
-~~~~~~~~~~~~~~~~~~~~~~~~
+.. _smui-basic-settings:
+
+Basic settings
+--------------
 
 The following settings can (and should) be overwritten on
-application.conf in your own ``smui-prod.conf`` level:
+application.conf in your own ``smui-prod.conf`` or in your deployment,
+using environment variables:
 
 .. list-table:: SMUI basic settings
-   :widths: 20 50 30
+   :widths: 20 20 50 30
    :header-rows: 1
 
    * - Config key
+     - Environment variable
      - Description
      - Default
    * - ``db.default.driver``
+     - ``SMUI_DB_JDBC_DRIVER``
      - JDBC database driver
-     - MySQL database on localhost for ``smui:smui``.
+     - ``com.mysql.cj.jdbc.Driver``.
    * - ``db.default.url``
+     - ``SMUI_DB_URL``
      - Database host and optional connection parameters (JDBC connection string).
-     - MySQL database on localhost for ``smui:smui``.
-   * - ``db.default.username`` and ``db.default.password``
-     - Database credentials.
-     - MySQL database on localhost for smui:smui.
+     - ``jdbc:mysql://host.docker.internal/smui?autoReconnect=true&useSSL=false``.
+   * - ``db.default.username``
+     - ``SMUI_DB_USER``
+     - Database user
+     - ``smui``.
+   * - ``db.default.password``
+     - ``SMUI_DB_PASSWORD``
+     - Database password
+     - ``smui``
    * - ``smui2solr.SRC_TMP_FILE``
-     - Path to temp file (when ``rules.txt`` generation happens)
-     - local /tmp file in docker container (recommended: leave default). WARNING: Deprecated as of v3.4, will be replaced soon.
+     - ``SMUI_2SOLR_SRC_TMP_FILE``
+     - Path to temp file (i.e. where to output the generated ``rules.txt`` file after generation). **WARNING:** Deprecated as of v3.4, will be replaced soon.
+     - ``/tmp/search-management-ui_rules-txt.tmp`` (recommended: leave default).
    * - ``smui2solr.DST_CP_FILE_TO``
+     - ``SMUI_2SOLR_DST_CP_FILE_TO``
+     - LIVE ``rules.txt`` destination file for the default deployment script. See :ref:`Details on rules.txt deployment<smui-rules-deployment-details>` for more info. WARNING: Deprecated as of v3.4, will be replaced soon.
      - ``/usr/bin/solr/defaultCore/conf/rules.txt``
-     - LIVE ``rules.txt`` destination file for the default deployment script. See “Details on rules.txt deployment” for more info. WARNING: Deprecated as of v3.4, will be replaced soon.
    * - ``smui.deployment.git.repo-url``
-     - Needed for git deployment (see “Deploy rules.txt to a git target“).
-     - Empty.
+     - ``SMUI_DEPLOYMENT_GIT_REPO_URL``
+     - Only necessary for git deployment (see :ref:`git deployment documentation<smui-rules-deployment-git>`).
+     - ``ssh://git@localhost/git-server/repos/smui_rulestxt_repo.git``
    * - ``smui2solr.deployment.git.filename.common-rules-txt``
-     - Bare filename of the common ``rules.txt`` file, that should be pushed to the git repository.
+     - ``SMUI_DEPLOYMENT_GIT_FN_COMMON_RULES_TXT``
+     - Bare filename of the common ``rules.txt`` file that should be pushed to the git repository.
      - ``rules.txt``
    * - ``smui2solr.SOLR_HOST``
-     - Solr host
-     - Virtual local Solr instance. WARNING: Deprecated as of v3.4, will be replaced soon.
+     - ``SMUI_2SOLR_SOLR_HOST``
+     - Virtual local Solr instance. **WARNING:** Deprecated as of v3.4, will be replaced soon.
+     - ``localhost:8983``
    * - ``play.http.secret.key``
-     - Encryption key for server/client communication (Play 2.6 standard)
-     - unsecure default.
+     - ``SMUI_PLAY_APPLICATION_SECRET``
+     - Encryption key for server/client communication (Play 2.6 standard). This positively needs to be set to a high-entropy value in production environments.
+     - **WARNING:** insecure default.
 
-Start SMUI (docker) application
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Advanced configuration
+----------------------
 
-Using the config key’s environment variable equivalents (as defined in
-the ``application.conf``), the following start
-command can be used to bootstrap the SMUI (docker) application.
+The following sections describe the configuration of:
 
-NOTE: For security reasons, within the docker container, SMUI is run as
-``smui`` user (group: ``smui``) with a ``uid`` of ``1024``. For
-rules.txt deployment onto the host file system, you need to make sure,
-that an according user (``uid``) exists on the host (see “Details on
-rules.txt deployment” for more info).
-
-A minimum start command can look like this (working with the default
-setup as described above) running SMUI on its default port 9000, e.g.
-(command line):
-
-::
-
-   docker run \
-     -p 9000:9000 \
-     -v /tmp/smui_deployment_path:/usr/bin/solr/defaultCore/conf \
-     querqy/smui
-
-This will deploy a ``rules.txt`` to the ``/tmp/smui_deployment_path`` of
-the host (if user and permission requirements are set accordingly).
-
-NOTE: In a productive scenario, you can as well use a
-``docker-compose.yml`` to define the SMUI (docker) runtime environment.
-
-Full feature configuration for SMUI
------------------------------------
-
-The following sections describe:
-
--  Configuration of the application behaviour / feature toggles
-   (e.g. rule tagging)
--  Details and options for the deployment (of Querqy’s ``rules.txt``
+-  application behaviour / feature toggles
+   (e.g. rule tagging)
+-  details and options for the deployment (of Querqy’s ``rules.txt``
    file)
--  Configuration of authentication
+-  authentication
 
-Configure application behaviour / feature toggles
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The following tables only list the config keys as defined in the SMUI `application.conf`_ file.
+See the file for the mappings of config keys to environment variables
+(e.g. ``SMUI_DB_JDBC_DRIVER`` environment variable sets ``db.default.driver``).
 
-Optional. The following settings in the ``application.conf`` define its
-(frontend) behaviour:
+.. _application.conf: https://github.com/querqy/smui/blob/master/conf/application.conf
+
+.. _smui-config-features:
+
+Feature toggles
+~~~~~~~~~~~~~~~
+
+The following settings are optional and define the general SMUI behaviour:
 
 .. list-table:: SMUI advanced application settings
    :widths: 20 50 30
@@ -231,7 +187,7 @@ Optional. The following settings in the ``application.conf`` define its
      - Target URL of simple logout button (see "Configure Authentication").
      -
    * - ``toggle.activate-spelling``
-     - Activate spelling items: Add spelling items to maintain common misspellings using the querqy replace rewriter. The spelling items are exported in a seperate replace_rules.txt that is uploaded to Solr.
+     - Activate spelling items: Add spelling items to maintain common misspellings using the Querqy replace rewriter. The spelling items are exported in a separate replace_rules.txt that is uploaded to Solr.
      - ``false``
    * - ``toggle.ui-list.limit-items-to``
      - Activate list limitation: Limits the list of visible items to the configured number and shows toggle button (*"show more/less"*). Set value to -1 to deactivate list limitation.
@@ -243,7 +199,7 @@ Optional. The following settings in the ``application.conf`` define its
      - ``/usr/bin/solr/defaultCore/conf/rules.txt``
      - ``/usr/bin/solr/liveCore/conf/replace-rules.txt``
    * - ``smui2solr.deploy-prelive-fn-replace-txt``
-     - PRELIVE ``replace_rules.txt`` destination file for the default deployment script. See “Details on rules.txt deployment” for more info.
+     - PRELIVE ``replace_rules.txt`` destination file for the default deployment script. See :ref:`Details on rules.txt deployment<smui-rules-deployment-details>` for more info.
      -  ``/usr/bin/solr/preliveCore/conf/replace-rules.txt``
    * - ``toggle.display-username.default``
      - Default username for being displayed on the frontend, if no username is available (e.g. for event history).
@@ -259,29 +215,44 @@ NOTE: The above described feature toggles are passed to SMUI’s docker
 container using according environment variables. The mappings can be
 found in the ``application.conf``.
 
-Configure predefined rule tags (optional)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Predefined rule tags (optional)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Optional. You can define pre-defined rule tags, that can be used by the
+Optional: You can define pre-defined rule tags, that can be used by the
 search manager to organise or even adjust the rules exported to the
 rules.txt. See
 `TestPredefinedTags.json <test/resources/TestPredefinedTags.json>`__ for
 structure.
 
-Configure custom UP/DOWN dropdown mappings (optional)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. note::
 
-SMUI makes life easier when dealing with UP/DOWN boosting/penalising intensities. It translates raw values passed to querqy to a more comprehensible format to the search manager working with ``+++`` and ``---`` on the frontend. By default a typical intensity range from ``500`` to ``5`` is covered, which should work with most search engine (e.g. Solr) schema configurations and the according querqy setup.
+	The rule tagging feature is disabled by default. You may activate it by setting the configuration key ``toggle.rule-tagging`` to ``true``. See the :ref:`feature configuration<smui-config-features>` section for more information.
 
-However, if SMUI's default does not match the specific needs, the default can be adjusted. This can be achieved by passing a JSON object, describing the desired custom UP/DOWN dropdown mappings to SMUI while using the ``toggle.ui-concept.custom.up-down-dropdown-mappings`` configuration. The JSON is passed as a raw string, that is then validated by SMUI.
+Custom UP/DOWN dropdown mappings (optional)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Note: If for any reason your custom mappings do not apply, check SMUI's (error) logs, as it is likely, that the validation yielded an error.
+SMUI makes life easier when dealing with UP/DOWN boosting/penalising intensities.
+It translates raw values passed to querqy to a more comprehensible format to
+the search manager working with ``+++`` and ``---`` on the frontend.
+By default, a typical intensity range from ``500`` to ``5`` is covered, which
+should work with most search engine's (e.g. Solr) schema configurations and the according querqy setup.
+
+However, if SMUI's default does not match the specific needs, the default can be adjusted.
+This can be achieved by passing a JSON object describing the desired custom UP/DOWN dropdown
+mappings to SMUI while using the ``toggle.ui-concept.custom.up-down-dropdown-mappings`` configuration.
+The JSON is passed as an escaped string, which is then validated by SMUI.
+
+Note: If for any reason your custom mappings do not apply, check SMUI's (error) logs,
+as it is likely, that the validation yielded an error.
+
+Example configuration setting:
 
 ::
 
    toggle.ui-concept.custom.up-down-dropdown-mappings="[{\"displayName\":\"UP(+++++)\",\"upDownType\":0,\"boostMalusValue\":750},{\"displayName\":\"UP(++++)\",\"upDownType\":0,\"boostMalusValue\":100},{\"displayName\":\"UP(+++)\",\"upDownType\":0,\"boostMalusValue\":50},{\"displayName\":\"UP(++)\",\"upDownType\":0,\"boostMalusValue\":10},{\"displayName\":\"UP(+)\",\"upDownType\":0,\"boostMalusValue\": 5},{\"displayName\":\"DOWN(-)\",\"upDownType\":1,\"boostMalusValue\": 5},{\"displayName\":\"DOWN(--)\",\"upDownType\":1,\"boostMalusValue\": 10},{\"displayName\":\"DOWN(---)\",\"upDownType\":1,\"boostMalusValue\": 50},{\"displayName\":\"DOWN(----)\",\"upDownType\":1,\"boostMalusValue\": 100},{\"displayName\":\"DOWN(-----)\",\"upDownType\":1,\"boostMalusValue\": 750}]"
 
-Here is Docker example (command line):
+Note that all attribute/value quotation marks in the JSON string need to be escaped.
+The equivalent docker startup argument would be (command line):
 
 ::
 
@@ -290,97 +261,13 @@ Here is Docker example (command line):
      -e SMUI_CUSTOM_UPDOWN_MAPPINGS="[{\"displayName\":\"UP(+++++)\",\"upDownType\":0,\"boostMalusValue\":750},{\"displayName\":\"UP(++++)\",\"upDownType\":0,\"boostMalusValue\":100},{\"displayName\":\"UP(+++)\",\"upDownType\":0,\"boostMalusValue\":50},{\"displayName\":\"UP(++)\",\"upDownType\":0,\"boostMalusValue\":10},{\"displayName\":\"UP(+)\",\"upDownType\":0,\"boostMalusValue\": 5},{\"displayName\":\"DOWN(-)\",\"upDownType\":1,\"boostMalusValue\": 5},{\"displayName\":\"DOWN(--)\",\"upDownType\":1,\"boostMalusValue\": 10},{\"displayName\":\"DOWN(---)\",\"upDownType\":1,\"boostMalusValue\": 50},{\"displayName\":\"DOWN(----)\",\"upDownType\":1,\"boostMalusValue\": 100},{\"displayName\":\"DOWN(-----)\",\"upDownType\":1,\"boostMalusValue\": 750}]"
    ...
 
-Note: Quotations used for JSON attributes/values must be escaped (``\"``) in complete string sequence!
-
-Details and options for the deployment (``rules.txt``)
-------------------------------------------------------
-
-The default deployment script supports ``cp`` or ``scp`` file transfer
-method to deploy the ``rules.txt`` and ``replace_rules.txt`` and triggers a Solr core on the
-target system, if configured accordingly. Its behaviour is controlled
-using the config variables above, e.g.:
-
-::
-
-   docker run \
-     ...
-     -e SMUI_2SOLR_DST_CP_FILE_TO=remote_user:remote_pass@remote_host:/path/to/live/solr/defaultCore/conf/rules.txt \
-     -e SMUI_2SOLR_SOLR_HOST=remote_solr_host:8983 \
-     -e SMUI_DEPLOY_PRELIVE_FN_RULES_TXT=/mnt/prelive_solr_depl/rules.txt \
-     -e SMUI_DEPLOY_PRELIVE_SOLR_HOST=docker_host:8983 \
-     ...
-     -v /path/to/prelive/solr/defaultCore/conf:/mnt/prelive_solr_depl
-     ...
-     querqy/smui
-
-(config parameters are expressed as according environment variable
-names, like applicable in a docker setup, see ``application.conf``)
-
-In this particular example, the LIVE instance of Solr runs on
-``remote_solr_host`` and can be reached by ``remote_user`` on
-``remote_host`` for ``rules.txt`` deployment (NOTE: ``remote_host`` as
-well as ``remote_solr_host`` might even be the same instance, but just
-have differing network names). ``scp`` will be chosen by the default
-deployment script. In contrast to that, the PRELIVE instance of Solr
-resides on the ``docker_host``. File deployment is ensured using an
-according docker volume mount. ``cp`` will be chosen.
-
-NOTE: The example above also accounts for
-``SMUI_TOGGLE_DEPL_DECOMPOUND_DST`` and
-``SMUI_DEPLOY_PRELIVE_FN_DECOMPOUND_TXT``, when
-``SMUI_TOGGLE_DEPL_SPLIT_DECOMPOUND`` is set to ``true``.
-
-NOTE: The example above also accounts for
-``SMUI_2SOLR_REPLACE_RULES_DST_CP_FILE_TO`` and
-``SMUI_DEPLOY_PRELIVE_FN_REPLACE_TXT``, when
-``SMUI_TOGGLE_SPELLING`` is set to ``true``.
-
-Deploy rules.txt to a git target
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The SMUI docker container comes with an alternative
-deployment script for deployment to git, which is located under
-``conf/smui2git.sh``.
-
-NOTE: Your ``rules.txt`` repository needs to be initialised with (at least) the empty files, you would like to get managed by SMUI on the ``master`` branch (or branch you would like SMUI to deploy to).
-
-The ``conf/smui2git.sh`` main deployment script uses the
-alternative git deployment script, in case a ``GIT`` deployment target
-is supplied (for the specific target system). You can use the following
-setting to force git deployment for the ``LIVE`` stage, e.g. (command
-line):
-
-In the docker container the git deployment will be done in the
-``/tmp/smui-git-repo`` path. You need to make sure, that identification is provided to the SMUI docker
-environment:
-
-The following example illustrates how to configure SMUI and pass host's identity:
-
-::
-
-   docker run \
-     ...
-     -v ~/.ssh/id_rsa:/smui/.ssh/id_rsa \
-     -v ~/.gitconfig:/home/smui/.gitconfig \
-     ...
-     -e SMUI_2SOLR_DST_CP_FILE_TO="GIT" \
-     -e SMUI_DEPLOYMENT_GIT_REPO_URL="ssh://git@repo-host.tld/smui_rulestxt_repo.git" \
-     ...
-     querqy/smui
-
-NOTE:
-
-* When working with remote git locations, it might be necessary to also add your git repo host to SMUI's ``/home/smui/.ssh/known_hosts``.
-* As of v3.11.5 only deployment of the common rules.txt file is supported (neither decompound- nor replace-rules.txt files). Support for that might be added in future releases.
-* Currently only git deployment to the LIVE instance is possibe.
-
-Configuration of authentication
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Authentication
+--------------
 
 SMUI is shipped with HTTP Basic and JWT Authentication support.
 
 Basic Authentication
-^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~
 
 This is telling every controller method (Home and ApiController) to use
 the according authentication method as well as it tells SMUI’s
@@ -396,7 +283,7 @@ Basic Auth can be turned on in the extension by configuring an
    smui.BasicAuthAuthenticatedAction.pass = smui_pass
 
 JWT Authentication
-^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~
 
 ::
 
@@ -443,9 +330,9 @@ Example of decoded Json Web Token:
    }
 
 Logout
-^^^^^^
+~~~~~~
 
-In this setup SMUI can provide a simple logout button, that simply sends
+In this setup, SMUI can provide a simple logout button that simply sends
 the user to a configured target URL:
 
 ::
@@ -453,7 +340,7 @@ the user to a configured target URL:
    smui.auth.ui-concept.simple-logout-button-target-url="https://www.example.com/logoutService/"
 
 Custom Authentication
-^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~
 
 You can also implement a custom authentication action and tell SMUI to
 decorate its controllers with that, e.g.:
@@ -462,7 +349,94 @@ decorate its controllers with that, e.g.:
 
    smui.authAction = myOwnPackage.myOwnAuthenticatedAction
 
-See “Developing Custom Authentication” for details.
+See :ref:`Developing Custom Authentication<smui-dev-custom>` for details.
+
+.. _smui-rules-deployment-details:
+
+Rules deployment
+----------------
+
+Deploying rules.txt via cp/scp
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The default deployment script supports using ``cp`` or ``scp`` file transfer
+as methods to deploy the ``rules.txt`` and ``replace_rules.txt`` and triggers a Solr core on the
+target system, if configured accordingly. Its behaviour is controlled
+using the config variables above, e.g.:
+
+::
+
+   docker run \
+     ...
+     -e SMUI_2SOLR_DST_CP_FILE_TO=remote_user:remote_pass@remote_host:/path/to/live/solr/defaultCore/conf/rules.txt \
+     -e SMUI_2SOLR_SOLR_HOST=remote_solr_host:8983 \
+     -e SMUI_DEPLOY_PRELIVE_FN_RULES_TXT=/mnt/prelive_solr_depl/rules.txt \
+     -e SMUI_DEPLOY_PRELIVE_SOLR_HOST=docker_host:8983 \
+     ...
+     -v /path/to/prelive/solr/defaultCore/conf:/mnt/prelive_solr_depl
+     ...
+     querqy/smui
+
+In this particular example, the LIVE instance of Solr runs on
+``remote_solr_host`` and can be reached by ``remote_user`` on
+``remote_host`` for ``rules.txt`` deployment (NOTE: ``remote_host`` as
+well as ``remote_solr_host`` might even be the same instance, but just
+have differing network names). ``scp`` will be chosen by the default
+deployment script. In contrast to that, the PRELIVE instance of Solr
+resides on the ``docker_host``. File deployment is ensured using an
+according docker volume mount. ``cp`` will be chosen.
+
+NOTE: The example above also accounts for
+``SMUI_TOGGLE_DEPL_DECOMPOUND_DST`` and
+``SMUI_DEPLOY_PRELIVE_FN_DECOMPOUND_TXT``, when
+``SMUI_TOGGLE_DEPL_SPLIT_DECOMPOUND`` is set to ``true``.
+
+NOTE: The example above also accounts for
+``SMUI_2SOLR_REPLACE_RULES_DST_CP_FILE_TO`` and
+``SMUI_DEPLOY_PRELIVE_FN_REPLACE_TXT``, when
+``SMUI_TOGGLE_SPELLING`` is set to ``true``.
+
+.. _smui-rules-deployment-git:
+
+Deploying rules.txt to a git target
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The SMUI docker container comes with an alternative
+deployment script for deployment to git, which is located under
+``conf/smui2git.sh``.
+
+NOTE: Your ``rules.txt`` repository needs to be initialised with (at least) the empty files,
+you would like to get managed by SMUI on the ``master`` branch (or branch you would like SMUI to deploy to).
+
+The ``conf/smui2git.sh`` main deployment script uses the
+alternative git deployment script, in case a ``GIT`` deployment target
+is supplied (for the specific target system). You can use the following
+setting to force git deployment for the ``LIVE`` stage, e.g. (command
+line):
+
+In the docker container the git deployment will be done in the
+``/tmp/smui-git-repo`` path. You need to make sure, that identification is provided to the SMUI docker
+environment:
+
+The following example illustrates how to configure SMUI and pass host's identity:
+
+::
+
+   docker run \
+     ...
+     -v ~/.ssh/id_rsa:/smui/.ssh/id_rsa \
+     -v ~/.gitconfig:/home/smui/.gitconfig \
+     ...
+     -e SMUI_2SOLR_DST_CP_FILE_TO="GIT" \
+     -e SMUI_DEPLOYMENT_GIT_REPO_URL="ssh://git@repo-host.tld/smui_rulestxt_repo.git" \
+     ...
+     querqy/smui
+
+NOTE:
+
+* When working with remote git locations, it might be necessary to also add your git repo host to SMUI's ``/home/smui/.ssh/known_hosts``.
+* As of v3.11.5 only deployment of the common rules.txt file is supported (neither decompound- nor replace-rules.txt files). Support for that might be added in future releases.
+* Currently only git deployment to the LIVE instance is possibe.
 
 Create SMUI admin data initially (via REST interface)
 -----------------------------------------------------
@@ -474,7 +448,7 @@ following) into the database.
 Solr Collections to maintain Search Management rules for
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-There must exist a minimum of 1 Solr Collection (or
+There must exist a minimum of one Deployment Channel (or
 querqy/\ ``rules.txt`` deployment target), that Search Management rules
 are maintained for. This must be created before the application can be
 used. Example ``curl`` (relative to ``localhost:9000``):

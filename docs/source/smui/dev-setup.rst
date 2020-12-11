@@ -1,13 +1,64 @@
 .. _smui-dev-setup:
 
-==========================
-Development setup for SMUI
-==========================
+===============
+Developing SMUI
+===============
 
-Basic development setup for SMUI
---------------------------------
+The SMUI sources are hosted on the corresponding `GitHub repository`_.
 
-For developing new features and test the application with different type
+.. _GitHub repository: https://github.com/querqy/smui
+
+For development and building, you will need
+
+- `docker`_ with `BuildKit`_ capabilities (i.e. version 18.09 or higher)
+- `docker-compose`_ (optional)
+- Java Runtime Environment (version 8)
+- NodeJS (version 14.x)
+- `sbt`_ (1.3.x and above)
+- `GNU make`_
+
+.. _docker: https://www.docker.com/
+.. _docker-compose: https://docs.docker.com/compose/
+.. _BuildKit: https://docs.docker.com/develop/develop-images/build_enhancements/
+.. _sbt: https://www.scala-sbt.org/download.html
+.. _GNU make: https://www.gnu.org/software/make/
+
+Building SMUI
+-------------
+
+The code repository provides a Makefile for creating the SMUI docker image. In the project root, run
+
+::
+
+    make docker-build-only
+
+This will build both the backend and frontend components in a dockerized environment and create and tag the following
+images: ``querqy/smui:latest`` and ``querqy/smui:$VERSION``, where `$VERSION` is the version given in the build.sbt file.
+
+Running SMUI locally
+--------------------
+
+When working on the SMUI sources, building a docker image on each change
+would be very time-consuming. Therefore, you may run a local development
+server by running:
+
+::
+
+    make serve
+
+The SMUI frontend will then be available on http://localhost:4200 , and the backend on http://localhost:9000.
+``make serve`` assumes a MySQL/MariaDB instance, as outlined in the :ref:`SMUI quickstart<smui-quickstart>`
+documentation. Alternatively, you may customize the database configuration. See :ref:`Development configuration<smui-dev-config>`
+below.
+
+The development server is hot-reloading, i.e. will recompile on changes in the source files.
+
+.. _smui-dev-config:
+
+Development configuration
+-------------------------
+
+For developing new features and testing the application with different types
 of configuration, it is recommended to create a local development
 configuration of the application (instead of the productive one
 described above). There is the ``smui-dev.conf`` being excluded from
@@ -58,7 +109,7 @@ e.g.:
 
    run -Dconfig.file=./smui-dev.conf 9000
 
-Furthermore, above’s configuration points to a deviant development
+Furthermore, above’s configuration points to an alternative development
 version of the ``smui2solr.sh``-script. The file ``smui2solr-dev.sh`` is
 as well excluded from the version control. The following example
 provides a simple custom deployment script approach, that basically just
@@ -76,6 +127,8 @@ It can be used as a basis for extension.
 
 NOTE: Remember to give it a ``+x`` permission for being executable to
 the application.
+
+.. _smui-dev-custom:
 
 Developing Custom Authentication
 --------------------------------
@@ -139,12 +192,16 @@ redirect back to SMUI once the login has succeeded.
 Developing git deployment method
 --------------------------------
 
-SMUI offers the possibility to deploy rules.txt (files) to a git repository. For doing so in a local development setup, it might therefore be necessary to operate a local git instance. The following section describes, how that can be achieved.
+SMUI offers the possibility to deploy rules.txt (files) to a git repository.
+For doing so in a local development setup, it might therefore be necessary to
+operate a local git instance. The following section describes how that can be achieved.
 
 Bootstrap a local git server (docker)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For the local git server, the dockerhub image `jkarlos/git-server-docker <https://hub.docker.com/r/jkarlos/git-server-docker/>`_ will be used, see (command line):
+For the local git server, the dockerhub image `jkarlos/git-server-docker`_ will be used, see (command line):
+
+.. _jkarlos/git-server-docker: https://hub.docker.com/r/jkarlos/git-server-docker/
 
 ::
 
