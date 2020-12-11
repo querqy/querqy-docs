@@ -4,7 +4,7 @@
 Contributors
 ============
 
-Thanks to all the great developers, that contributed to SMUI:
+Thanks to all the great developers that contributed to SMUI:
 
 -  `Paul M. Bartusch <https://github.com/pbartusch>`__,
    Committer/Maintainer

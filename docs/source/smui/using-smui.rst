@@ -4,70 +4,58 @@
 Using SMUI: Operations guide
 ============================
 
-Search rules
-------------
+Database connection
+-------------------
 
-SMUI supports the following search rules, that can be deployed to a
-Querqy supporting search engine (like
-`Solr <https://lucene.apache.org/solr/>`__):
+SMUI needs a database backend in order to manage and store search
+management rules.
 
--  ``SYNONYM`` (directed & undirected)
--  ``UP`` / ``DOWN``
--  ``FILTER``
--  ``DELETE``
+Supported databases
+~~~~~~~~~~~~~~~~~~~
 
-Please see `Querqy <https://github.com/renekrie/querqy>`__ for a
-description of those rules.
+Generally, SMUI database connection implementation is based on JDBC and
+only standard SQL is used, so technically every database management
+system supported by JDBC should work with SMUI. However, database
+management systems come with specific features which potentially could
+impact SMUI operation. SMUI has been explicitly tested (and/or productively used)
+with the following database management systems:
 
-Furthermore, SMUI comes with built in ``DECORATE`` rules for certain use
-cases:
+-  MySQL & MariaDB
+-  PostgreSQL
+-  SQLite
+-  HSQLDB
 
--  ``REDIRECT`` (as Querqy/\ ``DECORATE``) to a specific target URL
+Where your database backend application runs, e.g. in a production
+environment, depends on your specific setup. Refer to the :ref:`basic configuration <smui-basic-settings>`
+section on how to configure your database connection.
 
-SMUI might as well leverages querqy’s ``@_log`` property to communicate
-SMUI’s rule ID back to the search-engine (Solr) querying instance.
+Once the database connection has been configured, SMUI will initialize the
+database on first startup.
 
-Spelling rules
+Managing rules
 --------------
 
-Spelling rules are using the querqy REPLACE rewriter to overwrite the input term.
-Following rules can be used to replace the input term:
+Managing rules via REST interface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. list-table:: SMUI spelling rules
-   :widths: 20 20 20 50
-   :header-rows: 1
+As with SMUI’s web frontend, you are capable of leveraging its
+REST interface to create and update search management rules
+programmatically. Rules have corresponding search inputs, that they are
+working on. If you want to create rules programmatically it is therefore
+important to keep track of the input the rules should refer to.
 
-   * -
-     - Spelling
-     - Alternative
-     - Description
-   * - **simple rule**
-     - mobile
-     - ombile
-     - ``ombile => mobile``
-       Simple replacement of the alternative with the spelling
-   * - **prefix rule**
-     - cheap
-     - cheap*
-     - ``cheap* => cheap``
-       Can be used to generalize spellings (e.g. cheapest pants => cheap pants). Just one suffix rule is allowed per spelling.
-   * - **suffix rule**
-     - phone
-     - \*phones
-     - ``*phones => phone``
-       Can be used to generalize spellings (e.g. smartphone => phone). Just one suffix rule is allowed per spelling.
-   * - **wildcards**
-     - computer $1
-     - computer*
-     - computer* => computer $1
-       Can be used to generalize and split spellings (e.g. computertable => computer table). Just one suffix rule is allowed per spelling.
+The following example python script shows how search inputs & rules
+can be created programmatically. The script creates a single search input,
+which is subsequently be updated with one ``SYNONYM`` and one ``FILTER`` rule as an example:
+
+.. literalinclude:: example_rest_crud.py
 
 .. _smui-import-existing-rules:
 
-Import existing rules (rules.txt)
----------------------------------
+Importing existing rules (rules.txt)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-As of version 3.3 SMUI supports importing an existing rules.txt file and
+As of version 3.3, SMUI supports importing an existing rules.txt file and
 adding its content to the SMUI database. The following steps outline the
 procedure
 
@@ -84,11 +72,38 @@ e.g.:
    #> a4aaf472-c0c0-49ac-8e34-c70fef9aa8a9 is the Id of new Solr index
    curl -F 'rules_txt=@/path/to/local/rules.txt' http://localhost:9000/api/v1/a4aaf472-c0c0-49ac-8e34-c70fef9aa8a9/import-from-rules-txt
 
-NOTE: If you have configured SMUI with authentication, you need to pass
-authentication information (e.g. BasicAuth header) along the ``curl``
-request.
+.. note::
 
-WARNING: As of version 3.3 the rules.txt import endpoint only supports
-``SYNONYM``, ``UP`` / ``DOWN``, ``FILTER`` and ``DELETE`` rules.
-Redirects, other ``DECORATE``\ s, as well as Input Tags will be omitted,
-and not be migrated using the import endpoint.
+    If you have configured SMUI with authentication, you need to pass
+    authentication information (e.g. BasicAuth header) along the ``curl``
+    request.
+
+.. warning::
+
+    As of version 3.3 the rules.txt import endpoint only supports
+    ``SYNONYM``, ``UP`` / ``DOWN``, ``FILTER`` and ``DELETE`` rules.
+    Redirects, other ``DECORATE``\ s, as well as Input Tags will be omitted,
+    and not be migrated using the import endpoint.
+
+
+Accessing logs
+--------------
+
+The SMUI docker container outputs logs to the STDOUT. Alternatively,
+there is a SMUI log file under the following path (in the SMUI docker
+container):
+
+::
+
+   /smui/logs/application.log
+
+Server logs can be watched using ``docker exec``, e.g. (command line):
+
+::
+
+   docker exec -it <CONTAINER_ID> tail -f /smui/logs/application.log
+
+Running multiple instances
+--------------------------
+
+SMUI supports operation in a multi instance setup, with all instances sharing the same database.
