@@ -11,3 +11,4 @@ Thanks to all the great developers, that contributed to SMUI:
 -  `Michael Gottschalk <https://github.com/migo>`__
 -  `Matthias Krüger <https://github.com/mkr>`__
 -  `Gunnar Busch <https://github.com/gunnarbusch>`__
+-  `Moritz Wagner <https://github.com/recombinationgroup>`__

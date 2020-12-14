@@ -4,6 +4,9 @@
 Quickstart SMUI
 ===============
 
+Quickstart SMUI from scratch
+----------------------------
+
 * Have MySQL up & running on its default port 3306 (e.g. spin up a docker container).
 * There should exist a database ``smui`` with a user ``smui`` and the password ``smui`` (default setup for SMUI).
 * Run SMUI:
@@ -15,7 +18,7 @@ Quickstart SMUI
 The latest SMUI is now up & running locally.
 
 * Open SMUI in a browser under http://localhost:9000.
-* Create a first deployment channel in SMUI:
+* Create a first rule collection in SMUI, in which search query inputs and rules can be maintained:
 
 ::
 
@@ -30,6 +33,16 @@ It is all set up and you are ready to use SMUI now.
 
    curl http://localhost:9000/api/v1/allRulesTxtFiles
 
-You will receive a ZIP file containing the rules.txt.
+You will receive a ZIP file containing the rules.txt for the configured channel.
 
 That's a minimum setup to start & work with SMUI. Visit :ref:`the installation and full configuration guide <smui-install-config>` to learn more about, how to proper configure SMUI for your setup.
+
+Quickstart SMUI from ``docker-compose``
+---------------------------------------
+
+::
+
+   # In smui repo path:
+   docker-compose up
+
+Create your first rule collection in SMUI (see above) & you are ready to use it.

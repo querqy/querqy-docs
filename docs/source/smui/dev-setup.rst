@@ -4,8 +4,8 @@
 Development setup for SMUI
 ==========================
 
-DEVELOPMENT SETUP
------------------
+Basic development setup for SMUI
+--------------------------------
 
 For developing new features and test the application with different type
 of configuration, it is recommended to create a local development
@@ -78,10 +78,10 @@ NOTE: Remember to give it a ``+x`` permission for being executable to
 the application.
 
 Developing Custom Authentication
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------------
 
 Authentication Backend
-^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~
 
 If you want to extend SMUI’s authentication behaviour, you can do so by
 supplying your own authentication implementation into the classpath of
@@ -108,7 +108,7 @@ As an example implementation, you can check
 as well.
 
 Frontend Behaviour for Authentication
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The Angular frontend comes with a built-in HTTP request authentication
 interceptor. Every API request is observed for returned 401 status
@@ -137,14 +137,14 @@ Through this, it becomes possible for the remote login service to
 redirect back to SMUI once the login has succeeded.
 
 Developing git deployment method
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------------
 
 SMUI offers the possibility to deploy rules.txt (files) to a git repository. For doing so in a local development setup, it might therefore be necessary to operate a local git instance. The following section describes, how that can be achieved.
 
 Bootstrap a local git server (docker)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For the local git server, the dockerhub image |jkarlos/git-server-docker|:target: https://hub.docker.com/r/jkarlos/git-server-docker/| will be used, see (command line):
+For the local git server, the dockerhub image `jkarlos/git-server-docker <https://hub.docker.com/r/jkarlos/git-server-docker/>`_ will be used, see (command line):
 
 ::
 
@@ -158,6 +158,9 @@ For the local git server, the dockerhub image |jkarlos/git-server-docker|:target
    # start the container (and provide public key)
    docker run -d -p 22:22 -v <SMUI_GIT_ROOT>/keys:/git-server/keys -v <SMUI_GIT_ROOT>/repos:/git-server/repos jkarlos/git-server-docker
    # NOTE: Your local development user must have permission to access information of your local git user (in case they differ)
+
+Init the git repository
+~~~~~~~~~~~~~~~~~~~~~~~
 
 You can run the following script (preferred as git test user itself) to init the repo (command line):
 

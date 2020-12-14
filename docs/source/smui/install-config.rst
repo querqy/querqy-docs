@@ -380,7 +380,7 @@ Configuration of authentication
 SMUI is shipped with HTTP Basic and JWT Authentication support.
 
 Basic Authentication
-''''''''''''''''''''
+^^^^^^^^^^^^^^^^^^^^
 
 This is telling every controller method (Home and ApiController) to use
 the according authentication method as well as it tells SMUI’s

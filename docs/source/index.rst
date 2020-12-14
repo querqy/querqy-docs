@@ -67,6 +67,7 @@ Docker image. :ref:`Get started here <chorus-index>`!
    smui/quickstart
    smui/install-config
    smui/using-smui
+   smui/advanced-usage
    smui/dev-setup
    smui/release-notes
    smui/contributors
