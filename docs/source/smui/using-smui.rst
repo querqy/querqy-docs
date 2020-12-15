@@ -1,7 +1,7 @@
 .. _smui-using-smui:
 
 ============================
-Using SMUI: operations guide
+Using SMUI: Operations guide
 ============================
 
 Search rules
@@ -61,6 +61,8 @@ Following rules can be used to replace the input term:
      - computer*
      - computer* => computer $1
        Can be used to generalize and split spellings (e.g. computertable => computer table). Just one suffix rule is allowed per spelling.
+
+.. _smui-import-existing-rules:
 
 Import existing rules (rules.txt)
 ---------------------------------

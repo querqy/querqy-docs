@@ -4,10 +4,10 @@
 Advanced usage of SMUI
 ======================
 
-Create & maintain rules via REST interface
-------------------------------------------
+Managing rules via REST interface
+---------------------------------
 
-Like SMUI’s (angular) frontend, you are capable of leveraging SMUI’s
+As with SMUI’s web frontend, you are capable of leveraging its
 REST interface to create and update search management rules
 programmatically. Rules have corresponding search inputs, that they are
 working on. If you want to create rules programmatically it is therefore

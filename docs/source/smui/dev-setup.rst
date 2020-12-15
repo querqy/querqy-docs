@@ -58,7 +58,7 @@ e.g.:
 
    run -Dconfig.file=./smui-dev.conf 9000
 
-Furthermore, above’s configuration points to a deviant development
+Furthermore, above’s configuration points to an alternative development
 version of the ``smui2solr.sh``-script. The file ``smui2solr-dev.sh`` is
 as well excluded from the version control. The following example
 provides a simple custom deployment script approach, that basically just
@@ -76,6 +76,8 @@ It can be used as a basis for extension.
 
 NOTE: Remember to give it a ``+x`` permission for being executable to
 the application.
+
+.. _smui-dev-custom-auth:
 
 Developing Custom Authentication
 --------------------------------

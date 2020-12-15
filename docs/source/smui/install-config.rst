@@ -4,20 +4,21 @@
 Installation and full configuration guide
 =========================================
 
-Create and configure database
------------------------------
+Database connection
+-------------------
 
 SMUI needs a database backend in order to manage and store search
 management rules.
 
-Supported (tested) databases:
+Supported databases
+~~~~~~~~~~~~~~~~~~~
 
-Generally SMUI database connection implementation is based on JDBC and
+Generally, SMUI database connection implementation is based on JDBC and
 only standard SQL is used, so technically every database management
-system supported by JDBC should feasible when using SMUI. However as
-database management systems potentially come with specific features,
-SMUI explicity is tested (and/or productively used) only with the
-following database management systems:
+system supported by JDBC should work with SMUI. However, database
+management systems come with specific features which potentially could
+impact SMUI operation. SMUI has been explicitly tested (and/or productively used)
+with the following database management systems:
 
 -  MySQL & MariaDB
 -  PostgreSQL
@@ -41,12 +42,12 @@ script (SQL, MariaDB / MySQL):
    CREATE DATABASE smui;
    GRANT ALL PRIVILEGES ON smui.* TO 'smui'@'localhost' WITH GRANT OPTION;
 
-Migrate pre-v2 SMUI databases
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Migrating pre-v2 SMUI databases
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-As of version 3.3 it has become possible to migrate prior version’s
-search management input and rules via the ``rules.txt`` file. See
-“Import existing rules.txt” for details.
+As of v3.3 it has become possible to migrate prior version’s
+search management input and rules via an existing ``rules.txt`` file. See
+:ref:`Import existing rules.txt<smui-import-existing-rules>` for details.
 
 Install SMUI application (using docker image or Docker Hub repository)
 ----------------------------------------------------------------------
@@ -87,52 +88,67 @@ variables can be found in ``application.conf``
 ``db.default.driver``).
 
 NOTE: Environment variables are the preferred way to configure your
-production environment. In contrast, while developing (outside a docker
-environment) it is possible to use a local ``smui-dev.conf`` file (see
-“DEVELOPMENT SETUP”).
+production environment. During development (i.e. outside a docker
+environment) it is possible to use a local ``smui-dev.conf`` file
+(see the :ref:`development setup<smui-dev-setup>` documentation).
 
 The following sections describe application configs in more detail.
 
-Configure basic settings
-~~~~~~~~~~~~~~~~~~~~~~~~
+Setup configuration
+~~~~~~~~~~~~~~~~~~~
 
-The following settings can (and should) be overwritten on
-application.conf in your own ``smui-prod.conf`` level:
+The following settings can (and should) be overwritten within the
+``application.conf`` in your own ``smui-prod.conf`` or in your deployment,
+using environment variables:
 
 .. list-table:: SMUI basic settings
-   :widths: 20 50 30
+   :widths: 20 20 50 30
    :header-rows: 1
 
    * - Config key
+     - Environment variable
      - Description
      - Default
    * - ``db.default.driver``
+     - ``SMUI_DB_JDBC_DRIVER``
      - JDBC database driver
      - MySQL database on localhost for ``smui:smui``.
    * - ``db.default.url``
+     - ``SMUI_DB_URL``
      - Database host and optional connection parameters (JDBC connection string).
      - MySQL database on localhost for ``smui:smui``.
-   * - ``db.default.username`` and ``db.default.password``
-     - Database credentials.
-     - MySQL database on localhost for smui:smui.
+   * - ``db.default.username``
+     - ``SMUI_DB_USER``
+     - Database user
+     - ``smui``.
+   * - ``db.default.password``
+     - ``SMUI_DB_PASSWORD``
+     - Database password
+     - ``smui``
    * - ``smui2solr.SRC_TMP_FILE``
-     - Path to temp file (when ``rules.txt`` generation happens)
-     - local /tmp file in docker container (recommended: leave default). WARNING: Deprecated as of v3.4, will be replaced soon.
+     - ``SMUI_2SOLR_SRC_TMP_FILE``
+     - Path to temp file (i.e. where to output the generated ``rules.txt`` file after generation). **WARNING:** Deprecated as of v3.4, will be replaced soon.
+     - ``/tmp/search-management-ui_rules-txt.tmp`` (recommended: leave default).
    * - ``smui2solr.DST_CP_FILE_TO``
+     - ``SMUI_2SOLR_DST_CP_FILE_TO``
+     - LIVE ``rules.txt`` destination file for the default deployment script. See “Details on rules.txt deployment” for more info. **WARNING:**: Deprecated as of v3.4, will be replaced soon.
      - ``/usr/bin/solr/defaultCore/conf/rules.txt``
-     - LIVE ``rules.txt`` destination file for the default deployment script. See “Details on rules.txt deployment” for more info. WARNING: Deprecated as of v3.4, will be replaced soon.
    * - ``smui.deployment.git.repo-url``
+     - ``SMUI_DEPLOYMENT_GIT_REPO_URL``
      - Needed for git deployment (see “Deploy rules.txt to a git target“).
      - Empty.
    * - ``smui2solr.deployment.git.filename.common-rules-txt``
+     - ``SMUI_DEPLOYMENT_GIT_FN_COMMON_RULES_TXT``
      - Bare filename of the common ``rules.txt`` file, that should be pushed to the git repository.
      - ``rules.txt``
    * - ``smui2solr.SOLR_HOST``
-     - Solr host
-     - Virtual local Solr instance. WARNING: Deprecated as of v3.4, will be replaced soon.
+     - ``SMUI_2SOLR_SOLR_HOST``
+     - Local Solr instance. **WARNING**: Deprecated as of v3.4, will be replaced soon.
+     - ``localhost:8983``
    * - ``play.http.secret.key``
-     - Encryption key for server/client communication (Play 2.6 standard)
-     - unsecure default.
+     - ``SMUI_PLAY_APPLICATION_SECRET``
+     - Encryption key for server/client communication (Play 2.6 standard). This positively needs to be set to a high-entropy value in production environments.
+     - **WARNING:** Insecure default.
 
 Start SMUI (docker) application
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -462,7 +478,7 @@ decorate its controllers with that, e.g.:
 
    smui.authAction = myOwnPackage.myOwnAuthenticatedAction
 
-See “Developing Custom Authentication” for details.
+See :ref:`Developing Custom Authentication<smui-dev-custom-auth>` for details.
 
 Create SMUI admin data initially (via REST interface)
 -----------------------------------------------------
