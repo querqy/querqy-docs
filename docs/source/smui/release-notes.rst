@@ -7,7 +7,7 @@ Release notes
 Major changes in v3.12
 ======================
 
--  Optimised development setup.
+-  Optimised development setup (split npm frontend from Scala/Play backend).
 -  Removed RPM build. SMUI is now Docker only.
 
 Major changes in v3.11
