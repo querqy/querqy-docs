@@ -35,6 +35,12 @@ The code repository provides a Makefile for creating the SMUI docker image. In t
 This will build both the backend and frontend components in a dockerized environment and create and tag the following
 images: ``querqy/smui:latest`` and ``querqy/smui:$VERSION``, where `$VERSION` is the version given in the build.sbt file.
 
+If you want to only build the fat jar itself, e.g. to build your own docker container, you may do so by running `sbt`:
+
+::
+
+    sbt assembly
+
 Running SMUI locally
 --------------------
 
