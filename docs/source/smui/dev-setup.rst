@@ -1,13 +1,70 @@
 .. _smui-dev-setup:
 
-==========================
-Development setup for SMUI
-==========================
+===============
+Developing SMUI
+===============
 
-Basic development setup for SMUI
---------------------------------
+The SMUI sources are hosted on the corresponding `GitHub repository`_.
 
-For developing new features and test the application with different type
+.. _GitHub repository: https://github.com/querqy/smui
+
+For development and building, you will need
+
+- `docker`_ with `BuildKit`_ capabilities (i.e. version 18.09 or higher)
+- `docker-compose`_ (optional)
+- Java Runtime Environment
+- NodeJS
+- `sbt`_
+- `GNU make`_
+
+.. _docker: https://www.docker.com/
+.. _docker-compose: https://docs.docker.com/compose/
+.. _BuildKit: https://docs.docker.com/develop/develop-images/build_enhancements/
+.. _sbt: https://www.scala-sbt.org/download.html
+.. _GNU make: https://www.gnu.org/software/make/
+
+Building SMUI
+-------------
+
+The code repository provides a Makefile for creating the SMUI docker image. In the project root, run
+
+::
+
+    make docker-build-only
+
+This will build both the backend and frontend components in a dockerized environment and create and tag the following
+images: ``querqy/smui:latest`` and ``querqy/smui:$VERSION``, where `$VERSION` is the version given in the build.sbt file.
+
+If you want to only build the fat jar itself, e.g. to build your own docker image, you may do so by running `sbt`:
+
+::
+
+    sbt assembly
+
+Running SMUI locally
+--------------------
+
+When working on the SMUI sources, building a docker image on each change
+would be very time-consuming. Therefore, you may run a local development
+server by running:
+
+::
+
+    make serve
+
+The SMUI frontend will then be available on http://localhost:4200 , and the backend on http://localhost:9000.
+``make serve`` assumes a MySQL/MariaDB instance, as outlined in the :ref:`SMUI quickstart<smui-quickstart>`
+documentation. Alternatively, you may customize the database configuration. See :ref:`Development configuration<smui-dev-config>`
+below.
+
+The development server is hot-reloading, i.e. will recompile on changes in the source files.
+
+.. _smui-dev-config:
+
+Development configuration
+-------------------------
+
+For developing new features and testing the application with different types
 of configuration, it is recommended to create a local development
 configuration of the application (instead of the productive one
 described above). There is the ``smui-dev.conf`` being excluded from
@@ -74,8 +131,9 @@ delegates the script call to the main ``smui2solr.sh`` one:
 
 It can be used as a basis for extension.
 
-NOTE: Remember to give it a ``+x`` permission for being executable to
-the application.
+.. note::
+
+    Remember to make the script executable (`chmod +x`).
 
 .. _smui-dev-custom-auth:
 
@@ -105,9 +163,9 @@ Comply with the following protocol:
        ...
    }
 
-As an example implementation, you can check
-`BasicAuthAuthenticatedAction.scala <app/controllers/auth/BasicAuthAuthenticatedAction.scala>`__
-as well.
+As an example implementation, you can check `BasicAuthAuthenticatedAction.scala`_ as well.
+
+.. _BasicAuthAuthenticatedAction.scala: https://github.com/querqy/smui/blob/master/app/controllers/auth/BasicAuthAuthenticatedAction.scala
 
 Frontend Behaviour for Authentication
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -116,9 +174,9 @@ The Angular frontend comes with a built-in HTTP request authentication
 interceptor. Every API request is observed for returned 401 status
 codes. In case the backend returns 401, the backend can pass an
 behaviour instruction to the frontend by complying with spec defined by
-``SmuiAuthViolation`` within
-`http-auth-interceptor.ts <app/assets/app/http-auth-interceptor.ts>`__,
-e.g.:
+``SmuiAuthViolation`` within `http-auth-interceptor.ts`_, e.g.:
+
+.. _http-auth-interceptor.ts: https://github.com/querqy/smui/blob/master/app/assets/app/helpers/http-auth-interceptor.ts
 
 ::
 
@@ -127,10 +185,12 @@ e.g.:
      "params": "https://www.example.com/loginService/?urlCallback={{CURRENT_SMUI_URL}}"
    }
 
-NOTE: The authentication interceptor only joins the game, in case the
-Angular application is successfully bootstrap’ed. So for SMUI’s ``/``
-route, your custom authentication method might choose a different
-behaviour (e.g. 302).
+.. note::
+
+    The authentication interceptor only joins the game, in case the
+    Angular application is successfully bootstrapped. So for SMUI’s ``/``
+    route, your custom authentication method might choose a different
+    behaviour (e.g. 302).
 
 Within exemplary ``redirect`` action above, you can work with the
 ``{{CURRENT_SMUI_URL}}`` placeholder, that SMUI will replace with its
@@ -141,12 +201,16 @@ redirect back to SMUI once the login has succeeded.
 Developing git deployment method
 --------------------------------
 
-SMUI offers the possibility to deploy rules.txt (files) to a git repository. For doing so in a local development setup, it might therefore be necessary to operate a local git instance. The following section describes, how that can be achieved.
+SMUI offers the possibility to deploy rules.txt (files) to a git repository.
+For doing so in a local development setup, it might therefore be necessary to
+operate a local git instance. The following section describes how that can be achieved.
 
 Bootstrap a local git server (docker)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For the local git server, the dockerhub image `jkarlos/git-server-docker <https://hub.docker.com/r/jkarlos/git-server-docker/>`_ will be used, see (command line):
+For the local git server, the dockerhub image `jkarlos/git-server-docker`_ will be used, see (command line):
+
+.. _jkarlos/git-server-docker: https://hub.docker.com/r/jkarlos/git-server-docker/
 
 ::
 
