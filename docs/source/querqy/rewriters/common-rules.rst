@@ -968,6 +968,7 @@ querqyParser
      <str name="class">querqy.solr.SimpleCommonRulesRewriterFactory</str>
      <str name="rules">rules.txt</str>
      <bool name="ignoreCase">true</bool>
+     <bool name="buildTermCache">true</bool>
      <str name="querqyParser">querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory</str>
    </lst>
 
@@ -984,6 +985,12 @@ rules
 
 ignoreCase
   Ignore case in input matching for rules?
+
+  Default: ``true``
+
+buildTermCache
+  Whether to build a term cache from matching terms. This is a optimization
+  that might not be feasable for very large rule lists.
 
   Default: ``true``
 
