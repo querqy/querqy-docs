@@ -27,3 +27,25 @@ cd docs
 make serve
 ```
 This will serve the generated documentation on [http://localhost:8000](http://localhost:8000).
+
+### Build with Docker
+
+> 🐳 An alternative for the lazy Docker fanboys ;-)
+
+Build the builder Docker image:
+
+```
+docker build -t querqy-doc-builder .
+```
+
+Build the docs:
+
+```
+docker run --rm -v $(pwd)/docs:/docs querqy-doc-builder make html
+```
+
+Browse the docs at [http://localhost:8000](http://localhost:8000):
+
+```
+docker run -it -p 8000:80 -v $PWD/docs/build/html:/usr/share/caddy/ caddy
+```
