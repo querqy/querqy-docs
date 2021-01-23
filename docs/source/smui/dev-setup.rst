@@ -253,4 +253,15 @@ You can run the following script (preferred as git test user itself) to init the
 
 To configure and start SMUI using a git deployment see “Deploy rules.txt to a git target“.
 
+Developing github actions for SMUI
+----------------------------------
+
+Build and deployment of SMUI's official docker image on DockerHub is realised through a github action, which is located under: `.github/workflows <https://github.com/querqy/smui/tree/master/.github/workflows>`_.
+
+Testing SMUI relies on Ryuk test containers within the ``sbt test`` build step. Unfortunately, there seems to be an issue with local build containers used by ``act`` (https://github.com/nektos/act), so that adjustments to the deployment workflow can only be tested while triggering the build on the github infrastructure (master push) and not tested locally with ``act``.
+
+This problem is described in the following issue: https://github.com/nektos/act/issues/501.
+
+Anyway, the workflow performs well on the github action container infrastructure.
+
 Have fun coding SMUI!!
