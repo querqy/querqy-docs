@@ -479,7 +479,7 @@ information to the search results:
    :linenos:
 
    faq =>
-     DECORATE: redirect, /service/faq
+     DECORATE: REDIRECT /service/faq
 
 
 The Solr response will then contain an array 'querqy_decorations' with the
@@ -494,13 +494,13 @@ right-hand side expressions of the matching decorate rules:
      <result name="response" numFound="0" start="0">...</result>
      <lst name="facet_counts">...</lst>
      <arr name="querqy_decorations">
-       <str>redirect, /service/faq</str>
+       <str>REDIRECT /service/faq</str>
         ...
      </arr>
    </response>
 
 Querqy does not inspect the right-hand side of the decorate instruction
-('redirect, /service/faq') but returns the configured value 'as is'. You could
+('REDIRECT /service/faq') but returns the configured value 'as is'. You could
 even configure a JSON-formatted value in this place but you have to assure that
 the value does not contain any line break.
 
