@@ -83,6 +83,10 @@ Setting up a Word Break Rewriter
      <arr name="reverseCompoundTriggerWords">
        <str>for</str>
      </arr>
+     <arr name="protectedWords">
+       <str>slipper</str>
+       <str>wissenschaft</str>
+     </arr>
    </lst>
 
 
@@ -255,6 +259,18 @@ reverseCompoundTriggerWords
   List of words for which the compound of the left and right neighbour tokens
   should be added as a synonym in reverse order (add synonym 'YX' to
   'X <triggerWord> Y').
+
+  Default: (empty list)
+
+protectedWords
+  List of words that should never be split or be the result of a combination.
+  These can be words that are no compounds grammatically but produce splits
+  because their parts are terms in your dictionary (e.g. German "Slipper"
+  if your vocabulary contains the words "Slip" and "per") or simply terms
+  that you don't want to split as they produce too many irrelevant results
+  when appearing on their own (e.g. German "Wissenschaft" if the dictionary
+  contains "Wissen" and "Schaft", or "Löwenzahn" which you might not want to
+  split into "Löwe" and "Zahn").
 
   Default: (empty list)
 
