@@ -260,6 +260,49 @@ computer' should also search for 'pc' while query 'pc' should also search for
 	   SYNONYM: personal computer
 
 
+.. rubric:: Weighted synonyms
+
+Synonyms can be configured to have a *term weight*. A 
+term weight has to be greater than (or equal to) ``0``. 
+Defining the term weight is optional. By default synonyms have a 
+term weight of ``1.0``.
+
+.. code-block:: Text
+   :linenos:
+
+   cutlery =>
+     SYNONYM(0.5): fork
+     SYNONYM(0.5): knife
+
+   notebook =>
+     SYNONYM: laptop
+     SYNONYM(0.5): macbook
+     SYNONYM(0.5): chromebook
+
+At query time, the *term weight* is multiplied with the *field boost* 
+of the queried field. This helps to formulate queries for
+synonyms that mimic *subtopic synonyms*. These are linguistical 
+unequal synonyms and include terms that should appear
+in a search result but with a lower score than linguistical 
+equal synonyms. They will increase recall and keep the exact
+matches on top of the search result.
+
+Given the examples above, if you search for ``cutlery`` and 
+define ``qf=title^3`` as query field boost, the following
+dismax query is issued:
+
+.. code-block:: Text
+   :linenos:
+
+   boolean_query (mm=1) (
+	   dismax('title:cutlery^3'),
+	   dismax('title:fork^1.5'),
+	   dismax('title:knife^1.5')
+   )
+
+In e-commerce search this can be used to handle *umbrella term* 
+searches (like ``cutlery``  or ``gardening tools``).
+
 .. rubric:: Expert: Structure of expanded queries
 
 Querqy preserves the 'minimum should match' semantics for boolean queries
@@ -968,6 +1011,7 @@ querqyParser
      <str name="class">querqy.solr.SimpleCommonRulesRewriterFactory</str>
      <str name="rules">rules.txt</str>
      <bool name="ignoreCase">true</bool>
+     <bool name="buildTermCache">true</bool>
      <str name="querqyParser">querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory</str>
    </lst>
 
@@ -984,6 +1028,12 @@ rules
 
 ignoreCase
   Ignore case in input matching for rules?
+
+  Default: ``true``
+
+buildTermCache
+  Whether to build a term cache from matching terms. This is a optimization
+  that might not be feasable for very large rule lists.
 
   Default: ``true``
 
