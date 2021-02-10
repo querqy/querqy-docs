@@ -162,21 +162,41 @@ The Querqy plugin is installed as a .jar file.
   Querqy version.
 
 * Put the .jar file into `Solr's lib folder`_.
-* Add the Querqy query parser and the Querqy query component to your
-  ``solrconfig.xml`` file:
+* Add the Querqy request handler, the Querqy query parser and the Querqy query
+  component to your ``solrconfig.xml`` file:
+
+**Querqy 5**
 
 .. code-block:: xml
 
  <!--
+    Add the Querqy request handler.
+ -->
+ <requestHandler name="/querqy/rewriter" class="querqy.solr.QuerqyRewriterRequestHandler" />
+
+ <!--
      Add the Querqy query parser.
  -->
- <queryParser name="querqy" class="querqy.solr.DefaultQuerqyDismaxQParserPlugin"/>
+ <queryParser name="querqy" class="querqy.solr.DismaxQParserPlugin"/>
 
  <!--
     Override the default QueryComponent.
  -->
  <searchComponent name="query" class="querqy.solr.QuerqyQueryComponent"/>
 
+**Querqy 4**
+
+.. code-block:: xml
+
+  <!--
+      Add the Querqy query parser.
+  -->
+  <queryParser name="querqy" class="querqy.solr.DefaultQuerqyDismaxQParserPlugin"/>
+
+  <!--
+     Override the default QueryComponent.
+  -->
+  <searchComponent name="query" class="querqy.solr.QuerqyQueryComponent"/>
 
 
 .. _`Solr's lib folder`: https://cwiki.apache.org/confluence/display/solr/Lib+Directives+in+SolrConfig

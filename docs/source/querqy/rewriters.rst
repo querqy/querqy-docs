@@ -160,6 +160,115 @@ will delete your common_rules rewriter.
 Rewriter configuration in Solr
 ------------------------------
 
+.. note:: The rewriter configuration has changed in a non-compatible way with
+  the introduction of Querqy 5. Make sure to follow the documentation for your
+  Querqy version below. TODO: migration
+
+**Querqy 5**
+
+Querqy adds a URL endpoint to Solr for managing rewriters. When you set up
+Querqy in :code:`solrconfig.xml`, you've added a request handler for this:
+
+.. code-block:: XML
+
+  <requestHandler name="/querqy/rewriter" class="querqy.solr.QuerqyRewriterRequestHandler" />
+
+You can then manage your rewriters at
+
+:code:`http://<solr host>:<port>/solr/mycollection/querqy/rewriter`
+
+TODO: how to change rewriter path
+
+
+Creating/configuring a 'Common Rules rewriter':
+
+
+:code:`POST /solr/mycollection/querqy/rewriter/common_rules?action=save`
+
+.. code-block:: JSON
+   :linenos:
+
+   {
+       "class": "querqy.solr.rewriter.commonrules.CommonRulesRewriterFactory",
+       "config": {
+           "rules" : "notebook =>\nSYNONYM: laptop"
+       }
+   }
+
+Rewriter definitions are uploaded by sending a POST request and appending the
+:code:`action=save` parameter to the rewriter endpoint. The last part of the
+request URL path (:code:`common_rules`) will become the name of the rewriter.
+
+A rewriter definition must contain a class element (line #2). Its value
+references an implementation of a querqy.solr.SolrRewriterFactoryAdapter which
+will provide the rewriter that we want to use.
+
+The rewriter definition can also have a config object (#3) which contains the
+rewriter-specific configuration.
+
+In the case of the CommonRulesRewriterFactory, the configuration must contain
+the rewriting rules (#4). Remember to escape line breaks etc. when you include
+your rules in a JSON document.
+
+We can now apply one or more rewriters to a query:
+
+:code:`GET /solr/mycollection/select?q=notebook&defType=querqy&querqy.rewriters=common_rules&qf=title^3.0...`
+
+The parameter :code:`defType=querqy` enables the Querqy query parser. The
+parameter :code:`querqy.rewriters` contains a list of comma-separated rewriter
+names. These rewriters form the rewrite chain and they are processed in their
+order of occurrence. In this specific example, we only used the rewriter that we
+defined in our POST request above and we reference it by its name
+:code:`common_rules`.
+
+In SolrCloud, rewriter configurations are stored in ZooKeeper under the path
+:code:`querqy/rewriters` as part of the collection's config set. Configurations
+will be gzipped for storage. If the gzipped configuration still exceeds a
+pre-defined limit, they will be split into multiple chunks. You can set this
+limit in the QuerqyRewriterRequestHandler configuration:
+
+.. code-block:: XML
+
+  <requestHandler name="/querqy/rewriter" class="querqy.solr.QuerqyRewriterRequestHandler">
+  <int name="zkMaxFileSize">500000</int>
+  </requestHandler>
+
+:code:`zkMaxFileSize` is the maximum chunk size in bytes. The default value is
+1000000, which fits the default ZooKeeper limit.
+
+In standalone Solr, rewriter configurations are stored under
+:code:`conf/querqy/rewriters`.
+
+
+Updating and deleting rewriters
+...............................
+
+To update a rewriter configuration, just send the updated configuration in a
+POST request with :code:`action=save` to the same rewriter URL again.
+
+To delete a rewriter, send a POST request with :code:`action=delete` to the
+rewriter URL. For example,
+
+:code:`POST /solr/mycollection/querqy/rewriter/common_rules?action=delete`
+
+will delete your common_rules rewriter.
+
+Getting rewriter information
+............................
+
+You can get a list of configured rewriters at:
+
+:code:`GET /solr/mycollection/querqy/rewriter`
+
+To retrieve the configuration of a specific rewriter, you can make a GET call
+against its endpoint. In the case of the :code:`common_rules` rewriter above,
+the call would be:
+
+:code:`GET /solr/mycollection/querqy/rewriter/common_rules`
+
+
+**Querqy 4**
+
 The rewrite chain is configured at the Querqy query parser in solrconfig.xml:
 
 .. code-block:: xml
