@@ -104,7 +104,7 @@ transition to Querqy 5, we provide a way to configure a static rewrite chain in
 
 
 While the definition of the :code:`rewriteChain` (lines #3-11) looks the same
-like in Querqy 4, this XML element must now be configured under a search
+like in Querqy 4, this XML element must now be configured under a searcher
 listener (#2). Note that if you use Querqy's :ref:`term query cache <querqy-term-query-cache>`, the
 ClassicRewriteChainLoader must be configured before the listener that preloads
 terms into that cache. To update a rewriter configuration or an artefact
