@@ -65,6 +65,28 @@ As a first step, the Replace Rewriter is configured
 
  <div>
 
+**Querqy 5**
+
+| :code:`POST /solr/mycollection/querqy/rewriter/replace?action=save`
+| :code:`Content-Type: application/json`
+
+.. code-block:: JSON
+   :linenos:
+   :emphasize-lines: 4-7
+
+   {
+       "class": "querqy.solr.rewriter.replace.ReplaceRewriterFactory",
+       "config": {
+            "rules":  "mobiles => mobile",
+            "ignoreCase": true,
+            "inputDelimiter": ";",
+            "querqyParser": "querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory"
+       }
+   }
+
+
+**Querqy 4**
+
 .. code-block:: xml
    :linenos:
 
@@ -80,11 +102,14 @@ As a first step, the Replace Rewriter is configured
 
     </div>
 
-For Solr, a file in the ZooKeeper containing the rules must be specified; for Elasticsearch,
-the rules are simply put into a string value for the property ``rules``. The property
-``ignoreCase`` defines whether the rewriter differs between upper- and lowercase when
-matching query terms to rule inputs (default is ``true``). The property ``inputDelimiter``
-enables to configure different input definitions for the same output, separated by the
+The replace rules must be specified in a property ``rules`` (Elasticsearch,
+Querqy 5 for Solr). Remember to JSON-escape the value of this property.
+
+In Querqy 4 for Solr, ``rules`` references a file in  ZooKeeper that contains
+the rules. The property`` ignoreCase`` defines whether the rewriter
+differentiates between upper- and lowercase when matching query terms to rule
+inputs (default is ``true``). The property ``inputDelimiter`` enables to
+configure different input definitions for the same output, separated by the
 configured delimiter (default is tab).
 
 

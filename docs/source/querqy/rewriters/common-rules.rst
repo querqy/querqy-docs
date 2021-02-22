@@ -61,8 +61,8 @@ SimpleCommonRulesRewriterFactory in Elasticsearch.
 The rules for the 'Common Rules Rewriter' are passed as the ``rules`` property
 in the rewriter configuration:
 
-:code:`POST /solr/mycollection/querqy/rewriter/common_rules?action=save`
-:code:`Content-Type: application/json`
+| :code:`POST /solr/mycollection/querqy/rewriter/common_rules?action=save`
+| :code:`Content-Type: application/json`
 
 .. code-block:: JSON
    :linenos:

@@ -71,6 +71,24 @@ value for the property ``config``.
 
  <div>
 
+**Querqy 5**
+
+| :code:`POST /solr/mycollection/querqy/rewriter/number_unit?action=save`
+| :code:`Content-Type: application/json`
+
+.. code-block:: JSON
+   :linenos:
+
+   {
+       "class": "querqy.solr.rewriter.numberunit.NumberUnitRewriterFactory",
+       "config": {
+            "config":  "{ \"numberUnitDefinitions\": [ ... ] }"
+       }
+   }
+
+
+**Querqy 4**
+
 .. code-block:: xml
    :linenos:
 
@@ -290,5 +308,3 @@ In some edge cases, a query even might contain more than one number-unit combina
 ``notebook 15 inch 1 tb``. In this case, one filter query is applied for each number-unit combination
 (which means they are logically combined via boolean ``AND``) and one boost is added to the score per
 number-unit combination.
-
-

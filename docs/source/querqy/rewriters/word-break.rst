@@ -44,7 +44,7 @@ Setting up a Word Break Rewriter
 
 .. code-block:: JSON
    :linenos:
-   :emphasize-lines: 4-10
+   :emphasize-lines: 4-11
 
    {
        "class": "querqy.elasticsearch.rewriter.WordBreakCompoundRewriterFactory",
@@ -55,8 +55,8 @@ Setting up a Word Break Rewriter
                 "maxExpansions": 5,
                 "verifyCollation": true
             },
-            "reverseCompoundTriggerWords": ["for"]
-
+            "reverseCompoundTriggerWords": ["for"],
+            "morpholgy": "GERMAN"
        }
    }
 
@@ -69,6 +69,31 @@ Setting up a Word Break Rewriter
 .. raw:: html
 
  <div>
+
+**Querqy 5**
+
+| :code:`POST /solr/mycollection/querqy/rewriter/word_break?action=save`
+| :code:`Content-Type: application/json`
+
+.. code-block:: JSON
+   :linenos:
+
+   {
+       "class": "querqy.solr.rewriter.wordbreak.WordBreakCompoundRewriterFactory",
+       "config": {
+            "dictionaryField" :  "dictionary",
+            "lowerCaseInput": true,
+            "decompound": {
+                "maxExpansions": 5,
+                "verifyCollation": true
+            },
+            "morphology": "GERMAN",
+            "reverseCompoundTriggerWords": ["for"],
+            "protectedWords": ["slipper"]
+       }
+   }
+
+**Querqy 4**
 
 .. code-block:: xml
    :linenos:
@@ -97,8 +122,8 @@ Setting up a Word Break Rewriter
 
 
 The Word Break Rewriter is backed by a dictionary of known words. The
-dictionary is just a field in the index - the ``dictionaryField`` (line
-:raw-html:`<span class="elasticsearch">#4</span><span class="solr">#3</span>`).
+dictionary is just a field in the index - the ``dictionaryField``
+:raw-html:`<span class="elasticsearch">(line #4)</span>`.
 This field is normally a 'copy field' to which contents from  high-quality
 content fields is copied - usually fields like 'title', 'product type',
 'category', 'brand', 'colour' or other textual attributes. The Analyzer of this
@@ -106,29 +131,39 @@ field should not apply any stemming. Using a Standard Tokenizer and a Lowercase
 Token Filter will be a good start.
 
 Setting ``lowerCaseInput`` to ``true``
-(:raw-html:`<span class="elasticsearch">#5</span><span class="solr">#4</span>`)
+:raw-html:`<span class="elasticsearch">(#5)</span>`
 assures that the query token lookup in the dictionary will match the lowercased
 words in the dictionary field, making the word break handling case-insensitive.
 
 When the rewriter splits a compound word, it could find more than one position
 in the word at which a split is possible. The ``decompound.maxExpansions``
-(:raw-html:`<span class="elasticsearch">#7</span><span class="solr">#5</span>`)
+:raw-html:`<span class="elasticsearch">(#7)</span>`
 setting specifies how many of these split variants should be added as synonyms
 to the query.
 
 Setting ``decompound.verifyCollation`` to ``true``
-(:raw-html:`<span class="elasticsearch">#8</span><span class="solr">#6</span>`)
+:raw-html:`<span class="elasticsearch">(#8)</span>`
 assures that only those variants will be added that co-occur in the
 dictionaryField value of at least one document. This can prevent many unwanted
 word splits. For example, the word 'action' will not be split into 'act + ion'
 as long as the 'act' and 'ion' do not co-occur in the dictionaryField of a
 document.
 
+
 .. rst-class:: solr
 
 .. raw:: html
 
  <div>
+
+Words provided on the list of ``protectedWords`` will be exempt from
+decompounding.
+
+.. raw:: html
+
+ </div>
+
+
 
 By default, it is assumed that words that together form compound word
 were just joined together without changing their form. But in some languages
@@ -144,14 +179,9 @@ which applies the 20 most popular compound forms listed on page 6 in [S. Langer
 compounds but not when creating them.
 
 
- .. raw:: html
-
-  </div>
-
-
 
 ``reverseCompoundTriggerWords``
-(:raw-html:`<span class="elasticsearch">#10</span><span class="solr">#8-10</span>`)
+:raw-html:`<span class="elasticsearch">(#10)</span>`
 support an additional compound creation strategy that drops the trigger word and
 creates a compound from the left and right tokens in reverse order. In languages
 with very productive compounding, like Dutch and German, this strategy helps to

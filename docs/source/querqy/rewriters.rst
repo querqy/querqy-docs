@@ -178,8 +178,8 @@ You can then manage your rewriters at
 Creating/configuring a 'Common Rules rewriter':
 
 
-:code:`POST /solr/mycollection/querqy/rewriter/common_rules?action=save`
-:code:`Content-Type: application/json`
+| :code:`POST /solr/mycollection/querqy/rewriter/common_rules?action=save`
+| :code:`Content-Type: application/json`
 
 .. code-block:: JSON
    :linenos:

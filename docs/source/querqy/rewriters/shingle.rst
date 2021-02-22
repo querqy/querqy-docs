@@ -27,6 +27,25 @@ Reference
 Configuration
 -------------
 
+**Querqy 5**
+
+| :code:`POST /solr/mycollection/querqy/rewriter/shingle?action=save`
+| :code:`Content-Type: application/json`
+
+.. code-block:: JSON
+   :linenos:
+
+   {
+       "class": "querqy.solr.rewriter.ShingleRewriterFactory",
+       "config": {
+           "acceptGeneratedTerms": false
+       }
+   }
+
+
+
+**Querqy 4**
+
 .. code-block:: xml
 
    <lst name="rewriter">
