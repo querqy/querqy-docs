@@ -160,9 +160,7 @@ will delete your common_rules rewriter.
 Rewriter configuration in Solr
 ------------------------------
 
-.. note:: The rewriter configuration has changed in a non-compatible way with
-  the introduction of Querqy 5. Make sure to follow the documentation for your
-  Querqy version below. TODO: migration
+.. include:: hint-querqy-5-solr.txt
 
 **Querqy 5**
 
@@ -177,13 +175,11 @@ You can then manage your rewriters at
 
 :code:`http://<solr host>:<port>/solr/mycollection/querqy/rewriter`
 
-TODO: how to change rewriter path
-
-
 Creating/configuring a 'Common Rules rewriter':
 
 
 :code:`POST /solr/mycollection/querqy/rewriter/common_rules?action=save`
+:code:`Content-Type: application/json`
 
 .. code-block:: JSON
    :linenos:
@@ -203,45 +199,57 @@ A rewriter definition must contain a class element (line #2). Its value
 references an implementation of a querqy.solr.SolrRewriterFactoryAdapter which
 will provide the rewriter that we want to use.
 
-The rewriter definition can also have a config object (#3) which contains the
-rewriter-specific configuration.
+The rewriter definition can also have a config object (#3-5), which contains the
+rewriter-specific configuration. In the case of the CommonRulesRewriterFactory,
+the configuration must contain the rewriting rules (#4). Remember to escape line
+breaks etc. when you include your rules in a JSON document.
 
-In the case of the CommonRulesRewriterFactory, the configuration must contain
-the rewriting rules (#4). Remember to escape line breaks etc. when you include
-your rules in a JSON document.
+If you work with SolrJ, you can create your configuration request using a
+request that comes with most of the Querqy-supplied rewriters. Just look out for
+the :code:`*ConfigRequestBuilder` classes in the Java packages under
+:code:`querqy.solr.rewriter`.
 
-We can now apply one or more rewriters to a query:
+Once we have managed our rewriter configuration, We can apply one or more
+rewriters to a query:
 
 :code:`GET /solr/mycollection/select?q=notebook&defType=querqy&querqy.rewriters=common_rules&qf=title^3.0...`
 
 The parameter :code:`defType=querqy` enables the Querqy query parser. The
-parameter :code:`querqy.rewriters` contains a list of comma-separated rewriter
-names. These rewriters form the rewrite chain and they are processed in their
-order of occurrence. In this specific example, we only used the rewriter that we
-defined in our POST request above and we reference it by its name
-:code:`common_rules`.
+optional parameter :code:`querqy.rewriters` contains a list of comma-separated
+rewriter names. These rewriters form the rewrite chain and they are processed in
+their order of occurrence. In this specific example, we only used the rewriter
+that we defined in our POST request above and we reference it by its name
+:code:`common_rules`. Had we configured another rewriter under
+:code:`/solr/mycollection/querqy/rewriter/replace`, we could apply the
+'replace' rewriter before the 'common_rules' rewriter using the URL parameter
+:code:`querqy.rewriters=replace,common_rules`.
+
+By default, Solr will reply with a :code:`400 Bad Request` response, if a
+rewriter that was passed in in the 'querqy.rewriters' parameter does not exist.
+Please see :ref:`this section <querqy-unknown-rewriters>` in the 'Advanced Solr
+Plugin Configuration' documentation for an option to ignore missing rewriters.
 
 In SolrCloud, rewriter configurations are stored in ZooKeeper under the path
 :code:`querqy/rewriters` as part of the collection's config set. Configurations
-will be gzipped for storage. If the gzipped configuration still exceeds a
-pre-defined limit, they will be split into multiple chunks. You can set this
+will be gzipped for storage. If the gzipped configuration still exceeds the
+maximum file size, it will be split into multiple chunks. You can set this
 limit in the QuerqyRewriterRequestHandler configuration:
 
 .. code-block:: XML
 
   <requestHandler name="/querqy/rewriter" class="querqy.solr.QuerqyRewriterRequestHandler">
-  <int name="zkMaxFileSize">500000</int>
+    <int name="zkMaxFileSize">500000</int>
   </requestHandler>
 
 :code:`zkMaxFileSize` is the maximum chunk size in bytes. The default value is
-1000000, which fits the default ZooKeeper limit.
+1000000, which fits the default ZooKeeper size limit.
 
 In standalone Solr, rewriter configurations are stored under
 :code:`conf/querqy/rewriters`.
 
 
-Updating and deleting rewriters
-...............................
+Updating and deleting rewriters (Querqy 5)
+..........................................
 
 To update a rewriter configuration, just send the updated configuration in a
 POST request with :code:`action=save` to the same rewriter URL again.
@@ -253,8 +261,8 @@ rewriter URL. For example,
 
 will delete your common_rules rewriter.
 
-Getting rewriter information
-............................
+Getting rewriter information (Querqy 5)
+.......................................
 
 You can get a list of configured rewriters at:
 

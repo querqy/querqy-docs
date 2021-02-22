@@ -1,0 +1,5 @@
+.. warning:: Querqy configuration has changed in a non-compatible way with
+  the introduction of Querqy v5 for Solr. Make sure to follow the documentation
+  for your Querqy version below. See :doc:`here<querqy5-solr-migration>` for
+  detailed information about changes and a migration guide to :doc:`Querqy 5 for
+  Solr <querqy5-solr-migration>`

@@ -55,6 +55,7 @@ Docker image. :ref:`Get started here <chorus-index>`!
    querqy/more-about-queries
    querqy/elasticsearch-plugin-configuration
    querqy/solr-plugin-configuration
+   querqy/querqy5-solr-migration
    querqy/contributors
 
 .. toctree::

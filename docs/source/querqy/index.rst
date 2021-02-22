@@ -114,6 +114,8 @@ below and we will generate the install command for you:
 
 .. rubric:: Installation under Solr
 
+.. include:: hint-querqy-5-solr.txt
+
 The Querqy plugin is installed as a .jar file.
 
 .. TODO Link to Release Notes
@@ -162,8 +164,8 @@ The Querqy plugin is installed as a .jar file.
   Querqy version.
 
 * Put the .jar file into `Solr's lib folder`_.
-* Add the Querqy request handler, the Querqy query parser and the Querqy query
-  component to your ``solrconfig.xml`` file:
+* Add the Querqy request handler (Querqy 5 only), the Querqy query parser and
+  the Querqy query component to your ``solrconfig.xml`` file:
 
 **Querqy 5**
 
@@ -177,7 +179,7 @@ The Querqy plugin is installed as a .jar file.
  <!--
      Add the Querqy query parser.
  -->
- <queryParser name="querqy" class="querqy.solr.DismaxQParserPlugin"/>
+ <queryParser name="querqy" class="querqy.solr.QuerqyDismaxQParserPlugin"/>
 
  <!--
     Override the default QueryComponent.

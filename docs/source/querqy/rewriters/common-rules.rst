@@ -56,6 +56,30 @@ SimpleCommonRulesRewriterFactory in Elasticsearch.
 
  <div>
 
+**Querqy 5**
+
+The rules for the 'Common Rules Rewriter' are passed as the ``rules`` property
+in the rewriter configuration:
+
+:code:`POST /solr/mycollection/querqy/rewriter/common_rules?action=save`
+:code:`Content-Type: application/json`
+
+.. code-block:: JSON
+   :linenos:
+   :emphasize-lines: 4
+
+   {
+       "class": "querqy.solr.rewriter.commonrules.CommonRulesRewriterFactory",
+       "config": {
+           "rules" : "notebook =>\nSYNONYM: laptop"
+       }
+   }
+
+Remember to JSON-escape your rules.
+
+
+**Querqy 4**
+
 The rules for the 'Common Rules Rewriter' are maintained in the resource that
 you configured as property ``rules`` for the
 SimpleCommonRulesRewriterFactory.
@@ -215,7 +239,57 @@ the current wildcard implementation, which might be removed in the future:
 * The wildcard can only occur at the very end of the input matching.
 * It cannot be combined with the right-hand input boundary marker (...").
 
+.. rst-class:: solr
 
+.. raw:: html
+
+ <div>
+
+**Querqy 5**
+
+So far, input matching requires that all specified input terms match the query.
+Starting with version 5, Querqy adds the option to express more complex boolean
+semantics for input matching.
+
+You will have to enable **boolean input matching** in the rewriter configuration
+by setting the ``allowBooleanInput`` to ``true``:
+
+.. code-block:: JSON
+   :linenos:
+   :emphasize-lines: 5
+
+   {
+     "class": "querqy.solr.rewriter.commonrules.CommonRulesRewriterFactory",
+     "config": {
+         "rules" : "notebook AND NOT sleeve =>\nDOWN(100): accessories",
+         "allowBooleanInput": true
+
+     }
+   }
+
+You can then use the operators ``AND``, ``OR``, ``NOT`` and ``( )`` to express
+boolean matching. In the following example, both rules require to see
+``smartphone`` in the query. The first rule is only triggered if the query
+does not contain ``case``, while the second rule requires ``case`` or ``cover``
+to occur in the query.
+
+.. code-block:: Text
+   :linenos:
+
+   smartphone AND NOT case =>
+     FILTER: * category:smartphones
+
+   smartphone AND (case OR cover) =>
+     FILTER: * category:"smartphone cases"
+
+If you use wildcard matching, the wildcard can occur at the end of any boolean
+sub-group (like in ``smart* AND (mobile app*)``). However, a boolean input
+expression that contains a wildcard cannot be combined with SYNONYM or DELETE
+instructions.
+
+.. raw:: html
+
+ </div>
 
 SYNONYM rules
 -------------
@@ -262,9 +336,9 @@ computer' should also search for 'pc' while query 'pc' should also search for
 
 .. rubric:: Weighted synonyms
 
-Synonyms can be configured to have a *term weight*. A 
-term weight has to be greater than (or equal to) ``0``. 
-Defining the term weight is optional. By default synonyms have a 
+Synonyms can be configured to have a *term weight*. A
+term weight has to be greater than (or equal to) ``0``.
+Defining the term weight is optional. By default synonyms have a
 term weight of ``1.0``.
 
 .. code-block:: Text
@@ -279,15 +353,15 @@ term weight of ``1.0``.
      SYNONYM(0.5): macbook
      SYNONYM(0.5): chromebook
 
-At query time, the *term weight* is multiplied with the *field boost* 
+At query time, the *term weight* is multiplied with the *field boost*
 of the queried field. This helps to formulate queries for
-synonyms that mimic *subtopic synonyms*. These are linguistical 
+synonyms that mimic *subtopic synonyms*. These are linguistical
 unequal synonyms and include terms that should appear
-in a search result but with a lower score than linguistical 
+in a search result but with a lower score than linguistical
 equal synonyms. They will increase recall and keep the exact
 matches on top of the search result.
 
-Given the examples above, if you search for ``cutlery`` and 
+Given the examples above, if you search for ``cutlery`` and
 define ``qf=title^3`` as query field boost, the following
 dismax query is issued:
 
@@ -300,7 +374,7 @@ dismax query is issued:
 	   dismax('title:knife^1.5')
    )
 
-In e-commerce search this can be used to handle *umbrella term* 
+In e-commerce search this can be used to handle *umbrella term*
 searches (like ``cutlery``  or ``gardening tools``).
 
 .. rubric:: Expert: Structure of expanded queries
@@ -716,7 +790,8 @@ We will tell Querqy to only apply the first rule after sorting them by the
  <div>
 
 In order to enable rule selection we need to make sure that a rewriter ID has
-been configured for the Common Rules rewriter in solrconfig.xml:
+been configured for the Common Rules rewriter in solrconfig.xml (Querqy 4 only,
+Querqy 5 provides the ID automatically by using the rewriter configuration API):
 
 .. code-block:: xml
    :linenos:
@@ -1005,6 +1080,25 @@ querqyParser
 
  <div>
 
+**Querqy 5**
+
+.. code-block:: JSON
+
+  {
+    "class": "querqy.solr.rewriter.commonrules.CommonRulesRewriterFactory",
+    "config": {
+        "rules" : "notebook =>\nSYNONYM: laptop",
+        "ignoreCase" : true,
+        "buildTermCache": true,
+        "allowBooleanInput": true,
+        "querqyParser": "querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory"
+    }
+  }
+
+
+**Querqy 4**
+
+
 .. code-block:: xml
 
    <lst name="rewriter">
@@ -1016,13 +1110,17 @@ querqyParser
    </lst>
 
 rules
-  The rule definitions file containing the rules for rewriting. The file is kept
-  in the configset of the collection in ZooKeeper (SolrCloud) or in the 'conf'
-  folder of the Solr core in standalone or master-slave Solr.
+  *Querqy 5*: A property containing the rules for rewriting. Remember to escape
+  the rules for JSON.
 
-  Note that the default maximum file size in ZooKeeper is 1 MB. The file can be
-  gzipped. Querqy will auto-detect whether the file is compressed, regardless of
-  the file name.
+  *Querqy 4*: The rule definitions file containing the rules for rewriting. The
+  file is kept in the configset of the collection in ZooKeeper (SolrCloud) or in
+  the 'conf' folder of the Solr core in standalone or master-slave Solr.
+
+  Note that the default maximum file size in ZooKeeper is 1 MB. For Querqy 4,
+  the file can be gzipped. Querqy will auto-detect whether the file is
+  compressed, regardless of the file name. Querqy 5 will compress and split
+  files automatically.
 
   Required.
 
@@ -1036,6 +1134,12 @@ buildTermCache
   that might not be feasable for very large rule lists.
 
   Default: ``true``
+
+allowBooleanInput
+  Whether to interpret the rule input definitions as boolean expressions.
+  (Querqy 5 only)
+
+  Default: ``false``
 
 querqyParser
   The querqy.rewrite.commonrules.QuerqyParserFactory to use for parsing strings

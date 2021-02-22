@@ -2,9 +2,33 @@
 Advanced Solr plugin configuration
 ==================================
 
+.. include:: hint-querqy-5-solr.txt
+
+
 In the `installation <querqy-installation>`_ section you have already seen how
 to set up the Querqy query parser and the Querqy query component in
 ``solrconfig.xml``:
+
+**Querqy 5**
+
+.. code-block:: xml
+
+ <!--
+    Add the Querqy request handler.
+ -->
+ <requestHandler name="/querqy/rewriter" class="querqy.solr.QuerqyRewriterRequestHandler" />
+
+ <!--
+     Add the Querqy query parser.
+ -->
+ <queryParser name="querqy" class="querqy.solr.QuerqyDismaxQParserPlugin"/>
+
+ <!--
+    Override the default QueryComponent.
+ -->
+ <searchComponent name="query" class="querqy.solr.QuerqyQueryComponent"/>
+
+**Querqy 4**
 
 .. code-block:: xml
 
@@ -20,11 +44,44 @@ to set up the Querqy query parser and the Querqy query component in
 
 This section will explain additional configuration options:
 
+* Define how to deal with undefined rewriters in the rewrite chain (Querqy 5)
 * The term query cache that avoids building Lucene queries for sub-queries
   created in query rewriting that never match in specific fields
 * The info logging for query rewriters
 * The parser for the user query string
+* Changing the rewriter request handler path (Querqy 5)
 
+.. _querqy-unknown-rewriters:
+
+Dealing with undefined rewriters in the rewrite chain (Querqy 5)
+----------------------------------------------------------------
+
+In Querqy 5 the rewriter chain is passed as a list of rewriter IDs in a request
+parameter:
+
+:code:`querqy.rewriters=rewriter1,rewriter2`
+
+where each rewriter ID references a previously defined rewriter configuration.
+You can use the :code:`skipUnkownRewriters` property of the query parser plugin
+to define what should happen if no rewriter configuration can be found for a
+given rewriter ID that was passed in :code:`querqy.rewriters`:
+
+.. code-block:: xml
+   :linenos:
+   :emphasize-lines: 2
+
+   <queryParser name="querqy" class="querqy.solr.QuerqyDismaxQParserPlugin">
+     <bool name="skipUnkownRewriters">true</bool>
+   </queryParser>
+
+If 'skipUnkownRewriters' is set to :code:`true`, the missing rewriter is ignored
+and the rewrite chain will be processed as if this rewriter weren't part of it.
+A warning will be issued to the log file. If it is set to :code:`false`,
+Solr will reply with a '400 Bad Request' response, which is also the default
+behaviour when the 'skipUnkownRewriters' is not configured.
+
+
+.. _querqy-term-query-cache:
 
 Term query cache
 ----------------
@@ -49,7 +106,7 @@ will not be executed again until Solr opens a new searcher. Caching this
 information can speed up Querqy considerably, especially if there are many query
 fields.
 
-Cache configuration (solrconfig.xml):
+Version-independent cache configuration (solrconfig.xml):
 
 .. code-block:: xml
 
@@ -106,30 +163,87 @@ Cache configuration (solrconfig.xml):
    </query>
 
 
-   <!-- Tell the Querqy query parser to use the custom cache: -->
-   <queryParser name="querqy" class="querqy.solr.DefaultQuerqyDismaxQParserPlugin">
-
-     <!--
-          A reference to the custom cache. It must match the
-          cache name that you have used in the cache definition.
-     -->
-     <str name="termQueryCache.name">querqyTermQueryCache</str>
+  <queryParser name="querqy" class="...">
+    <!-- See below for Querqy version specific configuration -->
+  </queryParser>
 
 
-     <!--
-        If true, the cache will be updated after preloading for terms
-        from all user queries, including those that were not rewritten.
-        In most cases this should be set to 'false' in order to make sure
-        that the information for the right-hand side terms of your rewrite rules
-        is never evicted from the cache.
-     -->
-     <bool name="termQueryCache.update">false</bool>
 
-     <lst name="rewriteChain">
-         <!-- ... -->
-     </lst>
+Please see below for additional configuration for your Querqy version.
 
-   </queryParser>
+**Querqy 5**
+
+.. code-block:: xml
+
+ <!-- Tell the Querqy query parser to use the custom cache: -->
+ <queryParser name="querqy" class="querqy.solr.QuerqyDismaxQParserPlugin">
+
+  <!--
+       A reference to the custom cache. It must match the
+       cache name that you have used in the cache definition.
+  -->
+  <str name="termQueryCache.name">querqyTermQueryCache</str>
+
+
+  <!--
+     If true, the cache will be updated after preloading for terms
+     from all user queries, including those that were not rewritten.
+     In most cases this should be set to 'false' in order to make sure
+     that the information for the right-hand side terms of your rewrite rules
+     is never evicted from the cache.
+  -->
+  <bool name="termQueryCache.update">false</bool>
+
+ </queryParser>
+
+If you `changed the request handler name <#changing-the-name-of-the-rewriter-request-handler-querqy-5>`_ of the
+:code:`querqy.solr.QuerqyRewriterRequestHandler`, you will have to set this name
+at the :code:`querqy.solr.TermQueryCachePreloader` (line #9):
+
+.. code-block:: xml
+   :linenos:
+
+   <requestHandler name="/some/othername" class="querqy.solr.QuerqyRewriterRequestHandler" />
+
+   <query>
+      <listener event="newSearcher" class="querqy.solr.TermQueryCachePreloader">
+          <str name="fields">f1 f2</str>
+          <str name="qParserPlugin">querqy</str>
+          <str name="cacheName">querqyTermQueryCache</str>
+          <bool name="testForHits">true</bool>
+          <str name="rewriterRequestHandler">/some/othername</str>
+      </listener>
+   </query>
+
+
+**Querqy 4**
+
+.. code-block:: xml
+
+ <!-- Tell the Querqy query parser to use the custom cache: -->
+ <queryParser name="querqy" class="querqy.solr.DefaultQuerqyDismaxQParserPlugin">
+
+    <!--
+       A reference to the custom cache. It must match the
+       cache name that you have used in the cache definition.
+    -->
+    <str name="termQueryCache.name">querqyTermQueryCache</str>
+
+
+    <!--
+     If true, the cache will be updated after preloading for terms
+     from all user queries, including those that were not rewritten.
+     In most cases this should be set to 'false' in order to make sure
+     that the information for the right-hand side terms of your rewrite rules
+     is never evicted from the cache.
+    -->
+    <bool name="termQueryCache.update">false</bool>
+
+    <lst name="rewriteChain">
+      <!-- ... -->
+    </lst>
+
+ </queryParser>
 
 
 .. _querqy_solr_info_logging:
@@ -143,6 +257,54 @@ rules rewriter emits this information and it can be returned together with the
 Solr response.
 
 Configuration:
+
+**Querqy 5**
+
+.. code-block:: xml
+
+   <queryParser name="querqy" class="querqy.solr.QuerqyDismaxQParserPlugin">
+
+     <!-- ... -->
+
+     <lst name="infoLogging">
+       <!--
+         Define a 'sink' named 'responseSink' to which the logging information
+         will be sent:
+       -->
+
+       <lst name="sink">
+         <str name="id">responseSink</str>
+         <str name="class">querqy.solr.ResponseSink</str>
+       </lst>
+
+       <!--
+         Send the logging information from rewriter 'common1' to sink
+         'responseSink':
+       -->
+       <lst name="mapping">
+         <str name="rewriter">common1</str>
+         <str name="sink">responseSink</str>
+       </lst>
+       <!--
+         Send the logging information from rewriter 'common2' to sink
+         'responseSink' too:
+       -->
+       <lst name="mapping">
+         <str name="rewriter">common2</str>
+         <str name="sink">responseSink</str>
+       </lst>
+
+     </lst>
+
+   </queryParser>
+
+Mappings can be configured before the rewriter is created. For example, in the
+above configuration, we have a mapping from rewriter 'common1' to sink
+'responseSink'. This will be ignored if rewriter 'common1' doesn't exist, but
+logging will start as soon as you create a rewriter for the name 'common1'.
+
+
+**Querqy 4**
 
 .. code-block:: xml
 
@@ -289,11 +451,11 @@ The query string parser defines how the query string that is passed in request
 parameter ``q`` is parsed into Querqy's internal query object model before
 rewriting the query and before turning it into a Lucene query.
 
-It can be set using an element with name ``parser`` in the configuration:
+It can be set using an element with name ``parser`` in the configuration:[1]_
 
 .. code-block:: xml
 
-  <queryParser name="querqy" class="querqy.solr.DefaultQuerqyDismaxQParserPlugin">
+  <queryParser name="querqy" class="...">
 
     <str name="parser">querqy.parser.WhiteSpaceQuerqyParser</str>
 
@@ -316,11 +478,11 @@ considerably.
 
 You can implement your own query parser by implementing the
 ``querqy.parser.QuerqyParser`` interface. If your query parser needs more
-configuration options, you can provide it using a factory:
+configuration options, you can provide it using a factory:[1]_
 
 .. code-block:: xml
 
-   <queryParser name="querqy" class="querqy.solr.DefaultQuerqyDismaxQParserPlugin">
+   <queryParser name="querqy" class="...">
 
      <lst name="parser">
        <str name="factory">querqy.solr.MyQuerqyParserFactory</str>
@@ -336,3 +498,53 @@ receive the configuration properties ('myConfProperty1'/'myConfProperty2') in a
 map parsed to its init method. Note that
 ``SolrQuerqyParserFactory.createParser()`` is called per request implying that
 QuerqyParsers are allowed to be stateful.
+
+Changing the name of the rewriter request handler (Querqy 5)
+------------------------------------------------------------
+
+The rewriter request handler is normally configured for the path
+:code:`/querqy/rewriter`:
+
+.. code-block:: xml
+
+  <requestHandler name="/querqy/rewriter" class="querqy.solr.QuerqyRewriterRequestHandler" />
+
+This means that Querqy manages rewriters under a URL path
+:code:`/solr/mycollection/querqy/rewriter` and you normally should not need to
+change this path. Should you ever have to change it, you will need to change the
+:code:`name` attribute of the rewriter:
+
+.. code-block:: xml
+
+   <requestHandler name="/my/rewriter-path" class="querqy.solr.QuerqyRewriterRequestHandler" />
+
+... point the query parser to it:
+
+.. code-block:: xml
+   :linenos:
+   :emphasize-lines: 2
+
+   <queryParser name="querqy" class="querqy.solr.QuerqyDismaxQParserPlugin">
+     <str name="rewriterRequestHandler">/my/rewriter-path</str>
+   </queryParser>
+
+... and, if you use term query cache preloading, let the
+'TermQueryCachePreloader' know about it:
+
+.. code-block:: xml
+   :linenos:
+   :emphasize-lines: 4
+
+    <query>
+      <listener event="newSearcher" class="querqy.solr.TermQueryCachePreloader">
+          <!-- ... -->
+          <str name="rewriterRequestHandler">/my/rewriter-path</str>
+      </listener>
+   </query>
+
+
+
+
+.. [1] The queryParser class in the example below is
+  :code:`querqy.solr.QuerqyDismaxQParserPlugin` for Query 5 and
+  :code:`querqy.solr.DefaultQuerqyDismaxQParserPlugin` for Query 4.
