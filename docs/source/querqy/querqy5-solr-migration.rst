@@ -58,7 +58,7 @@ This change also means that rewriters no longer have a dependency on additional
 artefacts. The :code:`rules.txt` of the Common Rules Rewriter no longer exists,
 the rules are part of the rewriter configuration.
 
-To make using the new rewriter API easy to use, we provide a configuration
+To make the new rewriter API easy to use, we provide a configuration
 request builder for most rewriters for SolrJ. Look out for classes named
 :code:`*ConfigRequestBuilder` in the rewriter packages. For example, the
 :code:`querqy.solr.rewriter.commonrules.CommonRulesConfigRequestBuilder` can
