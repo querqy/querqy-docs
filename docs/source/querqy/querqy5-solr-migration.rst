@@ -126,3 +126,30 @@ Java package (packages under `querqy.solr.rewriter`). Most notably the
 :code:`querqy.solr.SimpleCommonRulesRewriterFactory` is now named
 :code:`querqy.solr.rewriter.commonrules.CommonRulesRewriterFactory`. Please see
 the individual rewriter documentation for the new class name.
+
+Custom Rewriters
+----------------
+
+If you have written your own Querqy rewriter, you will have to change the
+factory that plugs it into Solr. You will need to extend the
+``querqy.solr.SolrRewriterFactoryAdapter`` and implement the following abstract
+methods:
+
+:code:`List<String> validateConfiguration(Map<String, Object> config)`
+  Validate the ``config`` map. This is the `config` object from the JSON rewriter
+  configuration. Returns a list of validation error messages or an empty list if
+  the configuration is valid.
+
+:code:`void configure(Map<String, Object> config)`
+  Applies the configuration to this factory instance
+
+:code:`RewriterFactory getRewriterFactory()`
+  Creates the ``querqy.rewrite.RewriterFactory`` that is kept in memory and that
+  finally provides the rewriter instance per search request.
+
+If you want to use the static, deprecated rewriter configuration in
+``solrconfig.xml`` instead of the rewriter API, your factory must additionally
+implement the ``querqy.solr.rewriter.ClassicConfigurationParser`` interface. Use
+the Map<String, Object> parseConfigurationToRequestHandlerBody(NamedList<Object> configuration, ResourceLoader resourceLoader) method to
+translate the ``solrconfig.xml`` configuration to a ``config`` map that can be
+consumed by the above 'validateConfiguration' and 'configure' methods.
