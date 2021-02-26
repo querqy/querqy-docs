@@ -101,10 +101,9 @@ transition to Querqy 5, we provide a way to configure a static rewrite chain in
        </lst>
      </listener>
    </query>
-
-  <requestHandler name="/querqy/rewriter" class="querqy.solr.QuerqyRewriterRequestHandler">
-		<bool name="inMemory">true</bool>
-	</requestHandler>
+   <requestHandler name="/querqy/rewriter" class="querqy.solr.QuerqyRewriterRequestHandler">
+     <bool name="inMemory">true</bool>
+   </requestHandler>
 
 
 While the definition of the :code:`rewriteChain` (lines #3-11) looks the same
