@@ -62,7 +62,7 @@ parameter:
 :code:`querqy.rewriters=rewriter1,rewriter2`
 
 where each rewriter ID references a previously defined rewriter configuration.
-You can use the :code:`skipUnkownRewriters` property of the query parser plugin
+You can use the :code:`skipUnknownRewriters` property of the query parser plugin
 to define what should happen if no rewriter configuration can be found for a
 given rewriter ID that was passed in :code:`querqy.rewriters`:
 
@@ -71,14 +71,14 @@ given rewriter ID that was passed in :code:`querqy.rewriters`:
    :emphasize-lines: 2
 
    <queryParser name="querqy" class="querqy.solr.QuerqyDismaxQParserPlugin">
-     <bool name="skipUnkownRewriters">true</bool>
+     <bool name="skipUnknownRewriters">true</bool>
    </queryParser>
 
-If 'skipUnkownRewriters' is set to :code:`true`, the missing rewriter is ignored
+If 'skipUnknownRewriters' is set to :code:`true`, the missing rewriter is ignored
 and the rewrite chain will be processed as if this rewriter weren't part of it.
 A warning will be issued to the log file. If it is set to :code:`false`,
 Solr will reply with a '400 Bad Request' response, which is also the default
-behaviour when the 'skipUnkownRewriters' is not configured.
+behaviour when the 'skipUnknownRewriters' is not configured.
 
 
 .. _querqy-term-query-cache:
