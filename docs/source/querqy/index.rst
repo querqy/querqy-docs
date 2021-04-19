@@ -146,19 +146,19 @@ The Querqy plugin is installed as a .jar file.
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
   | 8.1.x          | :download:`5.0.lucene810.2<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.0.lucene810.2/querqy-solr-5.0.lucene810.2-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 8.0.x          | :download:`5.0.lucene800.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.0.lucene800.1/querqy-solr-5.0.lucene800.1-jar-with-dependencies.jar>` |
+  | 8.0.x          | :download:`5.0.lucene800.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.0.lucene800.2/querqy-solr-5.0.lucene800.2-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 7.7.x          | :download:`5.0.lucene720.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.0.lucene720.1/querqy-solr-5.0.lucene720.1-jar-with-dependencies.jar>` |
+  | 7.7.x          | :download:`5.0.lucene720.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.0.lucene720.2/querqy-solr-5.0.lucene720.2-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 7.6.x          | :download:`5.0.lucene720.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.0.lucene720.1/querqy-solr-5.0.lucene720.1-jar-with-dependencies.jar>` |
+  | 7.6.x          | :download:`5.0.lucene720.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.0.lucene720.2/querqy-solr-5.0.lucene720.2-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 7.5.x          | :download:`5.0.lucene720.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.0.lucene720.1/querqy-solr-5.0.lucene720.1-jar-with-dependencies.jar>` |
+  | 7.5.x          | :download:`5.0.lucene720.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.0.lucene720.2/querqy-solr-5.0.lucene720.2-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 7.4.x          | :download:`5.0.lucene720.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.0.lucene720.1/querqy-solr-5.0.lucene720.1-jar-with-dependencies.jar>` |
+  | 7.4.x          | :download:`5.0.lucene720.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.0.lucene720.2/querqy-solr-5.0.lucene720.2-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 7.3.x          | :download:`5.0.lucene720.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.0.lucene720.1/querqy-solr-5.0.lucene720.1-jar-with-dependencies.jar>` |
+  | 7.3.x          | :download:`5.0.lucene720.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.0.lucene720.2/querqy-solr-5.0.lucene720.2-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 7.2.x          | :download:`5.0.lucene720.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.0.lucene720.1/querqy-solr-5.0.lucene720.1-jar-with-dependencies.jar>` |
+  | 7.2.x          | :download:`5.0.lucene720.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.0.lucene720.2/querqy-solr-5.0.lucene720.2-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
 
   .. [#] For older Solr versions, please see `here <https://github.com/querqy/querqy/wiki/Older-Querqy-versions>`_.
