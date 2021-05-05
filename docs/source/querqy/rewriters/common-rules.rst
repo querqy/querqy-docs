@@ -121,7 +121,7 @@ follow example:
 
    personal computer =>
      SYNONYM: pc
-     SYNONYM: desktop computer
+       SYNONYM: desktop computer
      DOWN(50): software
      @_id: "ID1"
      @enabled: true
@@ -136,6 +136,7 @@ a new line and it ends at ``=>`` followed by a line break.
 
 An input definition is followed by one or more *instructions* (#6 to #8), which
 define how the query should be rewritten.
+Note, that the number of whitespaces in front of an instruction does not have any contextual significance.
 
 An instruction must have a predicate (``SYNONYM``, ``UP/DOWN``, ``FILTER``,
 ``DELETE``, ``DECORATE``). The predicate can be followed
@@ -431,7 +432,7 @@ the search results:
 
    iphone =>
      UP(10): apple
-   	 DOWN(20): case
+     DOWN(20): case
 
 UP and DOWN both take boost factors as parameters. The default boost factor is
 1.0. The interpretation of the boost factor is left to the search engine.
