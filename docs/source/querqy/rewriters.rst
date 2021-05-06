@@ -349,6 +349,86 @@ of a Solr core in standalone or master-slave Solr. They can be gzipped, which
 will be auto-detected by Querqy, regardless of the file name. If you keep your
 files in ZooKeeper, remember the maximum file size in ZooKeeper (default: 1 MB).
 
+
+Example: Configuring rewriter via curl (Querqy 5)
+.................................................
+
+.. note::
+  In these examples we use :code:`curl` and :code:`jq` to retrieve and edit
+  rewriter configuration from a running Solr installation. We assume, that
+  the Solr instance is reachable at :code:`http://localhost:8983`. Configure
+  your Solr target using the environment variables below.
+
+**List configured rewriters**
+
+This will list all configured rewriters as JSON response. Use the
+rewriters :code:`id` to retrieve it's details using the subsequent
+examples.
+
+.. code-block:: console
+    :linenos:
+
+    SOLR_URL="http://localhost:8983"
+    SOLR_COLLECTION="collection"
+    curl -s "http://${SOLR_URL}/solr/${SOLR_COLLECTION}/querqy/rewriter" \
+        | jq '.response.rewriters'
+
+.. code-block:: JSON
+    :linenos:
+
+    {
+      "filter": {
+        "id": "filter",
+        "path": "/querqy/rewriter/filter"
+      },
+      "synonyms": {
+        "id": "synonyms",
+        "path": "/querqy/rewriter/synonyms"
+      }
+    }
+
+**Get rules for a single rewriter**
+
+This example will return the Querqy rules configured for a single rewriter as raw
+output on the console.
+
+.. code-block:: console
+    :linenos:
+
+    SOLR_URL="http://localhost:8983"
+    SOLR_COLLECTION="collection"
+    QUERQY_REWRITER="synonyms"
+    curl -s "http://${SOLR_URL}/solr/${SOLR_COLLECTION}/querqy/rewriter/${QUERQY_REWRITER}" \
+        | jq -r '.rewriter.definition.config.rules'
+
+**Edit rules for a single rewriter**
+
+Downloads the Querqy rules for a single rewriter into
+a temporary file to edit.
+
+.. code-block:: console
+    :linenos:
+
+    SOLR_URL="http://localhost:8983"
+    SOLR_COLLECTION="collection"
+    QUERQY_REWRITER="synonyms"
+    curl -s "http://${SOLR_URL}/solr/${SOLR_COLLECTION}/querqy/rewriter/${QUERQY_REWRITER}" \
+        | jq -r '.rewriter.definition.config.rules' \
+        > /tmp/${QUERQY_REWRITER}.txt
+
+Edit the Querqy rules in :code:`/tmp/${QUERQY_REWRITER}.txt`. Afterwards upload them
+using the following :code:`curl` call.
+
+.. code-block:: console
+    :linenos:
+
+    curl -s "${SOLR_URL}/solr/${SOLR_COLLECTION}/querqy/rewriter/${QUERQY_REWRITER}" \
+        | jq -r --arg rules "$(cat /tmp/${QUERQY_REWRITER}.txt)" \
+            '.rewriter.definition | .config.rules |= $rules' \
+        | curl -X POST -H "Content-Type: application/json" --data-binary @- \
+            "${SOLR_URL}/solr/${SOLR_COLLECTION}/querqy/rewriter/${QUERQY_REWRITER}?action=save"
+
+
 .. _querqy-list-of-rewriters:
 
 List of available rewriters
