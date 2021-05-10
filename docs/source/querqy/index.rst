@@ -95,7 +95,7 @@ below and we will generate the install command for you:
 
 
   ./bin/elasticsearch-plugin install \
-     "https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.3.es7100.0/querqy-elasticsearch-1.3.es7100.0.zip"
+     "https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es7121.0/querqy-elasticsearch-1.4.es7121.0.zip"
 
 
 
