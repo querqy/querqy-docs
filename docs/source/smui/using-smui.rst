@@ -78,12 +78,48 @@ e.g.:
     authentication information (e.g. BasicAuth header) along the ``curl``
     request.
 
+Handling of Input Tags
+**********************
+
+As of version 3.13, SMUI supports importing Input Tags according to your
+SMUI Configuration.
+
+::
+
+   notebook =>
+     SYNONYM: laptop
+     @"_log" : "some log text"
+     @"_id" : "some-ID"
+     @"category" : "electronics"
+     @{
+       "lang" : ["de", "en"],
+       "tenant" : ["t1", "t3"]
+     }@
+
+Configuration settings
+
+``toggle.rule-tagging = false`` : All tags are ignored by the import
+
+``toggle.rule-tagging = true`` and ``toggle.predefined-tags-file = ""`` : All 
+tags are imported. Tags not yet known to SMUI are newly created and are available
+in the user interface after the import.
+
+``toggle.rule-tagging = true`` and ``toggle.predefined-tags-file = "path/to/tags.json"`` : Only
+predefined tags are allowed and will be imported. Import will abort in case of 
+other tags in the rules.txt that are not predefined in SMUI.
+
+.. note::
+
+    The Querqy internal tags ``_id`` and ``_log`` are omitted.
+
+
 .. warning::
 
     As of version 3.3 the rules.txt import endpoint only supports
-    ``SYNONYM``, ``UP`` / ``DOWN``, ``FILTER`` and ``DELETE`` rules.
-    Redirects, other ``DECORATE``\ s, as well as Input Tags will be omitted,
-    and not be migrated using the import endpoint.
+    ``SYNONYM``, ``UP`` / ``DOWN``, ``FILTER`` and ``DELETE`` rules as well
+    as Input Tags.
+    Redirects and other ``DECORATE``\ s will be omitted and not be migrated 
+    using the import endpoint.
 
 
 Accessing logs
