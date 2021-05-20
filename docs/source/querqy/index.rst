@@ -70,19 +70,19 @@ below and we will generate the install command for you:
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es762.0/querqy-elasticsearch-1.4.es762.0.zip">7.6.2</option>
 
 
-    <option value="https://dl.bintray.com/renekrie/maven/querqy/querqy-elasticsearch/1.4.es752.0/querqy-elasticsearch-1.4.es752.0.zip">7.5.2</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es752.0/querqy-elasticsearch-1.4.es752.0.zip">7.5.2</option>
 
-    <option value="https://dl.bintray.com/renekrie/maven/querqy/querqy-elasticsearch/1.4.es742.0/querqy-elasticsearch-1.4.es742.0.zip">7.4.2</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es742.0/querqy-elasticsearch-1.4.es742.0.zip">7.4.2</option>
 
-    <option value="https://dl.bintray.com/renekrie/maven/querqy/querqy-elasticsearch/1.4.es732.0/querqy-elasticsearch-1.4.es732.0.zip">7.3.2</option>
-
-
-    <option value="https://dl.bintray.com/renekrie/maven/querqy/querqy-elasticsearch/1.4.es721.0/querqy-elasticsearch-1.4.es721.0.zip">7.2.1</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es732.0/querqy-elasticsearch-1.4.es732.0.zip">7.3.2</option>
 
 
-    <option value="https://dl.bintray.com/renekrie/maven/querqy/querqy-elasticsearch/1.0.es711.0/querqy-elasticsearch-1.0.es711.0.zip">7.1.1</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es721.0/querqy-elasticsearch-1.4.es721.0.zip">7.2.1</option>
 
-    <option value="https://dl.bintray.com/renekrie/maven/querqy/querqy-elasticsearch/1.0.es701.0/querqy-elasticsearch-1.0.es701.0.zip">7.0.1</option>
+
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.0.es711.0/querqy-elasticsearch-1.0.es711.0.zip">7.1.1</option>
+
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.0.es701.0/querqy-elasticsearch-1.0.es701.0.zip">7.0.1</option>
 
   </select>
  <br/><br/>
