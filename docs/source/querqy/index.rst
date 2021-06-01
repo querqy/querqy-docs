@@ -53,13 +53,13 @@ below and we will generate the install command for you:
     onChange="setESURL(this.options[this.selectedIndex].value);">
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es7121.0/querqy-elasticsearch-1.4.es7121.0.zip">Elasticsearch 7.12.1</option>
 
-    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es7120.0/querqy-elasticsearch-1.4.es7100.0.zip">7.12.0</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es7120.0/querqy-elasticsearch-1.4.es7120.0.zip">7.12.0</option>
 
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es7112.1/querqy-elasticsearch-1.4.es7112.1.zip">7.11.2</option>
 
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es7102.0/querqy-elasticsearch-1.4.es7102.0.zip">7.10.2</option>
 
-    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es793.0/querqy-elasticsearch-1.4.es794.0.zip">7.9.3</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es793.0/querqy-elasticsearch-1.4.es793.0.zip">7.9.3</option>
 
 
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es781.0/querqy-elasticsearch-1.4.es781.0.zip">7.8.1</option>
