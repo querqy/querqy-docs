@@ -110,7 +110,7 @@ are no boost queries on the Querqy query use the query paramer ``querqy.rq={!ltr
 .. _querqy_query_params:
 
 Reference
-=========
+---------
 
 .. include:: se-section.txt
 
