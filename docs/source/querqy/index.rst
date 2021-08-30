@@ -57,7 +57,7 @@ below and we will generate the install command for you:
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es7134.0/querqy-elasticsearch-1.4.es7134.0.zip">7.13.4</option>
 
 
-    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es7121.1/querqy-elasticsearch-1.4.es7121.1.zip">Elasticsearch 7.12.1</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es7121.1/querqy-elasticsearch-1.4.es7121.1.zip">7.12.1</option>
 
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es7112.2/querqy-elasticsearch-1.4.es7112.2.zip">7.11.2</option>
 
