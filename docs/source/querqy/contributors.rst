@@ -4,7 +4,7 @@ Contributors
 
 
  * `Anton Dumler <https://github.com/jagile>`_
- * `Johannes Peter <https://github.com/JohannesDaniel>`_, Committer
+ * `Johannes Peter <https://github.com/JohannesDaniel>`_, Committer/Maintainer
  * `Lucky Sharma <https://github.com/MighTguY>`_
  * `Markus Heiden <https://github.com/markus-s24>`_
  * `Markus Müllenborn <https://github.com/muellenborn>`_
@@ -15,4 +15,5 @@ Contributors
  * `Robert Giacinto <https://github.com/lichtsprung>`_
  * `Thomas Wünsche <https://github.com/bzrk>`_
  * `Tobias Kässmann <https://github.com/tkaessmann>`_
+ * `Tom Gilke` <https://github.com/tomglk>`_
  * `Torsten Bøgh Köster <https://github.com/tboeghk>`_
