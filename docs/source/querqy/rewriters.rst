@@ -370,7 +370,7 @@ examples.
 
     SOLR_URL="http://localhost:8983"
     SOLR_COLLECTION="collection"
-    curl -s "http://${SOLR_URL}/solr/${SOLR_COLLECTION}/querqy/rewriter" \
+    curl -s "${SOLR_URL}/solr/${SOLR_COLLECTION}/querqy/rewriter" \
         | jq '.response.rewriters'
 
 .. code-block:: JSON
@@ -398,7 +398,7 @@ output on the console.
     SOLR_URL="http://localhost:8983"
     SOLR_COLLECTION="collection"
     QUERQY_REWRITER="synonyms"
-    curl -s "http://${SOLR_URL}/solr/${SOLR_COLLECTION}/querqy/rewriter/${QUERQY_REWRITER}" \
+    curl -s "${SOLR_URL}/solr/${SOLR_COLLECTION}/querqy/rewriter/${QUERQY_REWRITER}" \
         | jq -r '.rewriter.definition.config.rules'
 
 **Edit rules for a single rewriter**
@@ -412,7 +412,7 @@ a temporary file to edit.
     SOLR_URL="http://localhost:8983"
     SOLR_COLLECTION="collection"
     QUERQY_REWRITER="synonyms"
-    curl -s "http://${SOLR_URL}/solr/${SOLR_COLLECTION}/querqy/rewriter/${QUERQY_REWRITER}" \
+    curl -s "${SOLR_URL}/solr/${SOLR_COLLECTION}/querqy/rewriter/${QUERQY_REWRITER}" \
         | jq -r '.rewriter.definition.config.rules' \
         > /tmp/${QUERQY_REWRITER}.txt
 
