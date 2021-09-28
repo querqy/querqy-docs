@@ -113,7 +113,7 @@ e.g.:
 
 ::
 
-   run -Dconfig.file=./smui-dev.conf 9000
+   sbt run -Dconfig.file=./smui-dev.conf 9000
 
 Furthermore, above’s configuration points to an alternative development
 version of the ``smui2solr.sh``-script. The file ``smui2solr-dev.sh`` is
