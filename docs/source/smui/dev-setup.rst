@@ -23,6 +23,28 @@ For development and building, you will need
 .. _sbt: https://www.scala-sbt.org/download.html
 .. _GNU make: https://www.gnu.org/software/make/
 
+Note: As SMUI currently build on top of Play 2.7, only Java 8 and 11 are supported (see https://discuss.lightbend.com/t/play-sample-on-windows-java-lang-illegalstateexception-unable-to-load-cache-item/8663). The latest `sbt` might come with a Java 17. One solution is to downgrade `sbt` accordingly, e.g. (Mac OS with `brew`):
+
+::
+
+    brew info sbt
+    # Might output: "sbt: stable 1.6.1 (bottled)"
+    brew info openjdk
+    # Might output: "openjdk: stable 17.0.1 (bottled) [keg-only]" (WARN: Version too recent)
+
+    # Uninstall sbt and openjdk
+    brew uninstall sbt
+    brew uninstall openjdk
+
+    # Unfortunately, openjdk at a downgraded version might not be available (e.g. for Mac M1 chipset) or broke when building, so openjdk@11 should be installed
+    brew install openjdk@11
+    # Maybe the downgraded sbt & openjdk version got not linked properly:
+    brew unlink sbt
+    brew link sbt@0.13
+    brew unlink openjdk
+    brew link openjdk@11
+    # Stick to the advise: `echo 'export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"' >> ~/.zshrc`
+
 Building SMUI
 -------------
 
@@ -136,6 +158,25 @@ It can be used as a basis for extension.
     Remember to make the script executable (`chmod +x`).
 
 .. _smui-dev-custom-auth:
+
+Useful commands: Docker powered MariaDB (with local persistence)
+----------------------------------------------------------------
+
+Assuming a folder ``smui_runtime_data`` exists.
+
+::
+
+    # start MySQL
+    docker run --name smui-mysql -p 3306:3306 -v /LOCAL/PATH/TO/smui_runtime_data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=smui -e MYSQL_USER=smui -e MYSQL_PASSWORD=smui -e MYSQL_DATABASE=smui -d mysql
+    # stop
+    docker stop smui-mysql
+    # list and remove eventually
+    docker container ls -a
+    docker container rm <CONTAINER_ID>
+
+Note: Setting the MySQL root password is only for making potential root access easy (if necessary at some point).
+
+Also note: When developing with an Apple Silicon (M1 based) device, there does not seem to exist a suitable arm image for MySQL (as of Jan 2022). Therefore, the x86 architecture needs to be specified explicitly: ``docker run --platform linux/x86_64 --name smui-mysql [...]``
 
 Developing Custom Authentication
 --------------------------------
