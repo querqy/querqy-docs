@@ -208,6 +208,8 @@ As an example implementation, you can check `BasicAuthAuthenticatedAction.scala`
 
 .. _BasicAuthAuthenticatedAction.scala: https://github.com/querqy/smui/blob/master/app/controllers/auth/BasicAuthAuthenticatedAction.scala
 
+**WARNING:** Deprecated as of v3.14. BasicAuth support will be removed soon (see `github.com comment on PR#83 <https://github.com/querqy/smui/pull/83#issuecomment-1023284550>`_).
+
 Frontend Behaviour for Authentication
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -164,7 +164,7 @@ The following settings are optional and define the general SMUI behaviour:
      - PRELIVE ``replace_rules.txt`` destination file for the default deployment script. See :ref:`Details on rules.txt deployment<smui-rules-deployment-details>` for more info.
      -  ``/usr/bin/solr/preliveCore/conf/replace-rules.txt``
    * - ``toggle.display-username.default``
-     - Default username for being displayed on the frontend, if no username is available (e.g. for event history).
+     - **WARNING:** Deprecated as of v3.14, will be replaced soon (see `github.com comment on PR#83 <https://github.com/querqy/smui/pull/83#issuecomment-1023284550>`_). Default username for being displayed on the frontend, if no username is available (e.g. for event history).
      - ``Anonymous Search Manager``
    * - ``toggle.activate-eventhistory``
      - Persist an event history for all updates to the search management configuration, and provide an activity log for the search manager. WARNING: If this setting is changed over time (especially from ``true`` to ``false``) events in the history might get lost!
@@ -245,6 +245,8 @@ Basic Auth can be turned on in the extension by configuring an
    smui.authAction = controllers.auth.BasicAuthAuthenticatedAction
    smui.BasicAuthAuthenticatedAction.user = smui_user
    smui.BasicAuthAuthenticatedAction.pass = smui_pass
+
+**WARNING:** Deprecated as of v3.14. BasicAuth support will be removed soon (see `github.com comment on PR#83 <https://github.com/querqy/smui/pull/83#issuecomment-1023284550>`_).
 
 JWT Authentication
 ~~~~~~~~~~~~~~~~~~
