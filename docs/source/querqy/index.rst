@@ -290,7 +290,95 @@ list is not a child element of the matching_query.
 
 The combination of a query string with a list of fields and field weights
 resembles Elasticsearch's built-in :code:`multi_match` query. We will later see
-that there are some differences in matching and scoring.
+that there are some differences in matching and scoring. 
+
+
+.. rubric:: Querqy inside the known Elasticsearch Query DSL
+
+The following example shows, how easy it is to replace a Elasticsearch query type like :code:`multi_match` with a Querqy :code:`matching_query`, so you can profit from Querqy's rewriters.
+Let's say you have an index that contains forum posts and want to find a certain post in the topic "hobby", that was made 10-12 days ago and was about "fishing".
+
+A simple `Boolean query <https://www.elastic.co/guide/en/elasticsearch/reference/master/query-dsl-bool-query.html>`__ with a :code:`multi_match` and a :code:`match` query inside the :code:`must` occurrence and a :code:`range` query in the :code:`filter` occurrence should do the trick.
+
+:code:`POST /index/_search`
+
+.. code-block:: JSON
+   :linenos:
+
+    {
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "match": {
+                "topic": "hobby"
+              }
+            },
+            {
+              "multi_match": {
+                "query": "fishing",
+                "fields": ["title", "content"]
+              }
+            }
+          ],
+          "filter": [
+            {
+              "range": {
+                "dateField": {
+                  "gte": "now-12d",
+                  "lte": "now-10d"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+
+
+To use the :code:`matching_query` from the :code:`querqy` query builder, your request would look like this:
+
+:code:`POST /myindex/_search`
+
+.. code-block:: JSON
+   :linenos:
+   :emphasize-lines: 11
+
+    {
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "match": {
+                "topic": "hobby"
+              }
+            },
+            {
+                 "querqy": {
+                "matching_query": {
+                  "query": "fishing",
+                  "fields": ["title", "content"],
+                  "rewriters": ["my_replace_rewriter", "my_common_rules"]
+                }
+              }
+            }
+          ],
+          "filter": [
+            {
+              "range": {
+                "dateField": {
+                  "gte": "now-12d",
+                  "lte": "now-10d"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+
+
+As you can see, to use a :code:`matching_query` instead of a :code:`multi_match` you just need to use :code:`querqy` (line #11) as a "wrapper" for the :code:`matching_query`. 
 
 
 .. raw:: html
