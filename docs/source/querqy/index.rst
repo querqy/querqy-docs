@@ -354,7 +354,7 @@ To use the :code:`matching_query` from the :code:`querqy` query builder, your re
               }
             },
             {
-                 "querqy": {
+              "querqy": {
                 "matching_query": {
                   "query": "fishing",
                   "fields": ["title", "content"],
