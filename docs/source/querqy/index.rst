@@ -356,10 +356,10 @@ To use the :code:`matching_query` from the :code:`querqy` query builder, your re
             {
               "querqy": {
                 "matching_query": {
-                  "query": "fishing",
-                  "fields": ["title", "content"],
-                  "rewriters": ["my_replace_rewriter", "my_common_rules"]
-                }
+                  "query": "fishing"
+                },
+                "query_fields": ["title", "content"],
+                "rewriters": ["my_replace_rewriter", "my_common_rules"]
               }
             }
           ],
@@ -378,8 +378,8 @@ To use the :code:`matching_query` from the :code:`querqy` query builder, your re
     }
 
 
-As you can see, to use a :code:`matching_query` instead of a :code:`multi_match` you just need to use :code:`querqy` (line #11) as a "wrapper" for the :code:`matching_query`. 
 
+As you can see, to use a :code:`matching_query` instead of a :code:`multi_match` you need to use :code:`querqy` (line #11) as a "wrapper" for the :code:`matching_query`. 
 
 .. raw:: html
 
