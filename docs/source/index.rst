@@ -21,7 +21,7 @@ What's included?
   Supports rule management per language, multiple rule deployment targets,
   per-tenant rules. Currently available for Solr.
 *Chorus*
-  A Docker image that has Solr, Querqy and SMUI pre-installed to ramp up your
+  Docker compose based reference implementations for Solr and Elasticsearch to ramp up your
   search project quickly.
 
 Where to go from here
