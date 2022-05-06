@@ -229,25 +229,6 @@ rewriter that was passed in in the 'querqy.rewriters' parameter does not exist.
 Please see :ref:`this section <querqy-unknown-rewriters>` in the 'Advanced Solr
 Plugin Configuration' documentation for an option to ignore missing rewriters.
 
-In SolrCloud, rewriter configurations are stored in ZooKeeper under the path
-:code:`querqy/rewriters` as part of the collection's config set. Configurations
-will be gzipped for storage. If the gzipped configuration still exceeds the
-maximum file size, it will be split into multiple chunks. You can set this
-limit in the QuerqyRewriterRequestHandler configuration:
-
-.. code-block:: XML
-
-  <requestHandler name="/querqy/rewriter" class="querqy.solr.QuerqyRewriterRequestHandler">
-    <int name="zkMaxFileSize">500000</int>
-  </requestHandler>
-
-:code:`zkMaxFileSize` is the maximum chunk size in bytes. The default value is
-1000000, which fits the default ZooKeeper size limit.
-
-In standalone Solr, rewriter configurations are stored under
-:code:`conf/querqy/rewriters`.
-
-
 Updating and deleting rewriters (Querqy 5)
 ..........................................
 

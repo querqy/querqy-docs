@@ -52,7 +52,7 @@ below and we will generate the install command for you:
   <select class="es-url-select"
     onChange="setESURL(this.options[this.selectedIndex].value);">
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.5.es7172.0/querqy-elasticsearch-1.5.es7172.0.zip">Elasticsearch 7.17.2</option>
-    
+
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.5.es7162.0/querqy-elasticsearch-1.5.es7162.0.zip">7.16.2</option>
 
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.5.es7140.0/querqy-elasticsearch-1.5.es7140.0.zip">7.14.0</option>
@@ -142,10 +142,10 @@ The Querqy plugin is installed as a .jar file.
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
   | Solr version   | Querqy version [#]_                                                                                                                                      |
   +================+==========================================================================================================================================================+
-  | 8.11.x         | :download:`5.2.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.2.lucene810.0/querqy-solr-5.2.lucene810.0-jar-with-dependencies.jar>` |
+  | 8.11.x         | :download:`5.3.lucene810.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.3.lucene810.1/querqy-solr-5.3.lucene810.1-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
   | 8.10.x         | :download:`5.2.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.2.lucene810.0/querqy-solr-5.2.lucene810.0-jar-with-dependencies.jar>` |
-  +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+  
+  +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
   | 8.9.x          | :download:`5.2.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.2.lucene810.0/querqy-solr-5.2.lucene810.0-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
   | 8.8.x          | :download:`5.2.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.2.lucene810.0/querqy-solr-5.2.lucene810.0-jar-with-dependencies.jar>` |
@@ -292,7 +292,7 @@ list is not a child element of the matching_query.
 
 The combination of a query string with a list of fields and field weights
 resembles Elasticsearch's built-in :code:`multi_match` query. We will later see
-that there are some differences in matching and scoring. 
+that there are some differences in matching and scoring.
 
 
 .. rubric:: Querqy inside the known Elasticsearch Query DSL
@@ -381,7 +381,7 @@ To use the :code:`matching_query` from the :code:`querqy` query builder, your re
 
 
 
-As you can see, to use a :code:`matching_query` instead of a :code:`multi_match` you need to use :code:`querqy` (line #11) as a "wrapper" for the :code:`matching_query`. 
+As you can see, to use a :code:`matching_query` instead of a :code:`multi_match` you need to use :code:`querqy` (line #11) as a "wrapper" for the :code:`matching_query`.
 
 .. raw:: html
 

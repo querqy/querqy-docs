@@ -1,3 +1,4 @@
+
 ==================================
 Advanced Solr plugin configuration
 ==================================
@@ -50,6 +51,7 @@ This section will explain additional configuration options:
 * The info logging for query rewriters
 * The parser for the user query string
 * Changing the rewriter request handler path (Querqy 5)
+* Configuring how rewriter definitions are stored in ZooKeeper
 
 .. _querqy-unknown-rewriters:
 
@@ -540,10 +542,55 @@ change this path. Should you ever have to change it, you will need to change the
           <!-- ... -->
           <str name="rewriterRequestHandler">/my/rewriter-path</str>
       </listener>
-   </query>
+    </query>
+
+.. _querqy-store-rewriters:
+
+Configuring how rewriter definitions are stored in ZooKeeper (Querqy 5)
+-----------------------------------------------------------------------
+
+In SolrCloud, rewriter configurations are stored in ZooKeeper under the path
+:code:`querqy/rewriters` as part of the collection's config. You can set a
+number of Querqy configuration properties to control how rewriters are stored:
+
+.. code-block:: xml
+   :linenos:
+
+   <requestHandler name="/querqy/rewriter" class="querqy.solr.QuerqyRewriterRequestHandler">
+     <str name="zkConfigName">myconfig</str>
+     <str name="zkDataDirectory">__data</str>
+     <int name="zkMaxFileSize">500000</int>
+   </requestHandler>
 
 
+If you want to share rewriter configurations across collections, you can make
+rewriter configurations part of a shared Solr configuration that you use to
+create multiple collections from it. Set the
+``zkConfigName`` property to point to that shared Solr configuration and
+rewriter configurations will become part of it. :code:`querqy/rewriters` will
+then become a subpath in this shared configuration.
 
+Querqy only stores meta information about rewriters under
+:code:`querqy/rewriters` and keeps the actual rewriter configuations in a
+subpath underneath it. This subpath is named ``.data`` by default.
+Unfortunately, this path is not restored when you use Solr's collection backup
+to a file system. You can change that name using Querqy's ``zkDataDirectory``
+property but you need to make sure, it doesn't start with a ``.`` if you want
+to have it restored from your backup. Rewriter configurations will not be moved
+automatically when you change the configuration property, so you will have to
+save all rewriters again to move them to the new location. Querqy will be able
+to handle reading rewriters from locations that were previously saved at a
+location other than the location that the current ``zkDataDirectory`` points to.
+(Querqy 5.3 and above)
+
+Rewriter configurations will be gzipped for storage in ZK. If the gzipped
+configuration still exceeds the maximum ZK file size, it will be split into
+multiple chunks. Querqy takes care of this under the hood but it cannot know
+ZK's file size limit. You can let Querqy know about this limit using the
+:code:`zkMaxFileSize` property, which represents the maximum compressed chunk
+size in bytes. The default value is 1000000, which fits the default ZooKeeper
+size limit. If you change this limit, the new limit will only be applied at the
+next time when rewriters are saved.
 
 .. [1] The queryParser class in the example below is
   :code:`querqy.solr.QuerqyDismaxQParserPlugin` for Query 5 and

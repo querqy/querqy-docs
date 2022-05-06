@@ -56,7 +56,7 @@ Setting up a Word Break Rewriter
                 "verifyCollation": true
             },
             "reverseCompoundTriggerWords": ["for"],
-            "morpholgy": "GERMAN"
+            "morphology": "GERMAN"
        }
    }
 
@@ -75,6 +75,8 @@ Setting up a Word Break Rewriter
 | :code:`POST /solr/mycollection/querqy/rewriter/word_break?action=save`
 | :code:`Content-Type: application/json`
 
+Querqy 5.3 and greater:
+
 .. code-block:: JSON
    :linenos:
 
@@ -85,13 +87,42 @@ Setting up a Word Break Rewriter
             "lowerCaseInput": true,
             "decompound": {
                 "maxExpansions": 5,
-                "verifyCollation": true
+                "verifyCollation": true,
+                "morphology": "GERMAN"
             },
-            "morphology": "GERMAN",
+            "compound": {
+                "morphology": "GERMAN"
+            },
+
             "reverseCompoundTriggerWords": ["for"],
             "protectedWords": ["slipper"]
        }
    }
+
+For backward compatibility, you can configure ``morphology`` still as in
+Querqy for Solr < 5.3 (= 'above' the ``decompound``/``compound`` level) but it
+would then only be applied for decompounding, mimicking the behaviour of versions
+< 5.3.
+
+Querqy 5.0 to 5.2:
+
+.. code-block:: JSON
+   :linenos:
+
+   {
+        "class": "querqy.solr.rewriter.wordbreak.WordBreakCompoundRewriterFactory",
+        "config": {
+             "dictionaryField" :  "dictionary",
+             "lowerCaseInput": true,
+             "decompound": {
+                 "maxExpansions": 5,
+                 "verifyCollation": true
+             },
+             "morphology": "GERMAN",
+             "reverseCompoundTriggerWords": ["for"],
+             "protectedWords": ["slipper"]
+        }
+    }
 
 **Querqy 4**
 
@@ -267,6 +298,12 @@ lowerCaseInput
 
   Default: ``false``
 
+compound.morphology (Querqy >= 5.3)
+  Apply language-specific morphology when creating compound words. Available
+  morphologies: ``DEFAULT``, ``GERMAN``.
+
+  Default: ``DEFAULT``
+
 decompound.maxExpansions
   If a compound can be split at more than one position, how many variants at
   maximum should be added as a synonym?
@@ -279,8 +316,14 @@ decompound.verifyCollation
 
   Default: ``false``
 
-morphology
-  Apply language-specific morphology in compound words. Currently only used
+decompound.morphology (Querqy >= 5.3)
+  Apply language-specific morphology when splitting compound words. Available
+  morphologies: ``DEFAULT``, ``GERMAN``.
+
+  Default: ``DEFAULT``
+
+morphology (Querqy < 5.3)
+  Apply language-specific morphology in compound words. Only used
   for compound splitting. Available morphologies: ``DEFAULT``, ``GERMAN``.
 
   Default: ``DEFAULT``
