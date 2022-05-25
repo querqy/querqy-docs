@@ -13,6 +13,12 @@ Release notes
 
   <div>
 
+Major changes in Querqy for Solr 5.4.0
+======================================
+
+- The Common Rules Rewriter can now produce multiplicative UP/DOWN boosts
+  `(#328) <https://github.com/querqy/querqy/issues/328>`__. 
+
 Changes in Querqy for Solr 5.3.2
 ======================================
 

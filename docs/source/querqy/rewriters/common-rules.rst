@@ -1091,6 +1091,7 @@ querqyParser
         "rules" : "notebook =>\nSYNONYM: laptop",
         "ignoreCase" : true,
         "buildTermCache": true,
+        "boostMethod": "MULTIPLICATIVE",
         "allowBooleanInput": true,
         "querqyParser": "querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory"
     }
@@ -1107,6 +1108,7 @@ querqyParser
      <str name="rules">rules.txt</str>
      <bool name="ignoreCase">true</bool>
      <bool name="buildTermCache">true</bool>
+     <str name="boostMethod">MULTIPLICATIVE</str>
      <str name="querqyParser">querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory</str>
    </lst>
 
@@ -1136,9 +1138,15 @@ buildTermCache
 
   Default: ``true``
 
+boostMethod
+  *Querqy 5.4*: How to combine UP/DOWN boosts with the score of the main user
+  query. Available methods are ADDITIVE and MULTIPLICATIVE.
+
+  Default: ``ADDITIVE``
+
 allowBooleanInput
-  Whether to interpret the rule input definitions as boolean expressions.
-  (Querqy 5 only)
+  *Querqy 5.0*: Whether to interpret the rule input definitions as boolean
+  expressions.
 
   Default: ``false``
 
