@@ -24,13 +24,14 @@ with the following database management systems:
 -  PostgreSQL
 -  SQLite
 -  HSQLDB
+-  Microsoft SQL Server
 
 Where your database backend application runs, e.g. in a production
 environment, depends on your specific setup. Refer to the :ref:`basic configuration <smui-basic-settings>`
 section on how to configure your database connection.
 
-Once the database connection has been configured, SMUI will initialize the
-database on first startup.
+Once the database has been created, and the connection has been configured, SMUI will initialize the
+database on startup.
 
 Managing rules
 --------------

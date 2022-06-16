@@ -75,6 +75,40 @@ using environment variables:
      - Encryption key for server/client communication (Play 2.6 standard). This positively needs to be set to a high-entropy value in production environments.
      - **WARNING:** insecure default.
 
+
+MySQL Details
+~~~~~~~~~~~~~
+
+The below settings assume you have a database named `smui` created on your localhost.
+
+::
+
+   SMUI_DB_URL=jdbc:mysql://localhost:3306/smui?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+   SMUI_DB_USER=root
+   SMUI_DB_PASSWORD=password
+
+If you are using MySQL in a Docker Compose setup, then create the file `mysql/docker-entrypoint-initdb.d/db.sql`:
+
+::
+
+   CREATE DATABASE smui;
+   CREATE USER 'smui'@'%' IDENTIFIED BY 'smui';
+   GRANT ALL PRIVILEGES ON smui.* TO 'smui'@'%';
+
+Have the script run when MySQL starts via the volume mapping: `./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d`.
+
+Microsoft SQL Server Details
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The below settings assume you have a database named `smui` created on your localhost.
+
+::
+
+   SMUI_DB_JDBC_DRIVER=com.microsoft.sqlserver.jdbc.SQLServerDriver
+   SMUI_DB_URL=jdbc:sqlserver://localhost:1433;databaseName=smui
+   SMUI_DB_USER=sa
+   SMUI_DB_PASSWORD=Testing1122
+
 Advanced configuration
 ----------------------
 
