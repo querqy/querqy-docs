@@ -1,4 +1,5 @@
 .. _querqy5-solr-migration:
+
 ==============================
 Migrating to Querqy 5 for Solr
 ==============================
