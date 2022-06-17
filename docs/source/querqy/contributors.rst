@@ -15,5 +15,5 @@ Contributors
  * `Robert Giacinto <https://github.com/lichtsprung>`_
  * `Thomas Wünsche <https://github.com/bzrk>`_
  * `Tobias Kässmann <https://github.com/tkaessmann>`_
- * `Tom Gilke` <https://github.com/tomglk>`_
+ * `Tom Gilke <https://github.com/tomglk>`_
  * `Torsten Bøgh Köster <https://github.com/tboeghk>`_
