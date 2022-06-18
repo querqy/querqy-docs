@@ -13,11 +13,20 @@ Release notes
 
   <div>
 
+Changes in Querqy for Solr 5.4.1
+================================
+
+- Bumping jackson-databind and json-smart versions
+  `(#348) <https://github.com/querqy/querqy/issues/348>`__.
+- Do not rely on system character encoding settings but assure that input stream
+  bytes are interpreted as UTF-8 `(#346) <https://github.com/querqy/querqy/issues/346>`__.
+
+
 Major changes in Querqy for Solr 5.4.0
 ======================================
 
 - The Common Rules Rewriter can now produce multiplicative UP/DOWN boosts
-  `(#328) <https://github.com/querqy/querqy/issues/328>`__. 
+  `(#328) <https://github.com/querqy/querqy/issues/328>`__.
 
 Changes in Querqy for Solr 5.3.2
 ======================================
