@@ -144,27 +144,27 @@ The Querqy plugin is installed as a .jar file.
   +================+==========================================================================================================================================================+
   | 9.0.0          | :download:`5.4.lucene900.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.4.lucene900.1/querqy-solr-5.4.lucene900.1-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 8.11.x         | :download:`5.4.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.4.lucene810.0/querqy-solr-5.4.lucene810.0-jar-with-dependencies.jar>` |
+  | 8.11.x         | :download:`5.4.lucene810.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.4.lucene810.1/querqy-solr-5.4.lucene810.1-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 8.10.x         | :download:`5.2.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.2.lucene810.0/querqy-solr-5.2.lucene810.0-jar-with-dependencies.jar>` |
+  | 8.10.x         | :download:`5.4.lucene810.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.4.lucene810.1/querqy-solr-5.4.lucene810.1-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 8.9.x          | :download:`5.2.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.2.lucene810.0/querqy-solr-5.2.lucene810.0-jar-with-dependencies.jar>` |
+  | 8.9.x          | :download:`5.4.lucene810.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.4.lucene810.1/querqy-solr-5.4.lucene810.1-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 8.8.x          | :download:`5.2.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.2.lucene810.0/querqy-solr-5.2.lucene810.0-jar-with-dependencies.jar>` |
+  | 8.8.x          | :download:`5.4.lucene810.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.4.lucene810.1/querqy-solr-5.4.lucene810.1-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 8.7.x          | :download:`5.2.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.2.lucene810.0/querqy-solr-5.2.lucene810.0-jar-with-dependencies.jar>` |
+  | 8.7.x          | :download:`5.4.lucene810.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.4.lucene810.1/querqy-solr-5.4.lucene810.1-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 8.6.x          | :download:`5.2.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.2.lucene810.0/querqy-solr-5.2.lucene810.0-jar-with-dependencies.jar>` |
+  | 8.6.x          | :download:`5.4.lucene810.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.4.lucene810.1/querqy-solr-5.4.lucene810.1-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 8.5.x          | :download:`5.2.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.2.lucene810.0/querqy-solr-5.2.lucene810.0-jar-with-dependencies.jar>` |
+  | 8.5.x          | :download:`5.4.lucene810.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.4.lucene810.1/querqy-solr-5.4.lucene810.1-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 8.4.x          | :download:`5.2.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.2.lucene810.0/querqy-solr-5.2.lucene810.0-jar-with-dependencies.jar>` |
+  | 8.4.x          | :download:`5.4.lucene810.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.4.lucene810.1/querqy-solr-5.4.lucene810.1-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 8.3.x          | :download:`5.2.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.2.lucene810.0/querqy-solr-5.2.lucene810.0-jar-with-dependencies.jar>` |
+  | 8.3.x          | :download:`5.4.lucene810.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.4.lucene810.1/querqy-solr-5.4.lucene810.1-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 8.2.x          | :download:`5.2.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.2.lucene810.0/querqy-solr-5.2.lucene810.0-jar-with-dependencies.jar>` |
+  | 8.2.x          | :download:`5.4.lucene810.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.4.lucene810.1/querqy-solr-5.4.lucene810.1-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 8.1.x          | :download:`5.2.lucene810.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.2.lucene810.0/querqy-solr-5.2.lucene810.0-jar-with-dependencies.jar>` |
+  | 8.1.x          | :download:`5.4.lucene810.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.4.lucene810.1/querqy-solr-5.4.lucene810.1-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
   | 8.0.x          | :download:`5.2.lucene800.0<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.2.lucene800.0/querqy-solr-5.2.lucene800.0-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
