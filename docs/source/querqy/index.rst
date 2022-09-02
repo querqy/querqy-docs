@@ -51,6 +51,12 @@ below and we will generate the install command for you:
 
   <select class="es-url-select"
     onChange="setESURL(this.options[this.selectedIndex].value);">
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es841.0/querqy-elasticsearch-1.6.es841.0.zip">Elasticsearch 8.4.1</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es833.0/querqy-elasticsearch-1.6.es833.0.zip">Elasticsearch 8.3.3</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es823.0/querqy-elasticsearch-1.6.es823.0.zip">Elasticsearch 8.2.3</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es813.0/querqy-elasticsearch-1.6.es813.0.zip">Elasticsearch 8.1.3</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es801.0/querqy-elasticsearch-1.6.es801.0.zip">Elasticsearch 8.0.1</option>
+    
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.5.es7172.0/querqy-elasticsearch-1.5.es7172.0.zip">Elasticsearch 7.17.2</option>
 
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.5.es7162.0/querqy-elasticsearch-1.5.es7162.0.zip">7.16.2</option>
@@ -103,7 +109,7 @@ below and we will generate the install command for you:
 
 
   ./bin/elasticsearch-plugin install \
-     "https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.5.es7172.0/querqy-elasticsearch-1.5.es7172.0.zip"
+     "https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es841.0/querqy-elasticsearch-1.6.es841.0.zip"
 
 
 
