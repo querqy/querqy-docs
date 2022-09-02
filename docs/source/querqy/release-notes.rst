@@ -66,6 +66,33 @@ Major changes in Querqy for Solr 5.3.0
 .. raw:: html
 
   <div>
+  
+Querqy for Elasticsearch 1.6es841.0
+====================================
+
+  - Release for Elasticsearch 8.4.1
+  
+Querqy for Elasticsearch 1.6es833.0
+====================================
+
+  - Release for Elasticsearch 8.3.3
+  
+Querqy for Elasticsearch 1.6es823.0
+====================================
+
+  - Release for Elasticsearch 8.2.3
+  
+Querqy for Elasticsearch 1.6es813.0
+====================================
+
+  - Release for Elasticsearch 8.1.3
+  
+Querqy for Elasticsearch 1.6es801.0
+====================================
+
+  - Release for Elasticsearch 8.0.1
+  - Adding compound morphology to WordBreakCompoundRewriter `(#22) <https://github.com/querqy/querqy-elasticsearch/issues/22>`__ 
+  
 
 Querqy for Elasticsearch 1.5es7172.0
 ====================================
