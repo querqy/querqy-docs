@@ -37,8 +37,8 @@ already works as various defaults are applied.
       ]
    }
 
-For Solr, the JSON file is put into the ZooKeeper; for Elasticsearch, the JSON is put into a string
-value for the property ``config``.
+For Solr, the JSON file is put into the ZooKeeper; for Elasticsearch/OpenSearch,
+the JSON is put into a string value for the property ``config``.
 
 
 .. include:: ../se-section.txt
@@ -60,6 +60,8 @@ value for the property ``config``.
             "config":  "{ \"numberUnitDefinitions\": [ ... ] }"
        }
    }
+
+.. include:: hint-opensearch.txt
 
 .. raw:: html
 

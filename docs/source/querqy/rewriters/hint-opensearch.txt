@@ -1,0 +1,2 @@
+.. note:: OpenSearch users: Simply replace package name :code:`elasticsearch`
+   with :code:`opensearch` in rewriter configurations.

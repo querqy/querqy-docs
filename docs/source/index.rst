@@ -5,7 +5,7 @@ Welcome!
 querqy.org is an umbrella for open source tools and libraries that
 helps you create a powerful e-commerce search platform quickly, with a focus on
 optimising search relevance from day one, beyond the out-of-the-box capabilities
-of the Solr and Elasticsearch search engines.
+of the Solr, Elasticsearch and OpenSearch search engines.
 
 What's included?
 ================
@@ -14,7 +14,7 @@ What's included?
   A query rewriting library. It helps you to tune your search results for
   specific search terms. It also comes with some query-independent search
   relevance optimisations. You can plugin in your own query rewriter. Available
-  for Solr and Elasticsearch.
+  for Solr, Elasticsearch and OpenSearch.
 *SMUI*
   Search Management UI. A web UI to manage rules for query rewriting with
   Querqy (query-dependent synonyms, filters, boost/demote documents, ...)
@@ -32,8 +32,8 @@ Where to go from here
 Docker image. :ref:`Get started here <chorus-index>`!
 
 
-**Querqy:** If you want to install Querqy under Solr or Elasticsearch,
-:ref:`get started here <querqy-index>`!
+**Querqy:** If you want to install Querqy under Solr, Elasticsearch or
+OpenSearch, :ref:`get started here <querqy-index>`!
 
 **Further quick links:**
 

@@ -9,13 +9,13 @@ ranking of search results depending on the input query. In e-commerce search it
 is a powerful tool for merchandisers to fine-tune search results, especially for
 high-traffic queries.
 
-The rule definition format is the same for Solr and Elasticsearch with two
-exceptions:
+The rule definition format is the same for Solr and Elasticsearch/OpenSearch
+with two exceptions:
 
 * Filters and boostings can optionally be expressed in the syntax of the search
   engine instead of in the generic Querqy syntax.
-* Very few features are not available in Elasticsearch (yet) which will be
-  mentioned at the feature.
+* Very few features are not available in Elasticsearch/OpenSearch (yet) which
+  will be mentioned at the feature.
 
 Configuring rules
 =================
@@ -30,7 +30,7 @@ Configuring rules
 
 The rules for the 'Common Rules Rewriter' are passed as the value of the
 ``rules`` element when you create a configuration with the
-SimpleCommonRulesRewriterFactory in Elasticsearch.
+SimpleCommonRulesRewriterFactory in Elasticsearch/OpenSearch.
 
 ``PUT  /_querqy/rewriter/common_rules``
 
@@ -45,6 +45,7 @@ SimpleCommonRulesRewriterFactory in Elasticsearch.
        }
    }
 
+.. include:: hint-opensearch.txt
 
 .. raw:: html
 
@@ -297,7 +298,7 @@ SYNONYM rules
 
 Querqy gives you a powerful toolset for using synonyms at query time.
 
-As opposed to the solutions that exist in Elasticsearch and Solr, it does not
+As opposed to the solutions that exist in Elasticsearch/OpenSearch and Solr, it does not
 use a Lucene TokenFilter for synonyms but relies purely on query rewriting. This
 makes matching multi-term input and adding multi-term synonyms work flawlessly.
 Querqy can cope with applying multiple synonym rules at the same time, even if
@@ -305,7 +306,7 @@ they have overlapping multi-token inputs. In addition it avoids issues with
 scoring that are related to different document frequencies of the original input
 and synonym terms. Last but not least, Querqy also allows to configure synonym
 rules in a field-independent manner, making the maintenance of synonyms a lot
-more intuitive than in Elasticsearch or Solr.
+more intuitive than in Elasticsearch/OpenSearch or Solr.
 
 You have already seen rules for synonyms:
 
@@ -381,8 +382,8 @@ searches (like ``cutlery``  or ``gardening tools``).
 .. rubric:: Expert: Structure of expanded queries
 
 Querqy preserves the 'minimum should match' semantics for boolean queries
-as defined in parameter ``minimum_should_match`` (Elasticsearch) / ``mm``
-(Solr). In order to provide this semantics, given mm=1, the rule
+as defined in parameter ``minimum_should_match`` (Elasticsearch/OpenSearch) /
+``mm`` (Solr). In order to provide this semantics, given mm=1, the rule
 
 
 .. code-block:: Text
@@ -458,7 +459,7 @@ queries:
      UP(10): * price:[350 TO 450]
      DOWN(20): * category:accessories
 
-The same example in Elasticsearch:
+The same example in Elasticsearch/OpenSearch:
 
 .. code-block:: Text
    :linenos:
@@ -504,7 +505,7 @@ write in Solr:
    notebook =>
 	   FILTER: * -category:accessories
 
-The same filter in Elasticsearch:
+The same filter in Elasticsearch/OpenSearch:
 
 .. code-block:: Text
    :linenos:

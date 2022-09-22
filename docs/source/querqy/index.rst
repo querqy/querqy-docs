@@ -33,18 +33,28 @@ Installation
 
   <div>
 
-.. rubric:: Installation under Elasticsearch
+.. rubric:: Installation under Elasticsearch/OpenSearch
 
-* Stop Elasticsearch if it is running.
-* Open a shell and :code:`cd` into your Elasticsearch directory.
-* Run Elasticsearch's plugin install script:
+* Stop Elasticsearch/OpenSearch if it is running.
+* Open a shell and :code:`cd` into your Elasticsearch/OpenSearch directory.
+* Run Elasticsearch/OpenSearch's plugin install script:
 
 .. code-block:: shell
 
   ./bin/elasticsearch-plugin install <URL>
 
-The :code:`<URL>` depends on your Elasticsearch version. Select your version
-below and we will generate the install command for you:
+Or
+
+.. code-block:: shell
+
+  ./bin/opensearch-plugin install <URL>
+
+The :code:`<URL>` depends on your search engine version:
+
+Elasticsearch
+..............
+
+Select your version below and we will generate the install command for you:
 
 
 .. raw:: html
@@ -56,7 +66,7 @@ below and we will generate the install command for you:
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es823.0/querqy-elasticsearch-1.6.es823.0.zip">8.2.3</option>
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es813.0/querqy-elasticsearch-1.6.es813.0.zip">8.1.3</option>
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es801.0/querqy-elasticsearch-1.6.es801.0.zip">8.0.1</option>
-    
+
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.5.es7172.0/querqy-elasticsearch-1.5.es7172.0.zip">7.17.2</option>
 
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.5.es7162.0/querqy-elasticsearch-1.5.es7162.0.zip">7.16.2</option>
@@ -112,11 +122,20 @@ below and we will generate the install command for you:
      "https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es841.0/querqy-elasticsearch-1.6.es841.0.zip"
 
 
+OpenSearch
+..........
 
+Querqy is available for OpenSearch 2.3.0.
+
+.. code-block:: shell
+
+
+  ./bin/opensearch-plugin install \
+     "https://repo1.maven.org/maven2/org/querqy/opensearch-querqy/1.0.os2.3.0/opensearch-querqy-1.0.os2.3.0.zip"
 
 * Answer :code:`y`\es to the security related questions (Querqy needs special
   permissions to load query rewriters dynamically).
-* When you start Elasticsearch, you should see an INFO log message
+* When you start Elasticsearch/OpenSearch, you should see an INFO log message
   :code:`loaded plugin [querqy]`.
 
 .. raw:: html

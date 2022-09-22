@@ -60,6 +60,8 @@ Setting up a Word Break Rewriter
        }
    }
 
+.. include:: hint-opensearch.txt
+
 .. raw:: html
 
  </div>

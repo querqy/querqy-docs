@@ -120,3 +120,14 @@ function setESURL(url) {
     }
   }
 }
+
+function setOSURL(url) {
+  var html = $('.opensearch-version').html();
+  var start = html.indexOf('https://');
+  if (start > 0) {
+    var end = html.indexOf('"', start);
+    if (end > 0) {
+      $('.opensearch-version').html(html.substring(0, start) + url + html.substring(end));
+    }
+  }
+}

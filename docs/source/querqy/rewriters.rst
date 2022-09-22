@@ -29,10 +29,10 @@ search engine below.
 
 .. rst-class:: elasticsearch
 
-Rewriters in Elasticsearch
---------------------------
+Rewriters in Elasticsearch/OpenSearch
+-------------------------------------
 
-Querqy adds a REST endpoint to Elasticsearch for managing rewriters at
+Querqy adds a REST endpoint to Elasticsearch/OpenSearch for managing rewriters at
 
 :code:`/_querqy/rewriter`
 
@@ -50,6 +50,8 @@ Creating/configuring a 'Common Rules rewriter':
            "rules" : "notebook =>\nSYNONYM: laptop"
        }
    }
+
+.. include:: rewriters/hint-opensearch.txt
 
 Rewriter definitions are uploaded by sending a PUT request to the rewriter
 endpoint. The last part of the request URL path (:code:`common_rules`) will

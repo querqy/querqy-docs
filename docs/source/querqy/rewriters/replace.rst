@@ -55,6 +55,8 @@ As a first step, the Replace Rewriter is configured
        }
    }
 
+.. include:: hint-opensearch.txt
+
 .. raw:: html
 
  </div>
