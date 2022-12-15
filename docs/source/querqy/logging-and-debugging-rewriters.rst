@@ -389,6 +389,8 @@ In this case, the list contains only one element, ``response``, which is a
 predefined sink that adds the Info Logging output to the search response
 returned by Solr.
 
+.. _custom_solr_sinks:
+
 Expert: Predefined and custom sinks in Solr
 ...........................................
 
@@ -438,6 +440,8 @@ As the sink mappings are configured per rewriter, you can decide per rewriter
 to which sink you want to send their Info Logging output and even have one sink
 per rewriter.
 
+
+.. _logging-per-request:
 
 Enabling info logging per request
 _________________________________

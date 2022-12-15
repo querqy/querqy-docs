@@ -710,8 +710,8 @@ Property names can also be put in quotes. Both, single quotes and double quotes,
 are allowed.
 
 Property names starting with ``_`` (like ``_id`` and ``_log``) have
-a special meaning in Querqy (See for example: 'Info logging' in the
-:ref:`Advanced Solr plugin configuration <querqy_solr_info_logging>`)
+a special meaning in Querqy (See for example: 'Info logging' in
+:ref:`logging-and-debugging-rewriters`)
 
 Both formats can be mixed, however, the multi-line JSON object format must be
 used only once per rule:

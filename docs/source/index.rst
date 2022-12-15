@@ -55,8 +55,8 @@ OpenSearch, :ref:`get started here <querqy-index>`!
    querqy/logging-and-debugging-rewriters
    querqy/elasticsearch-plugin-configuration
    querqy/solr-plugin-configuration
-   querqy/querqy5-solr-migration
    querqy/release-notes
+   querqy/older-querqy-versions
    querqy/contributors
 
 .. toctree::
