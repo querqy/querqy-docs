@@ -310,7 +310,7 @@ within the rewriter definition:
        }
    }
 
-.. include:: hint-opensearch.txt
+.. include:: rewriters/hint-opensearch.txt
 
 
 

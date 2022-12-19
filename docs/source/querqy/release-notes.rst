@@ -13,10 +13,19 @@ Release notes
 
   <div>
 
+.. warning:: Querqy configuration has changed in an incompatible way with
+  the introduction of Querqy v5 for Solr. Make sure to follow the documentation
+  for your Querqy version below. See :doc:`here<older-versions/querqy5-solr-migration>` for
+  detailed information about changes and a migration guide to :doc:`Querqy 5 for
+  Solr <older-versions/querqy5-solr-migration>`
+
+.. rst-class:: solr
+
+
 Major changes in Querqy for Solr 5.5.1
 ======================================
 
-This version re-implements info logging and introduces some breaking changes
+This version re-implements info logging and introduces some **breaking changes**
 that will affect you if
 
 - you are using Info Logging, or
@@ -144,6 +153,15 @@ Major changes in Querqy for Solr 5.3.0
 
 Relase notes for Querqy for **OpenSearch** can be found `here  <https://github.com/querqy/querqy-opensearch/tags>`__.
 
+Querqy for Elasticsearch 1.6es852.0
+====================================
+
+  - Release for Elasticsearch 8.5.2
+
+Querqy for Elasticsearch 1.6es843.0
+====================================
+
+    - Release for Elasticsearch 8.4.3
 
 Querqy for Elasticsearch 1.6es841.0
 ====================================
