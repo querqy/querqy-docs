@@ -42,7 +42,6 @@ OpenSearch, :ref:`get started here <querqy-index>`!
   (synonyms, boostings, filters etc.)
 
 
-
 .. toctree::
    :glob:
    :maxdepth: 4
@@ -53,10 +52,11 @@ OpenSearch, :ref:`get started here <querqy-index>`!
    querqy/index
    querqy/rewriters
    querqy/more-about-queries
+   querqy/logging-and-debugging-rewriters
    querqy/elasticsearch-plugin-configuration
    querqy/solr-plugin-configuration
-   querqy/querqy5-solr-migration
    querqy/release-notes
+   querqy/older-querqy-versions
    querqy/contributors
 
 .. toctree::

@@ -61,7 +61,9 @@ Select your version below and we will generate the install command for you:
 
   <select class="es-url-select"
     onChange="setESURL(this.options[this.selectedIndex].value);">
-    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es841.0/querqy-elasticsearch-1.6.es841.0.zip">Elasticsearch 8.4.1</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es852.0/querqy-elasticsearch-1.6.es852.0.zip">Elasticsearch 8.5.2</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es843.0/querqy-elasticsearch-1.6.es843.0.zip">8.4.3</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es841.0/querqy-elasticsearch-1.6.es841.0.zip">8.4.1</option>
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es833.0/querqy-elasticsearch-1.6.es833.0.zip">8.3.3</option>
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es823.0/querqy-elasticsearch-1.6.es823.0.zip">8.2.3</option>
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es813.0/querqy-elasticsearch-1.6.es813.0.zip">8.1.3</option>
@@ -119,7 +121,7 @@ Select your version below and we will generate the install command for you:
 
 
   ./bin/elasticsearch-plugin install \
-     "https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es841.0/querqy-elasticsearch-1.6.es841.0.zip"
+     "https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es852.0/querqy-elasticsearch-1.6.es852.0.zip"
 
 
 OpenSearch
@@ -151,25 +153,23 @@ Querqy is available for OpenSearch 2.3.0.
 
 .. rubric:: Installation under Solr
 
-.. include:: hint-querqy-5-solr.txt
-
 The Querqy plugin is installed as a .jar file.
 
-.. TODO Link to Release Notes
+.. warning:: When upgrading your Querqy version, please make sure to read the
+   :doc:`release notes! <release-notes>`!
 
 * Download the Querqy .jar file that matches your Solr version from the table
   below.
 
 
-
-
-
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
   | Solr version   | Querqy version [#]_                                                                                                                                      |
   +================+==========================================================================================================================================================+
-  | 9.0.0          | :download:`5.4.lucene900.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.4.lucene900.1/querqy-solr-5.4.lucene900.1-jar-with-dependencies.jar>` |
+  | 9.1.0          | :download:`5.5.lucene900.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.5.lucene900.1/querqy-solr-5.5.lucene900.1-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | 8.11.x         | :download:`5.4.lucene810.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.4.lucene810.1/querqy-solr-5.4.lucene810.1-jar-with-dependencies.jar>` |
+  | 9.0.0          | :download:`5.5.lucene900.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.5.lucene900.1/querqy-solr-5.5.lucene900.1-jar-with-dependencies.jar>` |
+  +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
+  | 8.11.x         | :download:`5.5.lucene811.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.5.lucene811.1/querqy-solr-5.5.lucene811.1-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
   | 8.10.x         | :download:`5.4.lucene810.1<https://repo1.maven.org/maven2/org/querqy/querqy-solr/5.4.lucene810.1/querqy-solr-5.4.lucene810.1-jar-with-dependencies.jar>` |
   +----------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+
