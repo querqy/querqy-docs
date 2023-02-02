@@ -75,6 +75,34 @@ using environment variables:
      - Encryption key for server/client communication (Play 2.6 standard). This positively needs to be set to a high-entropy value in production environments.
      - **WARNING:** insecure default.
 
+SMUI with SQLite (in a Docker setup)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To use SMUI with SQLite in a Docker setup, you need to:
+
+* Make sure the SQLite database is read/write mounted to the SMUI Docker container.
+* Use the correct JDBC driver for SQLite with a URL pointing to the mounted database file, e.g.
+
+**NOTE:** Play is not good in handling SQLite out-of-the-box. We need to disable locks for Play database evolutions. A ``custom-application.conf`` is therefore also needed. It contains:
+
+::
+
+   include "application.conf"
+   
+   play.evolutions.useLocks=false
+
+This is the complete command to run a SMUI container with a SQLite DB and the necessary ``custom-application.conf`` (**NOTE:** environment variables for the CMD must be set in the environment starting SMUI).
+
+::
+
+   docker run -p 9000:9000 \
+       --mount type=bind,source=/PATH/TO/local_sqlite_smui.db,target=/smui/smui.db \
+       --mount type=bind,source=/PATH/TO/custom-application.conf,target=/smui/conf/custom-application.conf \
+       -e SMUI_DB_JDBC_DRIVER=org.sqlite.JDBC \
+       -e SMUI_DB_URL=jdbc:sqlite:/smui/smui.db \
+       querqy/smui \
+       java -Dpidfile.path=$SMUI_CONF_PID_PATH -Dlogback.configurationFile=$SMUI_CONF_LOGBACK_XML_PATH -Dhttp.port=$SMUI_CONF_HTTP_PORT -Dconfig.file="/smui/conf/custom-application.conf" -jar /smui/search-management-ui-assembly-$SMUI_VERSION.jar
+
 Advanced configuration
 ----------------------
 

@@ -62,3 +62,15 @@ You will receive a ZIP file (``rules.zip``) containing the rules.txt for the con
 
 That's a minimum setup to explore the capabilities of SMUI. Visit the :ref:`configuration guide <smui-config>`
 to learn more about how to properly configure SMUI for your production setup.
+
+Importing a backup SQL
+----------------------
+
+SMUI backup SQL import for SQLite
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Use the following command:
+
+::
+
+    sqlite3 smui.db < dump.sql
