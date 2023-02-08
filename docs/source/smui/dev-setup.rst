@@ -81,6 +81,18 @@ below.
 
 The development server is hot-reloading, i.e. will recompile on changes in the source files.
 
+In case more control is needed over the SMUI configuration ``sbt`` can also being used directly, e.g.:
+
+Here are some frequently used command:
+
+* ``compile``: Compiles the Scala/Play backend.
+* ``run -Dconfig.file=./smui-dev.conf``: Runs SMUI with a dev config (see below).
+* ``tasks -v``: Returns a complete list over all ``sbt`` commands available.
+* ``test``: Runs all backend tests.
+
+::
+    sbt "run -Dconfig.file=./smui-dev.conf"
+
 .. _smui-dev-config:
 
 Development configuration
@@ -158,6 +170,22 @@ It can be used as a basis for extension.
     Remember to make the script executable (`chmod +x`).
 
 .. _smui-dev-custom-auth:
+
+Testing SMUI
+------------
+
+Backend unit tests (specifications)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To execute a specific unit test, you can call the corresponding ``scalatest`` with ``sbt``, e.g.:
+
+::
+
+    sbt "testOnly models.querqy.QuerqyExactMatchRulesGeneratorSpec"
+
+**NOTE:** The ``testOnly`` instruction needs to be in quotations (otherwise all tests will be executed).
+
+You can also run through the whole specification using the ``sbt`` ``test`` command.
 
 Useful commands: Docker powered MariaDB (with local persistence)
 ----------------------------------------------------------------
