@@ -335,4 +335,14 @@ This problem is described in the following issue: https://github.com/nektos/act/
 
 Anyway, the workflow performs well on the github action container infrastructure.
 
+Releasing SMUI
+--------------
+
+Every release of SMUI should come with its own version incrementing at least the build number of the semver. The release number is maintained under:
+
+::
+    smui/build.sbt
+
+The ``SmuiVersionSpec`` enforces version number increments in the test automation.
+
 Have fun coding SMUI!!
