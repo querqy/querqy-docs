@@ -200,6 +200,9 @@ The following settings are optional and define the general SMUI behaviour:
    * - ``toggle.ui-concept.custom.up-down-dropdown-mappings``
      - Provide custom mapping / step sizes for UP/DOWN boosting/penalising values as JSON (used, if ``toggle.ui-concept.updown-rules.combined`` is set to ``true``). See below for details.
      - ``null`` (No custom mappings)
+   * - ``smui.target-environment.config``
+     - Target environment configuration (e.g. for preview links). See below for details.
+     - Empty target environment. **NOTE:** There will come a dummy config showcasing this feature withz upcoming (majo) releases.
 
 .. note::
 
@@ -252,6 +255,52 @@ The equivalent docker startup argument would be (command line):
    ...
      -e SMUI_CUSTOM_UPDOWN_MAPPINGS="[{\"displayName\":\"UP(+++++)\",\"upDownType\":0,\"boostMalusValue\":750},{\"displayName\":\"UP(++++)\",\"upDownType\":0,\"boostMalusValue\":100},{\"displayName\":\"UP(+++)\",\"upDownType\":0,\"boostMalusValue\":50},{\"displayName\":\"UP(++)\",\"upDownType\":0,\"boostMalusValue\":10},{\"displayName\":\"UP(+)\",\"upDownType\":0,\"boostMalusValue\": 5},{\"displayName\":\"DOWN(-)\",\"upDownType\":1,\"boostMalusValue\": 5},{\"displayName\":\"DOWN(--)\",\"upDownType\":1,\"boostMalusValue\": 10},{\"displayName\":\"DOWN(---)\",\"upDownType\":1,\"boostMalusValue\": 50},{\"displayName\":\"DOWN(----)\",\"upDownType\":1,\"boostMalusValue\": 100},{\"displayName\":\"DOWN(-----)\",\"upDownType\":1,\"boostMalusValue\": 750}]"
    ...
+
+Preview search queries (optional)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Preview links can be configured using the ``smui.target-environment.config`` in your custom ``application.conf``.
+Here is an example of a multi tenant, multi language preview configuration.
+**NOTE:** The JSON structure is encoded into the HOCON syntax (used by Play / typesafe) as a multiline string:
+
+::
+
+  smui.target-environment.config="""{
+    "LIVE": {
+      "de": [
+        {
+          "rulesCollection": "MainTenantDE",
+          "tenantTag": null,
+          "previewUrlTemplate": "https://www.example.com/de/main-tenant/search?query=$QUERY"
+        }, {
+          "rulesCollection": "AlternativeTenantDE",
+          "tenantTag": "tenant:ALTERNATIVE",
+          "previewUrlTemplate": "https://www.example.com/de/alternative-tenant/search?query=$QUERY"
+        }
+      ],
+      "fr": [
+        {
+          "rulesCollection": "MainTenantFR",
+          "tenantTag": null,
+          "previewUrlTemplate": "https://www.example.com/fr/main-tenant/search?query=$QUERY"
+        }, {
+          "rulesCollection": "AlternativeTenantFR",
+          "tenantTag": "tenant:ALTERNATIVE",
+          "previewUrlTemplate": "https://www.example.com/fr/alternative-tenant/search?query=$QUERY"
+        }
+      ]
+    },
+    "PRELIVE": {
+      ...
+    }
+  }"""
+
+The first level of the JSON describes the deployment instance that the preview links points to.
+Next is a free-definable organizational identifier - typically encoding the language. Then follows the preview link configuration itself.
+Preview links are tight to a rules collection, and might be scoped to specific tenants.
+The links are rendered using the magic ``$QUERY`` symbol in the URL template.
+
+**NOTE:** TODO As of v3.15 this will be the designated structure for the deployment description in the future.
 
 Authentication
 --------------
