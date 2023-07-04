@@ -69,7 +69,7 @@ Select your version below and we will generate the install command for you:
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es813.0/querqy-elasticsearch-1.6.es813.0.zip">8.1.3</option>
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es801.0/querqy-elasticsearch-1.6.es801.0.zip">8.0.1</option>
 
-    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.5.es7172.0/querqy-elasticsearch-1.5.es7172.0.zip">7.17.2</option>
+    <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.5.es71711.0/querqy-elasticsearch-1.5.es71711.0.zip">7.17.11</option>
 
     <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.5.es7162.0/querqy-elasticsearch-1.5.es7162.0.zip">7.16.2</option>
 
