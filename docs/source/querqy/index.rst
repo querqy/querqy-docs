@@ -212,7 +212,8 @@ The Querqy plugin is installed as a .jar file.
   `jar-with-dependencies` from the Downloads dropdown of the corresponding
   Querqy version.
 
-* Put the .jar file into `Solr's lib folder`_.
+* Put the .jar file into `Solr's lib folder`_. We currently recommend putting querqy into the
+  :code:`<solr_install>/server/solr-webapp/webapp/WEB-INF/lib/` folder.
 * Add the Querqy request handler (Querqy 5 only), the Querqy query parser and
   the Querqy query component to your ``solrconfig.xml`` file:
 
@@ -250,7 +251,7 @@ The Querqy plugin is installed as a .jar file.
   <searchComponent name="query" class="querqy.solr.QuerqyQueryComponent"/>
 
 
-.. _`Solr's lib folder`: https://cwiki.apache.org/confluence/display/solr/Lib+Directives+in+SolrConfig
+.. _`Solr's lib folder`: https://solr.apache.org/guide/solr/latest/configuration-guide/libs.html
 .. _`Central Maven Repository`: https://search.maven.org/artifact/org.querqy/querqy-solr
 
 .. raw:: html
