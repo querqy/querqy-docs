@@ -173,9 +173,6 @@ The following settings are optional and define the general SMUI behaviour:
    * - ``toggle.predefined-tags-file``
      - Path to optional file, that provides pre-defined rule tags (see “Configure predefined rule tags”).
      -
-   * - ``smui.auth.ui-concept.simple-logout-button-target-url``
-     - Target URL of simple logout button (see "Configure Authentication").
-     -
    * - ``toggle.activate-spelling``
      - Activate spelling items: Add spelling items to maintain common misspellings using the Querqy replace rewriter. The spelling items are exported in a separate replace_rules.txt that is uploaded to Solr.
      - ``false``
@@ -305,96 +302,108 @@ The links are rendered using the magic ``$QUERY`` symbol in the URL template.
 Authentication
 --------------
 
-SMUI is shipped with HTTP Basic and JWT Authentication support.
+In version 4 SMUI has dropped support for its proprietary authentication implementation and adopted the
+`pac4j <https://www.pac4j.org/>`_ library. pac4j offers a wide range of authentication and authorization mechanisms.
+At the moment, only SAML authentication is provided (tested against MS Azure AD / Entra, other SAML identity
+providers should work) but additional authentication mechanisms can be added quickly. Please
+`create a Github issue <https://github.com/querqy/smui/issues/new/choose>`_, a
+`pull request <https://github.com/querqy/smui/compare>`_, or
+`drop us an email <hello@productful.io>`_.
 
-Basic Authentication
+
+SAML Authentication
 ~~~~~~~~~~~~~~~~~~~~
 
-This is telling every controller method (Home and ApiController) to use
-the according authentication method as well as it tells SMUI’s
-``BasicAuthAuthenticatedAction`` username and password it should use.
-Basic Auth can be turned on in the extension by configuring an
-``smui.authAction`` in the config file, e.g.:
+Enabling SAML authentication requires a few steps of preparation. We describe the steps below using Microsoft Entra
+(ex Azure Active Directory) as the Identity Provider (IdP).
+
+First, create a new SMUI application in your IdP. In MS Entra this can be achieved in the `Application` /
+`Enterprise Applications` / `New application` dialogue. You will create a new "non-gallery" application.
+
+.. figure:: smui_saml_1.png
+   :alt: MS Entra Configuration: New Application
+
+Second, enable SAML Single sign-on for SMUI. In MS Entra this is done by Selecting the SAML option in the
+`Manage` / `Single sign-on` menu of your newly created application.
+
+.. figure:: smui_saml_2.png
+   :alt: MS Entra Configuration: Enable SAML SSO for the new application
+
+Third, assign an entity ID to your new application. This identifier is also called the `Audience Restriction`
+or `Audience URI` in other identity providers. In MS Entra this is configured in the `Single sign-on` section of your
+newly created application. There, the `Basic SAML Configuration` sub-section's `Identifier (Entity ID)` entry should
+contain the ID. There is `some recommendation <https://spaces.at.internet2.edu/display/federation/saml-metadata-entityid>`_
+to use a URI for SAML entity IDs but in general any globally unique identifier will work.
+
+.. figure:: smui_saml_3.png
+   :alt: MS Entra Configuration: Configure identifier (the SAML entity ID) for the new application, add Reply URL
+
+Fourth, configure your IdP to return your browser back to a SMUI callback endpoint after successful authentication.
+In MS Entra, this happens in the same section as above with the `Reply URL (Assertion Customer Service)` setting.
+Here you will need to use your SMUI host's URL appended with `/callback?client_name=SAML2Client`. Please note, that
+SAML requires this to be a HTTPS URL. Example: `https://smui.intranet.mycompany.com/callback?client_name=SAML2Client`
+
+Fifth, prepare the identity provider's metadata XML. This includes required signatures and SSO URL configurations
+and follows a standard format. In MS Entra you can download the `Federation Metadata XML` in the
+`SAML Certificates Section` of the application's Single sign-on configuration dialog. For pac4j only the
+`Signature` and `IDPSSODescriptor` elements in the XML are used and you would need to remove (!) additional XML
+`RoleDescriptor` elements as we had issues with pac4j complaining about unexpected elements.
+
+Sixth, assign users and/or groups to that new application to enable your users to allow authenticating your SMUI users
+against this new application.
+
+.. figure:: smui_saml_4.png
+   :alt: MS Entra Configuration: Assign users/groups to the application
+
+After the above steps you are able to run SMUI with enabled SAML authentication with the following environment variables:
 
 ::
 
-   # For Basic Auth authentication, use SMUI's BasicAuthAuthenticatedAction (or leave it blanked / commented out for no authentication), e.g.:
-   smui.authAction = controllers.auth.BasicAuthAuthenticatedAction
-   smui.BasicAuthAuthenticatedAction.user = smui_user
-   smui.BasicAuthAuthenticatedAction.pass = smui_pass
+    # This triggers SMUI to use the SAML2Client
+    SMUI_AUTH_CLIENT=SAML2Client
 
-**WARNING:** Deprecated as of v3.14. BasicAuth support will be removed soon (see `github.com comment on PR#83 <https://github.com/querqy/smui/pull/83#issuecomment-1023284550>`_).
+    # This sets the SMUI base URL, required for callbacks etc.
+    # Should just be the protocol+hostname+port you run SMUI on
+    SMUI_AUTH_BASEURL=https://<add-you-host-here>
 
-JWT Authentication
-~~~~~~~~~~~~~~~~~~
+    # The SAML entity ID configured in step three above
+    SMUI_SAML_SERVICE_PROVIDER_ENTITY_ID=<unique-configured-id>
 
-::
+    # Path to the identity provider metadata XML obtained in step five above
+    SMUI_SAML_IDENTITY_PROVIDER_METADATA_PATH=/path/to/idp.xml
 
-   smui.authAction="controllers.auth.JWTJsonAuthenticatedAction"
+    # Path to a keystore for a public/private key pair that SMUI uses to sign SAML messages.
+    # If it does not exist it is created during SMUI startup
+    SMUI_SAML_KEYSTORE=/tmp/smui_saml_keystore.jks
 
-.. list-table:: SMUI advanced application settings
-   :widths: 20 50 30
-   :header-rows: 1
+    # The password to the keystore above. It needs to match the actual keystore password
+    # if an existing keystore is provided, otherwise it will be the password SMUI uses
+    # when creating the new keystore file.
+    SMUI_SAML_KEYSTORE_PASSWORD=keystore-password
 
-   * - Config key
-     - Description
-     - Default
-   * - ``smui.JWTJsonAuthenticatedAction.login.url``
-     - The URL to the login page (e.g. https://loginexample.com/login.html?callback=https://redirecturl.com)
-     -
-   * - ``smui.JWTJsonAuthenticatedAction.cookie.name``
-     - Name of cookie that contains the Json Web Token (JWT)
-     - ``jwt_token``
-   * - ``smui.JWTJsonAuthenticatedAction.public.key``
-     - The public key to verify the token signature.
-     -
-   * - ``smui.JWTJsonAuthenticatedAction.algorithm``
-     - The algorithms that should be used for decoding (options: ‘rsa’, ‘hmac’, ‘asymmetric’, ‘ecdsa’)
-     - ``rsa``
-   * - ``smui.JWTJsonAuthenticatedAction.authorization.active``
-     - Activation of authorization check
-     - ``false``
-   * - ``smui.JWTJsonAuthenticatedAction.authorization.json.path``
-     - The JSON path to the roles saved in the JWT
-     - ``$.roles``
-   * - ``smui.JWTJsonAuthenticatedAction.authorization.roles``
-     - Roles (comma separated) of roles, that are authorized to access SMUI
-     - ``admin``
+    # The password to the private key within the keystore. It needs to match the actual
+    # private key password if an existing keystore is provided, otherwise it will be the
+    # password SMUI uses when creating the new keystore file.
+    SMUI_SAML_PRIVATE_KEY_PASSWORD=private-key-password
 
-Example of decoded Json Web Token:
+    # SMUI will generate an XML file for its own metadata and post that during the SAML
+    # authentication process. This is the path where this file will be stored. Please note,
+    # that you might need to manually delete this file if you change any of the above configuration.
+    SMUI_SAML_SERVICE_PROVIDER_METADATA_PATH=/tmp/smui_sp_metadata.xml
 
-.. code:: json
+    # SMUI will store authenticated user info in a browser cookie. You can set the maximum
+    # duration of this session before requiring re-authentication using this value.
+    SMUI_SESSION_MAXAGE=1 day
 
-   {
-     "user": "Test Admin",
-     "roles": [
-       "admin"
-     ]
-   }
 
-Logout
-~~~~~~
+Session and Logout
+~~~~~~~~~~~~~~~~~~~~
 
-In this setup, SMUI can provide a simple logout button that simply sends
-the user to a configured target URL:
+An authenticated user will stay logged in as long as their cookie is valid (see ``SMUI_SESSION_MAXAGE` value above).
+As we currently only support external authentication there is currently no active logout implemented (any logout
+would immediately redirect to the identity provider and, if the session with the identity provider still exists,
+re-login the user).
 
-::
-
-   smui.auth.ui-concept.simple-logout-button-target-url="https://www.example.com/logoutService/"
-
-Custom Authentication
-~~~~~~~~~~~~~~~~~~~~~
-
-You can also implement a custom authentication action and tell SMUI to
-decorate its controllers with that, e.g.:
-
-::
-
-   smui.authAction = myOwnPackage.myOwnAuthenticatedAction
-
-See :ref:`Developing Custom Authentication<smui-dev-custom-auth>` for details.
-
-.. _smui-rules-deployment-details:
 
 Options for rules deployment
 ----------------------------
