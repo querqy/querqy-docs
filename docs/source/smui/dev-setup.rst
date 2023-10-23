@@ -95,6 +95,15 @@ Here are some frequently used command:
 
 .. _smui-dev-config:
 
+Running SMUI with SSL locally
+-----------------------------
+
+For local development that requires accessing SMUI using a HTTPS URL (e.g. to implement external authentication)
+we recommend using the Caddy reverse proxy.
+
+::
+    caddy reverse-proxy --internal-certs --from https://localhost --to :9000
+
 Development configuration
 -------------------------
 
@@ -206,68 +215,6 @@ Note: Setting the MySQL root password is only for making potential root access e
 
 Also note: When developing with an Apple Silicon (M1 based) device, there does not seem to exist a suitable arm image for MySQL (as of Jan 2022). Therefore, the x86 architecture needs to be specified explicitly: ``docker run --platform linux/x86_64 --name smui-mysql [...]``
 
-Developing Custom Authentication
---------------------------------
-
-Authentication Backend
-~~~~~~~~~~~~~~~~~~~~~~
-
-If you want to extend SMUI’s authentication behaviour, you can do so by
-supplying your own authentication implementation into the classpath of
-SMUI’s play application instance and referencing it in the
-``application.conf``. Your custom authentication action offers a maximum
-of flexibility as it is based upon play’s ``ActionBuilderImpl``. In
-addition your custom action gets the current environment’s
-``appConfig``, so it can use configurations defined there as well.
-Comply with the following protocol:
-
-::
-
-   import play.api.Configuration
-   import play.api.mvc._
-   import scala.concurrent.ExecutionContext
-   class myOwnAuthenticatedAction(parser: BodyParsers.Default,
-                                  appConfig: Configuration)(implicit ec: ExecutionContext) extends ActionBuilderImpl(parser) {
-   override def invokeBlock[A](request: Request[A], block: (Request[A]) => Future[Result]) = {
-       ...
-   }
-
-As an example implementation, you can check `BasicAuthAuthenticatedAction.scala`_ as well.
-
-.. _BasicAuthAuthenticatedAction.scala: https://github.com/querqy/smui/blob/master/app/controllers/auth/BasicAuthAuthenticatedAction.scala
-
-**WARNING:** Deprecated as of v3.14. BasicAuth support will be removed soon (see `github.com comment on PR#83 <https://github.com/querqy/smui/pull/83#issuecomment-1023284550>`_).
-
-Frontend Behaviour for Authentication
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The Angular frontend comes with a built-in HTTP request authentication
-interceptor. Every API request is observed for returned 401 status
-codes. In case the backend returns 401, the backend can pass an
-behaviour instruction to the frontend by complying with spec defined by
-``SmuiAuthViolation`` within `http-auth-interceptor.ts`_, e.g.:
-
-.. _http-auth-interceptor.ts: https://github.com/querqy/smui/blob/master/app/assets/app/helpers/http-auth-interceptor.ts
-
-::
-
-   {
-     "action": "redirect",
-     "params": "https://www.example.com/loginService/?urlCallback={{CURRENT_SMUI_URL}}"
-   }
-
-.. note::
-
-    The authentication interceptor only joins the game, in case the
-    Angular application is successfully bootstrapped. So for SMUI’s ``/``
-    route, your custom authentication method might choose a different
-    behaviour (e.g. 302).
-
-Within exemplary ``redirect`` action above, you can work with the
-``{{CURRENT_SMUI_URL}}`` placeholder, that SMUI will replace with its
-current location as an absolute URL before the redirect gets executed.
-Through this, it becomes possible for the remote login service to
-redirect back to SMUI once the login has succeeded.
 
 Developing git deployment method
 --------------------------------
