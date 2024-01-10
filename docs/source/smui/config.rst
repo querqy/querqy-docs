@@ -396,6 +396,8 @@ After the above steps you are able to run SMUI with enabled SAML authentication 
     SMUI_SESSION_MAXAGE=1 day
 
 
+(!) NOTE: The ``<unique-configured-id>`` (for config ``SMUI_SAML_SERVICE_PROVIDER_ENTITY_ID``) usually starts with ``spn:`` (i.e. for Microsoft Azure/IdP).
+
 Session and Logout
 ~~~~~~~~~~~~~~~~~~~~
 
