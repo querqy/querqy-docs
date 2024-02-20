@@ -401,7 +401,7 @@ After the above steps you are able to run SMUI with enabled SAML authentication 
 Session and Logout
 ~~~~~~~~~~~~~~~~~~~~
 
-An authenticated user will stay logged in as long as their cookie is valid (see ``SMUI_SESSION_MAXAGE` value above).
+An authenticated user will stay logged in as long as their cookie is valid (see ``SMUI_SESSION_MAXAGE`` value above).
 As we currently only support external authentication there is currently no active logout implemented (any logout
 would immediately redirect to the identity provider and, if the session with the identity provider still exists,
 re-login the user).
