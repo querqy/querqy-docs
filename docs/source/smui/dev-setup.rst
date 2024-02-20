@@ -91,7 +91,8 @@ Here are some frequently used command:
 * ``test``: Runs all backend tests.
 
 ::
-    sbt "run -Dconfig.file=./smui-dev.conf"
+
+   sbt "run -Dconfig.file=./smui-dev.conf"
 
 .. _smui-dev-config:
 
@@ -102,7 +103,8 @@ For local development that requires accessing SMUI using a HTTPS URL (e.g. to im
 we recommend using the Caddy reverse proxy.
 
 ::
-    caddy reverse-proxy --internal-certs --from https://localhost --to :9000
+
+   caddy reverse-proxy --internal-certs --from https://localhost --to :9000   
 
 Development configuration
 -------------------------
@@ -156,7 +158,7 @@ e.g.:
 
 ::
 
-   run -Dconfig.file=./smui-dev.conf 9000
+   sbt run -Dconfig.file=./smui-dev.conf 9000
 
 Furthermore, above’s configuration points to an alternative development
 version of the ``smui2solr.sh``-script. The file ``smui2solr-dev.sh`` is
@@ -288,7 +290,8 @@ Releasing SMUI
 Every release of SMUI should come with its own version incrementing at least the build number of the semver. The release number is maintained under:
 
 ::
-    smui/build.sbt
+
+   smui/build.sbt
 
 The ``SmuiVersionSpec`` enforces version number increments in the test automation.
 

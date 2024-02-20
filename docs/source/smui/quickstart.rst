@@ -16,7 +16,7 @@ To quickly get SMUI up and running on your machine, you may use the bundled `doc
 
     git clone https://github.com/querqy/smui.git smui
     cd smui
-    docker-compose up
+    docker compose up
 
 Alternatively, you may start the containers manually like this:
 
