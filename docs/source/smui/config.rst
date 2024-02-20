@@ -56,7 +56,7 @@ using environment variables:
      - ``/tmp/search-management-ui_rules-txt.tmp`` (recommended: leave default).
    * - ``smui2solr.DST_CP_FILE_TO``
      - ``SMUI_2SOLR_DST_CP_FILE_TO``
-     - LIVE ``rules.txt`` destination file for the default deployment script. See :ref:`Details on rules.txt deployment<smui-rules-deployment-details>` for more info. WARNING: Deprecated as of v3.4, will be replaced soon.
+     - LIVE ``rules.txt`` destination file for the default deployment script. See :ref:`Details on rules.txt deployment<options-for-rules-deployment>` for more info. WARNING: Deprecated as of v3.4, will be replaced soon.
      - ``/usr/bin/solr/defaultCore/conf/rules.txt``
    * - ``smui.deployment.git.repo-url``
      - ``SMUI_DEPLOYMENT_GIT_REPO_URL``
@@ -186,7 +186,7 @@ The following settings are optional and define the general SMUI behaviour:
      - ``/usr/bin/solr/defaultCore/conf/rules.txt``
      - ``/usr/bin/solr/liveCore/conf/replace-rules.txt``
    * - ``smui2solr.deploy-prelive-fn-replace-txt``
-     - PRELIVE ``replace_rules.txt`` destination file for the default deployment script. See :ref:`Details on rules.txt deployment<smui-rules-deployment-details>` for more info.
+     - PRELIVE ``replace_rules.txt`` destination file for the default deployment script. See :ref:`Details on rules.txt deployment<options-for-rules-deployment>` for more info.
      -  ``/usr/bin/solr/preliveCore/conf/replace-rules.txt``
    * - ``toggle.display-username.default``
      - **WARNING:** Deprecated as of v3.14, will be replaced soon (see `github.com comment on PR#83 <https://github.com/querqy/smui/pull/83#issuecomment-1023284550>`_). Default username for being displayed on the frontend, if no username is available (e.g. for event history).
@@ -406,6 +406,7 @@ As we currently only support external authentication there is currently no activ
 would immediately redirect to the identity provider and, if the session with the identity provider still exists,
 re-login the user).
 
+.. _options-for-rules-deployment:
 
 Options for rules deployment
 ----------------------------

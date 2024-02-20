@@ -31,7 +31,7 @@ The basic workflow of SMUI is as follows:
 - Create Rules for various Search Inputs
 - Deploy the Rules in a Deployment Channel
 
-The deployment may occur by :ref:`various methods<smui-rules-deployment-details>`. After deployment, the set
+The deployment may occur by :ref:`various methods<options-for-rules-deployment>`. After deployment, the set
 of Rules in the Deployment Channel will be recognized by the Querqy plugin and thus applied to queries.
 
 Rule types
