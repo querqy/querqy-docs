@@ -12,8 +12,8 @@ For development and building, you will need
 
 - `docker`_ with `BuildKit`_ capabilities (i.e. version 18.09 or higher)
 - `docker-compose`_ (optional)
-- Java Runtime Environment
-- NodeJS
+- Java Runtime Environment (version 11 is recommended)
+- NodeJS (version 12 is recommended)
 - `sbt`_
 - `GNU make`_
 
