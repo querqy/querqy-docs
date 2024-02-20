@@ -90,8 +90,8 @@ Here are some frequently used command:
 * ``tasks -v``: Returns a complete list over all ``sbt`` commands available.
 * ``test``: Runs all backend tests.
 
-::
-    sbt "run -Dconfig.file=./smui-dev.conf"
+
+    ``sbt "run -Dconfig.file=./smui-dev.conf"``
 
 .. _smui-dev-config:
 
@@ -101,8 +101,7 @@ Running SMUI with SSL locally
 For local development that requires accessing SMUI using a HTTPS URL (e.g. to implement external authentication)
 we recommend using the Caddy reverse proxy.
 
-::
-    caddy reverse-proxy --internal-certs --from https://localhost --to :9000
+    ``caddy reverse-proxy --internal-certs --from https://localhost --to :9000``
 
 Development configuration
 -------------------------
