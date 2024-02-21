@@ -20,92 +20,78 @@ with two exceptions:
 Configuring rules
 =================
 
-.. include:: ../se-section.txt
+.. tabs::
 
-.. rst-class:: elasticsearch
+   .. group-tab:: Elasticsearch/OpenSearch
 
-.. raw:: html
+      The rules for the 'Common Rules Rewriter' are passed as the value of the
+      ``rules`` element when you create a configuration with the
+      SimpleCommonRulesRewriterFactory in Elasticsearch/OpenSearch.
+      
+      ``PUT  /_querqy/rewriter/common_rules``
+      
+      .. code-block:: JSON
+        :linenos:
+        :emphasize-lines: 4
+      
+        {
+            "class": "querqy.elasticsearch.rewriter.SimpleCommonRulesRewriterFactory",
+            "config": {
+                "rules" : "notebook =>\nSYNONYM: laptop"
+            }
+        }
+      
+      .. include:: hint-opensearch.txt
+      
 
- <div>
+   .. group-tab:: Solr
 
-The rules for the 'Common Rules Rewriter' are passed as the value of the
-``rules`` element when you create a configuration with the
-SimpleCommonRulesRewriterFactory in Elasticsearch/OpenSearch.
+      **Querqy 5**
+      
+      The rules for the 'Common Rules Rewriter' are passed as the ``rules`` property
+      in the rewriter configuration:
+      
+      | :code:`POST /solr/mycollection/querqy/rewriter/common_rules?action=save`
+      | :code:`Content-Type: application/json`
+      
+      .. code-block:: JSON
+        :linenos:
+        :emphasize-lines: 4
+      
+        {
+            "class": "querqy.solr.rewriter.commonrules.CommonRulesRewriterFactory",
+            "config": {
+                "rules" : "notebook =>\nSYNONYM: laptop"
+            }
+        }
+      
+      Remember to JSON-escape your rules.
+      
+      
+      **Querqy 4**
+      
+      The rules for the 'Common Rules Rewriter' are maintained in the resource that
+      you configured as property ``rules`` for the
+      SimpleCommonRulesRewriterFactory.
+      
+      .. code-block:: xml
+        :linenos:
+        :emphasize-lines: 5
+      
+        <queryParser name="querqy" class="querqy.solr.DefaultQuerqyDismaxQParserPlugin">
+          <lst name="rewriteChain">
+              <lst name="rewriter">
+                <str name="class">querqy.solr.SimpleCommonRulesRewriterFactory</str>
+                <str name="rules">rules.txt</str>
+            </lst>
+          </lst>
+        </queryParser>
+      
+      This `rules` files must be in UTF-8 character encoding. The maximum file size of
+      is 1 MB if Solr runs as SolrCloud and if you didn't change the maximum file size
+      in Zookeeper. You can however gzip the file - Querqy will automatically detect
+      this and uncompress the file.
 
-``PUT  /_querqy/rewriter/common_rules``
-
-.. code-block:: JSON
-   :linenos:
-   :emphasize-lines: 4
-
-   {
-       "class": "querqy.elasticsearch.rewriter.SimpleCommonRulesRewriterFactory",
-       "config": {
-           "rules" : "notebook =>\nSYNONYM: laptop"
-       }
-   }
-
-.. include:: hint-opensearch.txt
-
-.. raw:: html
-
-  </div>
-
-.. rst-class:: solr
-
-.. raw:: html
-
- <div>
-
-**Querqy 5**
-
-The rules for the 'Common Rules Rewriter' are passed as the ``rules`` property
-in the rewriter configuration:
-
-| :code:`POST /solr/mycollection/querqy/rewriter/common_rules?action=save`
-| :code:`Content-Type: application/json`
-
-.. code-block:: JSON
-   :linenos:
-   :emphasize-lines: 4
-
-   {
-       "class": "querqy.solr.rewriter.commonrules.CommonRulesRewriterFactory",
-       "config": {
-           "rules" : "notebook =>\nSYNONYM: laptop"
-       }
-   }
-
-Remember to JSON-escape your rules.
-
-
-**Querqy 4**
-
-The rules for the 'Common Rules Rewriter' are maintained in the resource that
-you configured as property ``rules`` for the
-SimpleCommonRulesRewriterFactory.
-
-.. code-block:: xml
-   :linenos:
-   :emphasize-lines: 5
-
-   <queryParser name="querqy" class="querqy.solr.DefaultQuerqyDismaxQParserPlugin">
-     <lst name="rewriteChain">
-        <lst name="rewriter">
-          <str name="class">querqy.solr.SimpleCommonRulesRewriterFactory</str>
-          <str name="rules">rules.txt</str>
-       </lst>
-     </lst>
-   </queryParser>
-
-This `rules` files must be in UTF-8 character encoding. The maximum file size of
-is 1 MB if Solr runs as SolrCloud and if you didn't change the maximum file size
-in Zookeeper. You can however gzip the file - Querqy will automatically detect
-this and uncompress the file.
-
-.. raw:: html
-
-  </div>
 
 Structure of a rule
 -------------------
@@ -241,11 +227,6 @@ the current wildcard implementation, which might be removed in the future:
 * The wildcard can only occur at the very end of the input matching.
 * It cannot be combined with the right-hand input boundary marker (...").
 
-.. rst-class:: solr
-
-.. raw:: html
-
- <div>
 
 **Querqy 5**
 
@@ -289,9 +270,6 @@ sub-group (like in ``smart* AND (mobile app*)``). However, a boolean input
 expression that contains a wildcard cannot be combined with SYNONYM or DELETE
 instructions.
 
-.. raw:: html
-
- </div>
 
 SYNONYM rules
 -------------
@@ -445,35 +423,39 @@ a simple parser that splits on whitespace and marks tokens prefixed by ``-`` as
 'querqyParser' in the `configuration` to set a different parser.)
 
 A special case are right-hand side definitions that start with ``*``. The
-string following the \* will be treated as a query in the syntax of the
+string following the ``*`` will be treated as a query in the syntax of the
 search engine.
 
 In the following example we favour a certain price range as an interpretation of
-'cheap' and penalise documents from category 'accessories' using raw Solr
-queries:
+'cheap' and penalise documents from category 'accessories':
 
-.. code-block:: Text
-   :linenos:
+.. tabs::
 
-   cheap notebook =>
-     UP(10): * price:[350 TO 450]
-     DOWN(20): * category:accessories
+   .. group-tab:: Elasticsearch/OpenSearch
 
-The same example in Elasticsearch/OpenSearch:
+      .. code-block:: Text
+        :linenos:
+      
+        cheap notebook =>
+        	 UP(10): * {"range": {"price": {"gte": 350, "lte": 450}}}
+        	 DOWN(20): * {"term": {"category": "accessories"}}
 
-.. code-block:: Text
-   :linenos:
 
-   cheap notebook =>
-   	 UP(10): * {"range": {"price": {"gte": 350, "lte": 450}}}
-   	 DOWN(20): * {"term": {"category": "accessories"}}
+   .. group-tab:: Solr
+
+      .. code-block:: Text
+        :linenos:
+      
+        cheap notebook =>
+          UP(10): * price:[350 TO 450]
+          DOWN(20): * category:accessories      
+
+
 
 
 
 FILTER rules
 ------------
-
-.. include:: ../se-section.txt
 
 Filter rules work similar to UP and DOWN rules, but instead of moving search
 results up or down the result list they restrict search results to those that
@@ -489,29 +471,34 @@ not 'case':
 	   FILTER: -case
 
 The filter is applied to all query fields defined in the
-:raw-html:`<span class="elasticsearch">'generated.query_fields' or 'query_fields'</span>
-<span class="solr">'gqf' or 'qf'</span>` :ref:`request parameters <querqy_query_params>`.
+``generated.query_fields`` or ``query_fields`` in Elasticsearch/OpenSearch or ``gqf`` or ``qf`` in Solr.
 In the case of a required keyword ('apple') the filter matches if the keyword
 occurs in one or more query fields. The negative filter ('-case') only matches
 documents where the keyword occurs in none of the query fields.
 
 The right-hand side of filter instructions accepts raw queries. To completely
-exclude results from category 'accessories' for query 'notebook' you would
-write in Solr:
+exclude results from category 'accessories' for query 'notebook':
 
-.. code-block:: Text
-   :linenos:
+.. tabs::
 
-   notebook =>
-	   FILTER: * -category:accessories
+   .. group-tab:: Elasticsearch/OpenSearch
 
-The same filter in Elasticsearch/OpenSearch:
+      .. code-block:: Text
+        :linenos:
+      
+        notebook =>
+      	   FILTER: * {"bool": { "must_not": [ {"term": {"category":"accessories"}}]}}
+      
 
-.. code-block:: Text
-   :linenos:
+   .. group-tab:: Solr
 
-   notebook =>
-	   FILTER: * {"bool": { "must_not": [ {"term": {"category":"accessories"}}]}}
+      .. code-block:: Text
+        :linenos:
+      
+        notebook =>
+      	   FILTER: * -category:accessories
+
+
 
 
 DELETE rules
@@ -574,59 +561,50 @@ The following restrictions apply to delete rules:
 DECORATE rules
 --------------
 
-.. include:: ../se-section.txt
+.. tabs::
 
-.. note::
+   .. group-tab:: Elasticsearch/OpenSearch
 
-	This feature is only available for Solr.
+      This feature is only available for Solr.
 
+   .. group-tab:: Solr
 
-.. rst-class:: solr
-
-.. raw:: html
-
-  <div>
-
-Decorate rules are not strictly query rewriting rules but they are quite handy
-to add query-dependent information to search results. For example, in online
-shops there are almost always a few search queries that have nothing to do with
-the products in the shop but with deliveries, T&C, FAQs and other service
-information. A decorate rule matches those search terms and adds the configured
-information to the search results:
-
-.. code-block:: Text
-   :linenos:
-
-   faq =>
-     DECORATE: REDIRECT /service/faq
-
-
-The Solr response will then contain an array 'querqy_decorations' with the
-right-hand side expressions of the matching decorate rules:
-
-.. code-block:: xml
-   :linenos:
-   :emphasize-lines: 5-8
-
-   <response>
-     <lst name="responseHeader">...</lst>
-     <result name="response" numFound="0" start="0">...</result>
-     <lst name="facet_counts">...</lst>
-     <arr name="querqy_decorations">
-       <str>REDIRECT /service/faq</str>
-        ...
-     </arr>
-   </response>
-
-Querqy does not inspect the right-hand side of the decorate instruction
-('REDIRECT /service/faq') but returns the configured value 'as is'. You could
-even configure a JSON-formatted value in this place but you have to assure that
-the value does not contain any line break.
-
-.. raw:: html
-
-    </div>
-
+      Decorate rules are not strictly query rewriting rules but they are quite handy
+      to add query-dependent information to search results. For example, in online
+      shops there are almost always a few search queries that have nothing to do with
+      the products in the shop but with deliveries, T&C, FAQs and other service
+      information. A decorate rule matches those search terms and adds the configured
+      information to the search results:
+      
+      .. code-block:: Text
+        :linenos:
+      
+        faq =>
+          DECORATE: REDIRECT /service/faq
+      
+      
+      The Solr response will then contain an array 'querqy_decorations' with the
+      right-hand side expressions of the matching decorate rules:
+      
+      .. code-block:: xml
+        :linenos:
+        :emphasize-lines: 5-8
+      
+        <response>
+          <lst name="responseHeader">...</lst>
+          <result name="response" numFound="0" start="0">...</result>
+          <lst name="facet_counts">...</lst>
+          <arr name="querqy_decorations">
+            <str>REDIRECT /service/faq</str>
+              ...
+          </arr>
+        </response>
+      
+      Querqy does not inspect the right-hand side of the decorate instruction
+      ('REDIRECT /service/faq') but returns the configured value 'as is'. You could
+      even configure a JSON-formatted value in this place but you have to assure that
+      the value does not contain any line break.
+      
 
 Properties: ordering, filtering and tracking of rules
 -----------------------------------------------------
@@ -783,102 +761,75 @@ and selecting rules depending on the context.
 We will tell Querqy to only apply the first rule after sorting them by the
 'priority' property in descending order.
 
-.. include:: ../se-section.txt
+.. tabs::
 
-.. rst-class:: solr
+   .. group-tab:: Elasticsearch/OpenSearch
 
-.. raw:: html
+      ``POST /myindex/_search``
+      
+      .. code-block:: JSON
+        :linenos:
+        :emphasize-lines: 12-15
+      
+        {
+          "query": {
+              "querqy": {
+                  "matching_query": {
+                      "query": "notebook"
+                  },
+                  "query_fields": [ "title^3.0", "brand^2.1", "shortSummary"],
+                  "rewriters": [
+                      {
+                          "name": "common_rules",
+                          "params": {
+                              "criteria": {
+                                  "sort": "priority desc",
+                                  "limit": 1
+                              }
+                          }
+                      }
+                  ]
+              }
+          }
+        }
 
- <div>
+   .. group-tab:: Solr
 
-In order to enable rule selection we need to make sure that a rewriter ID has
-been configured for the Common Rules rewriter in solrconfig.xml (Querqy 4 only,
-Querqy 5 provides the ID automatically by using the rewriter configuration API):
+      In order to enable rule selection we need to make sure that a rewriter ID has
+      been configured for the Common Rules rewriter in solrconfig.xml (Querqy 4 only,
+      Querqy 5 provides the ID automatically by using the rewriter configuration API):
+      
+      .. code-block:: xml
+        :linenos:
+        :emphasize-lines: 8
+      
+        <queryParser name="querqy" class="querqy.solr.DefaultQuerqyDismaxQParserPlugin">
+          <lst name="rewriteChain">
+      
+            <lst name="rewriter">
+              <!--
+      	         Note the rewriter ID:
+              -->
+              <str name="id">common1</str>
+              <str name="class">querqy.solr.SimpleCommonRulesRewriterFactory</str>
+              <str name="rules">rules.txt</str>
+                      <!-- ... -->
+            </lst>
+          </lst>
+        </queryParser>
 
-.. code-block:: xml
-   :linenos:
-   :emphasize-lines: 8
+      We can order the rules by the value of the 'priority' property in descending
+      order and tell Querqy that it should only apply the rule with the highest
+      priority using the following request parameters:
 
-   <queryParser name="querqy" class="querqy.solr.DefaultQuerqyDismaxQParserPlugin">
-     <lst name="rewriteChain">
-
-       <lst name="rewriter">
-         <!--
-	         Note the rewriter ID:
-         -->
-         <str name="id">common1</str>
-         <str name="class">querqy.solr.SimpleCommonRulesRewriterFactory</str>
-         <str name="rules">rules.txt</str>
-                <!-- ... -->
-       </lst>
-     </lst>
-   </queryParser>
-
-.. raw:: html
-
-  </div>
-
-We can order the rules by the value of the 'priority' property in descending
-order and tell Querqy that it should only apply the rule with the highest
-priority using the following request parameters:
-
-.. rst-class:: elasticsearch
-
-.. raw:: html
-
- <div>
-
-``POST /myindex/_search``
-
-.. code-block:: JSON
-   :linenos:
-   :emphasize-lines: 12-15
-
-   {
-     "query": {
-         "querqy": {
-             "matching_query": {
-                 "query": "notebook"
-             },
-             "query_fields": [ "title^3.0", "brand^2.1", "shortSummary"],
-             "rewriters": [
-                 {
-                     "name": "common_rules",
-                     "params": {
-                         "criteria": {
-                             "sort": "priority desc",
-                             "limit": 1
-                         }
-                     }
-                 }
-             ]
-         }
-     }
-   }
-
-.. raw:: html
-
- </div>
-
-
-.. rst-class:: solr
-
-.. raw:: html
-
- <div>
-
-.. code-block:: Text
-
-   querqy.common1.criteria.sort=priority desc
-   querqy.common1.criteria.limit=1
-
-The parameters have a common prefix 'querqy.common1.criteria' where 'common1'
-matches the rewriter ID that was configured in solrconfig.xml. This allows us to
-scope the rule selection and ordering per rewriter.
-
-.. raw:: html
-
-  </div>
+      .. code-block:: Text
+      
+        querqy.common1.criteria.sort=priority desc
+        querqy.common1.criteria.limit=1
+      
+      The parameters have a common prefix 'querqy.common1.criteria' where 'common1'
+      matches the rewriter ID that was configured in solrconfig.xml. This allows us to
+      scope the rule selection and ordering per rewriter.
 
 ``sort`` specifies the property to sort by and the sort order, which can
 take the values 'asc' and 'desc'
@@ -897,56 +848,53 @@ there are for the top priority value.
 
 The problem can be solved by adding another parameter:
 
-.. rst-class:: elasticsearch
+.. tabs::
 
-.. raw:: html
+   .. group-tab:: Elasticsearch/OpenSearch
 
-  <div>
+      ``POST /myindex/_search``
+      
+      
+      .. code-block:: JSON
+        :linenos:
+        :emphasize-lines: 15
+      
+        {
+          "query": {
+              "querqy": {
+                  "matching_query": {
+                      "query": "notebook"
+                  },
+                  "query_fields": [ "title^3.0", "brand^2.1", "shortSummary"],
+                  "rewriters": [
+                      {
+                          "name": "common_rules",
+                          "params": {
+                              "criteria": {
+                                  "sort": "priority desc",
+                                  "limit": 1,
+                                  "limitByLevel": true
+                              }
+                          }
+                      }
+                  ]
+              }
+          }
+        }
+
+   .. group-tab:: Solr
+
+      .. code-block:: Text
+        :emphasize-lines: 3
+      
+        querqy.common1.criteria.sort=priority desc
+        querqy.common1.criteria.limit=1
+        querqy.common1.criteria.limitByLevel=true
 
 
-``POST /myindex/_search``
 
 
-.. code-block:: JSON
-   :linenos:
-   :emphasize-lines: 15
 
-   {
-     "query": {
-         "querqy": {
-             "matching_query": {
-                 "query": "notebook"
-             },
-             "query_fields": [ "title^3.0", "brand^2.1", "shortSummary"],
-             "rewriters": [
-                 {
-                     "name": "common_rules",
-                     "params": {
-                         "criteria": {
-                             "sort": "priority desc",
-                             "limit": 1,
-                             "limitByLevel": true
-                         }
-                     }
-                 }
-             ]
-         }
-     }
-   }
-
-
-.. raw:: html
-
-  </div>
-
-.. rst-class:: solr
-
-.. code-block:: Text
-   :emphasize-lines: 3
-
-   querqy.common1.criteria.sort=priority desc
-   querqy.common1.criteria.limit=1
-   querqy.common1.criteria.limitByLevel=true
 
 
 
@@ -960,35 +908,38 @@ would select the first 5 elements in the list [10, 10, 8, 8, 8, 5, 4, 4].
 Rules can also be filtered by properties using `JsonPath`_ expressions, where
 the general parameter syntax is:
 
-.. rst-class:: elasticsearch
+.. tabs::
 
-.. code-block:: JSON
-   :linenos:
-   :emphasize-lines: 9
+   .. group-tab:: Elasticsearch/OpenSearch
 
-   {
-     "query": {
-         "querqy": {
-             "rewriters": [
-                 {
-                     "name": "common_rules",
-                     "params": {
-                         "criteria": {
-                             "filter": "<JsonPath expression>"
-                         }
-                     }
-                 }
-             ]
-         }
-     }
-   }
+      .. code-block:: JSON
+        :linenos:
+        :emphasize-lines: 9
+      
+        {
+          "query": {
+              "querqy": {
+                  "rewriters": [
+                      {
+                          "name": "common_rules",
+                          "params": {
+                              "criteria": {
+                                  "filter": "<JsonPath expression>"
+                              }
+                          }
+                      }
+                  ]
+              }
+          }
+        }
+
+   .. group-tab:: Solr
+
+      .. code-block:: Text
+      
+        querqy.common1.criteria.filter=<JsonPath expression>
 
 
-.. rst-class:: solr
-
-.. code-block:: Text
-
-  querqy.common1.criteria.filter=<JsonPath expression>
 
 The properties that where defined at a given Querqy rule are considered a
 JSON document and a rule filter matches the rule if the JsonPath expression
@@ -1034,186 +985,157 @@ Reference
 Configuration
 -------------
 
-.. include:: ../se-section.txt
+.. tabs::
 
-.. rst-class:: elasticsearch
+   .. group-tab:: Elasticsearch/OpenSearch
 
-.. raw:: html
+      ``PUT  /_querqy/rewriter/common_rules``
+      
+      .. code-block:: JSON
+        :linenos:
+      
+        {
+          "class": "querqy.elasticsearch.rewriter.SimpleCommonRulesRewriterFactory",
+          "config": {
+              "rules" : "notebook =>\nSYNONYM: laptop",
+              "ignoreCase": true,
+              "querqyParser": "querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory"
+          }
+        }
+      
+      rules
+        The rule definitions
+      
+        Default: (empty = no rules)
+      
+      ignoreCase
+        Ignore case in input matching for rules?
+      
+        Default: ``true``
+      
+      querqyParser
+        The querqy.rewrite.commonrules.QuerqyParserFactory to use for parsing strings
+        from the right-hand side of rules into query objects
+      
+        Default: ``querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory``
 
- <div>
+   .. group-tab:: Solr
 
-``PUT  /_querqy/rewriter/common_rules``
-
-.. code-block:: JSON
-   :linenos:
-
-   {
-     "class": "querqy.elasticsearch.rewriter.SimpleCommonRulesRewriterFactory",
-     "config": {
-        "rules" : "notebook =>\nSYNONYM: laptop",
-        "ignoreCase": true,
-        "querqyParser": "querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory"
-     }
-   }
-
-rules
-  The rule definitions
-
-  Default: (empty = no rules)
-
-ignoreCase
-  Ignore case in input matching for rules?
-
-  Default: ``true``
-
-querqyParser
-  The querqy.rewrite.commonrules.QuerqyParserFactory to use for parsing strings
-  from the right-hand side of rules into query objects
-
-  Default: ``querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory``
-
-.. raw:: html
-
-   </div>
-
-.. rst-class:: solr
-
-.. raw:: html
-
- <div>
-
-**Querqy 5**
-
-.. code-block:: JSON
-
-  {
-    "class": "querqy.solr.rewriter.commonrules.CommonRulesRewriterFactory",
-    "config": {
-        "rules" : "notebook =>\nSYNONYM: laptop",
-        "ignoreCase" : true,
-        "buildTermCache": true,
-        "boostMethod": "MULTIPLICATIVE",
-        "allowBooleanInput": true,
-        "querqyParser": "querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory"
-    }
-  }
-
-
-**Querqy 4**
-
-
-.. code-block:: xml
-
-   <lst name="rewriter">
-     <str name="class">querqy.solr.SimpleCommonRulesRewriterFactory</str>
-     <str name="rules">rules.txt</str>
-     <bool name="ignoreCase">true</bool>
-     <bool name="buildTermCache">true</bool>
-     <str name="boostMethod">MULTIPLICATIVE</str>
-     <str name="querqyParser">querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory</str>
-   </lst>
-
-rules
-  *Querqy 5*: A property containing the rules for rewriting. Remember to escape
-  the rules for JSON.
-
-  *Querqy 4*: The rule definitions file containing the rules for rewriting. The
-  file is kept in the configset of the collection in ZooKeeper (SolrCloud) or in
-  the 'conf' folder of the Solr core in standalone or master-slave Solr.
-
-  Note that the default maximum file size in ZooKeeper is 1 MB. For Querqy 4,
-  the file can be gzipped. Querqy will auto-detect whether the file is
-  compressed, regardless of the file name. Querqy 5 will compress and split
-  files automatically.
-
-  Required.
-
-ignoreCase
-  Ignore case in input matching for rules?
-
-  Default: ``true``
-
-buildTermCache
-  Whether to build a term cache from matching terms. This is a optimization
-  that might not be feasable for very large rule lists.
-
-  Default: ``true``
-
-boostMethod
-  *Querqy 5.4*: How to combine UP/DOWN boosts with the score of the main user
-  query. Available methods are ADDITIVE and MULTIPLICATIVE.
-
-  Default: ``ADDITIVE``
-
-allowBooleanInput
-  *Querqy 5.0*: Whether to interpret the rule input definitions as boolean
-  expressions.
-
-  Default: ``false``
-
-querqyParser
-  The querqy.rewrite.commonrules.QuerqyParserFactory to use for parsing strings
-  from the right-hand side of rules into query objects
-
-  Default: ``querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory``
-
-
-.. raw:: html
-
- </div>
-
+      **Querqy 5**
+      
+      .. code-block:: JSON
+      
+        {
+          "class": "querqy.solr.rewriter.commonrules.CommonRulesRewriterFactory",
+          "config": {
+              "rules" : "notebook =>\nSYNONYM: laptop",
+              "ignoreCase" : true,
+              "buildTermCache": true,
+              "boostMethod": "MULTIPLICATIVE",
+              "allowBooleanInput": true,
+              "querqyParser": "querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory"
+          }
+        }
+      
+      
+      **Querqy 4**
+      
+      
+      .. code-block:: xml
+      
+        <lst name="rewriter">
+          <str name="class">querqy.solr.SimpleCommonRulesRewriterFactory</str>
+          <str name="rules">rules.txt</str>
+          <bool name="ignoreCase">true</bool>
+          <bool name="buildTermCache">true</bool>
+          <str name="boostMethod">MULTIPLICATIVE</str>
+          <str name="querqyParser">querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory</str>
+        </lst>
+      
+      rules
+        *Querqy 5*: A property containing the rules for rewriting. Remember to escape
+        the rules for JSON.
+      
+        *Querqy 4*: The rule definitions file containing the rules for rewriting. The
+        file is kept in the configset of the collection in ZooKeeper (SolrCloud) or in
+        the 'conf' folder of the Solr core in standalone or master-slave Solr.
+      
+        Note that the default maximum file size in ZooKeeper is 1 MB. For Querqy 4,
+        the file can be gzipped. Querqy will auto-detect whether the file is
+        compressed, regardless of the file name. Querqy 5 will compress and split
+        files automatically.
+      
+        Required.
+      
+      ignoreCase
+        Ignore case in input matching for rules?
+      
+        Default: ``true``
+      
+      buildTermCache
+        Whether to build a term cache from matching terms. This is a optimization
+        that might not be feasable for very large rule lists.
+      
+        Default: ``true``
+      
+      boostMethod
+        *Querqy 5.4*: How to combine UP/DOWN boosts with the score of the main user
+        query. Available methods are ADDITIVE and MULTIPLICATIVE.
+      
+        Default: ``ADDITIVE``
+      
+      allowBooleanInput
+        *Querqy 5.0*: Whether to interpret the rule input definitions as boolean
+        expressions.
+      
+        Default: ``false``
+      
+      querqyParser
+        The querqy.rewrite.commonrules.QuerqyParserFactory to use for parsing strings
+        from the right-hand side of rules into query objects
+      
+        Default: ``querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory``
+      
 
 Request
 -------
 
-.. rst-class:: elasticsearch
+.. tabs::
 
-.. raw:: html
+   .. group-tab:: Elasticsearch/OpenSearch
 
- <div>
+      .. code-block:: JSON
+        :linenos:
+        :emphasize-lines: 8-13
+      
+        {
+          "query": {
+              "querqy": {
+                  "rewriters": [
+                      {
+                          "name": "common_rules",
+                          "params": {
+                              "criteria": {
+                                  "filter": "<JsonPath expression>",
+                                  "sort": "<sort property asc|desc>",
+                                  "limit": 1,
+                                  "limitByLevel": true
+                              }
+                          }
+                      }
+                  ]
+              }
+          }
+        }
+      
 
-.. code-block:: JSON
-   :linenos:
-   :emphasize-lines: 8-13
+   .. group-tab:: Solr
 
-   {
-     "query": {
-         "querqy": {
-             "rewriters": [
-                 {
-                     "name": "common_rules",
-                     "params": {
-                         "criteria": {
-                             "filter": "<JsonPath expression>",
-                             "sort": "<sort property asc|desc>",
-                             "limit": 1,
-                             "limitByLevel": true
-                         }
-                     }
-                 }
-             ]
-         }
-     }
-   }
+      Parameters must be prefixed by ``querqy.<rewriter id>.``
+      
+      Example: ``querqy.common1.criteria.sort=priority desc`` - set 'criteria.sort'
+      for rewriter 'common1'.
 
-.. raw:: html
-
-    </div>
-
-.. rst-class:: solr
-
-.. raw:: html
-
-     <div>
-
-Parameters must be prefixed by ``querqy.<rewriter id>.``
-
-Example: ``querqy.common1.criteria.sort=priority desc`` - set 'criteria.sort'
-for rewriter 'common1'.
-
-.. raw:: html
-
-  </div>
 
 criteria.filter
   Only apply rules that match the filter. A JsonPath_ expression that is
