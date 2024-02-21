@@ -70,3 +70,18 @@ Here is a template for the tabs:
 
       Solr tab content - tab set 1
 ```
+
+or
+
+
+```
+.. tabs::
+
+   .. group-tab:: Elasticsearch/OpenSearch
+
+      Elasticsearch/OpenSearch tab content - tab set 1
+
+   .. group-tab:: Solr
+
+      Solr tab content - tab set 1
+```
