@@ -117,7 +117,7 @@ html_static_path = ['_static']
 
 html_css_files = ['css/custom.css']
 
-html_js_files = ['js/custom.js']
+html_js_files = ['js/jquery-3.6.0.min.js','js/custom.js']
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
