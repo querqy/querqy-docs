@@ -374,10 +374,8 @@ Reference
         'matching_query'. A 'querqy' query allows to control two main types of
         boosting queries:
       
-        #. ``rewritten_queries`` - boost queries that are produced as part of query
-          rewriting
-        #. ``phrase_boosts`` - (partial) phrases that are derived from the query
-          string for boosting documents that contain corresponding phrase matches
+        #. ``rewritten_queries`` - boost queries that are produced as part of query rewriting
+        #. ``phrase_boosts`` - (partial) phrases that are derived from the query string for boosting documents that contain corresponding phrase matches
       
         Scores from both types of boosting queries will be *added* to the score of the
         'matching_query'.
