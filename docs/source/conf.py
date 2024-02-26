@@ -33,6 +33,7 @@
 # ones.
 extensions = ['sphinx.ext.intersphinx',
     'sphinx.ext.imgmath',
+    'sphinx_tabs.tabs',
     'sphinx.ext.ifconfig']
 
 # Add any paths that contain templates here, relative to this directory.

@@ -31,78 +31,63 @@ Setup
 
 As a first step, the Replace Rewriter is configured
 
-.. include:: ../se-section.txt
+.. tabs::
 
-.. rst-class:: elasticsearch
+   .. group-tab:: Elasticsearch/OpenSearch
 
-.. raw:: html
+      ``PUT  /_querqy/rewriter/replace``
+      
+      .. code-block:: JSON
+        :linenos:
+        :emphasize-lines: 4-7
+      
+        {
+            "class": "querqy.elasticsearch.rewriter.ReplaceRewriterFactory",
+            "config": {
+                  "rules":  "mobiles => mobile",
+                  "ignoreCase": true,
+                  "inputDelimiter": ";",
+                  "querqyParser": "querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory"
+            }
+        }
+      
+      .. include:: hint-opensearch.txt
 
- <div>
+   .. group-tab:: Solr
 
-``PUT  /_querqy/rewriter/replace``
-
-.. code-block:: JSON
-   :linenos:
-   :emphasize-lines: 4-7
-
-   {
-       "class": "querqy.elasticsearch.rewriter.ReplaceRewriterFactory",
-       "config": {
-            "rules":  "mobiles => mobile",
-            "ignoreCase": true,
-            "inputDelimiter": ";",
-            "querqyParser": "querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory"
-       }
-   }
-
-.. include:: hint-opensearch.txt
-
-.. raw:: html
-
- </div>
-
-.. rst-class:: solr
-
-.. raw:: html
-
- <div>
-
-**Querqy 5**
-
-| :code:`POST /solr/mycollection/querqy/rewriter/replace?action=save`
-| :code:`Content-Type: application/json`
-
-.. code-block:: JSON
-   :linenos:
-   :emphasize-lines: 4-7
-
-   {
-       "class": "querqy.solr.rewriter.replace.ReplaceRewriterFactory",
-       "config": {
-            "rules":  "mobiles => mobile",
-            "ignoreCase": true,
-            "inputDelimiter": ";",
-            "querqyParser": "querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory"
-       }
-   }
-
-
-**Querqy 4**
-
-.. code-block:: xml
-   :linenos:
-
-   <lst name="rewriter">
-     <str name="class">querqy.solr.contrib.ReplaceRewriterFactory</str>
-     <str name="rules">replace-rules.txt</str>
-     <str name="ignoreCase">true</str>
-     <str name="inputDelimiter">;</str>
-     <str name="querqyParser">querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory</str>
-   </lst>
-
-.. raw:: html
-
-    </div>
+      **Querqy 5**
+      
+      | :code:`POST /solr/mycollection/querqy/rewriter/replace?action=save`
+      | :code:`Content-Type: application/json`
+      
+      .. code-block:: JSON
+        :linenos:
+        :emphasize-lines: 4-7
+      
+        {
+            "class": "querqy.solr.rewriter.replace.ReplaceRewriterFactory",
+            "config": {
+                  "rules":  "mobiles => mobile",
+                  "ignoreCase": true,
+                  "inputDelimiter": ";",
+                  "querqyParser": "querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory"
+            }
+        }
+      
+      
+      **Querqy 4**
+      
+      .. code-block:: xml
+        :linenos:
+      
+        <lst name="rewriter">
+          <str name="class">querqy.solr.contrib.ReplaceRewriterFactory</str>
+          <str name="rules">replace-rules.txt</str>
+          <str name="ignoreCase">true</str>
+          <str name="inputDelimiter">;</str>
+          <str name="querqyParser">querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory</str>
+        </lst>
+      
 
 The replace rules must be specified in a property ``rules`` (Elasticsearch,
 Querqy 5 for Solr). Remember to JSON-escape the value of this property.

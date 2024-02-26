@@ -32,126 +32,108 @@ category and product type fields.
 Setting up a Word Break Rewriter
 ================================
 
-.. include:: ../se-section.txt
+.. tabs::
 
-.. rst-class:: elasticsearch
+   .. group-tab:: Elasticsearch/OpenSearch
 
-.. raw:: html
-
- <div>
-
-``PUT  /_querqy/rewriter/word_break``
-
-.. code-block:: JSON
-   :linenos:
-   :emphasize-lines: 4-11
-
-   {
-       "class": "querqy.elasticsearch.rewriter.WordBreakCompoundRewriterFactory",
-       "config": {
-            "dictionaryField" :  "dictionary",
-            "lowerCaseInput": true,
-            "decompound": {
-                "maxExpansions": 5,
-                "verifyCollation": true
-            },
-            "reverseCompoundTriggerWords": ["for"],
-            "morphology": "GERMAN"
-       }
-   }
-
-.. include:: hint-opensearch.txt
-
-.. raw:: html
-
- </div>
-
-.. rst-class:: solr
-
-.. raw:: html
-
- <div>
-
-**Querqy 5**
-
-| :code:`POST /solr/mycollection/querqy/rewriter/word_break?action=save`
-| :code:`Content-Type: application/json`
-
-Querqy 5.3 and greater:
-
-.. code-block:: JSON
-   :linenos:
-
-   {
-       "class": "querqy.solr.rewriter.wordbreak.WordBreakCompoundRewriterFactory",
-       "config": {
-            "dictionaryField" :  "dictionary",
-            "lowerCaseInput": true,
-            "decompound": {
-                "maxExpansions": 5,
-                "verifyCollation": true,
-                "morphology": "GERMAN"
-            },
-            "compound": {
-                "morphology": "GERMAN"
-            },
-
-            "reverseCompoundTriggerWords": ["for"],
-            "protectedWords": ["slipper"]
-       }
-   }
-
-For backward compatibility, you can configure ``morphology`` still as in
-Querqy for Solr < 5.3 (= 'above' the ``decompound``/``compound`` level) but it
-would then only be applied for decompounding, mimicking the behaviour of versions
-< 5.3.
-
-Querqy 5.0 to 5.2:
-
-.. code-block:: JSON
-   :linenos:
-
-   {
-        "class": "querqy.solr.rewriter.wordbreak.WordBreakCompoundRewriterFactory",
-        "config": {
-             "dictionaryField" :  "dictionary",
-             "lowerCaseInput": true,
-             "decompound": {
-                 "maxExpansions": 5,
-                 "verifyCollation": true
-             },
-             "morphology": "GERMAN",
-             "reverseCompoundTriggerWords": ["for"],
-             "protectedWords": ["slipper"]
+      ``PUT  /_querqy/rewriter/word_break``
+      
+      .. code-block:: JSON
+        :linenos:
+        :emphasize-lines: 4-11
+      
+        {
+            "class": "querqy.elasticsearch.rewriter.WordBreakCompoundRewriterFactory",
+            "config": {
+                  "dictionaryField" :  "dictionary",
+                  "lowerCaseInput": true,
+                  "decompound": {
+                      "maxExpansions": 5,
+                      "verifyCollation": true
+                  },
+                  "reverseCompoundTriggerWords": ["for"],
+                  "morphology": "GERMAN"
+            }
         }
-    }
+      
+      .. include:: hint-opensearch.txt
 
-**Querqy 4**
+   .. group-tab:: Solr
 
-.. code-block:: xml
-   :linenos:
-
-   <lst name="rewriter">
-     <str name="class">querqy.solr.contrib.WordBreakCompoundRewriterFactory</str>
-     <str name="dictionaryField">f1</str>
-     <bool name="lowerCaseInput">true</bool>
-     <int name="decompound.maxExpansions">5</int>
-     <bool name="decompound.verifyCollation">true</bool>
-     <str name="morphology">GERMAN</str>
-     <arr name="reverseCompoundTriggerWords">
-       <str>for</str>
-     </arr>
-     <arr name="protectedWords">
-       <str>slipper</str>
-       <str>wissenschaft</str>
-     </arr>
-   </lst>
-
-
-.. raw:: html
-
-    </div>
-
+      **Querqy 5**
+      
+      | :code:`POST /solr/mycollection/querqy/rewriter/word_break?action=save`
+      | :code:`Content-Type: application/json`
+      
+      Querqy 5.3 and greater:
+      
+      .. code-block:: JSON
+        :linenos:
+      
+        {
+            "class": "querqy.solr.rewriter.wordbreak.WordBreakCompoundRewriterFactory",
+            "config": {
+                  "dictionaryField" :  "dictionary",
+                  "lowerCaseInput": true,
+                  "decompound": {
+                      "maxExpansions": 5,
+                      "verifyCollation": true,
+                      "morphology": "GERMAN"
+                  },
+                  "compound": {
+                      "morphology": "GERMAN"
+                  },
+      
+                  "reverseCompoundTriggerWords": ["for"],
+                  "protectedWords": ["slipper"]
+            }
+        }
+      
+      For backward compatibility, you can configure ``morphology`` still as in
+      Querqy for Solr < 5.3 (= 'above' the ``decompound``/``compound`` level) but it
+      would then only be applied for decompounding, mimicking the behaviour of versions
+      < 5.3.
+      
+      Querqy 5.0 to 5.2:
+      
+      .. code-block:: JSON
+        :linenos:
+      
+        {
+              "class": "querqy.solr.rewriter.wordbreak.WordBreakCompoundRewriterFactory",
+              "config": {
+                  "dictionaryField" :  "dictionary",
+                  "lowerCaseInput": true,
+                  "decompound": {
+                      "maxExpansions": 5,
+                      "verifyCollation": true
+                  },
+                  "morphology": "GERMAN",
+                  "reverseCompoundTriggerWords": ["for"],
+                  "protectedWords": ["slipper"]
+              }
+          }
+      
+      **Querqy 4**
+      
+      .. code-block:: xml
+        :linenos:
+      
+        <lst name="rewriter">
+          <str name="class">querqy.solr.contrib.WordBreakCompoundRewriterFactory</str>
+          <str name="dictionaryField">f1</str>
+          <bool name="lowerCaseInput">true</bool>
+          <int name="decompound.maxExpansions">5</int>
+          <bool name="decompound.verifyCollation">true</bool>
+          <str name="morphology">GERMAN</str>
+          <arr name="reverseCompoundTriggerWords">
+            <str>for</str>
+          </arr>
+          <arr name="protectedWords">
+            <str>slipper</str>
+            <str>wissenschaft</str>
+          </arr>
+        </lst>
 
 
 The Word Break Rewriter is backed by a dictionary of known words. The
@@ -182,20 +164,7 @@ word splits. For example, the word 'action' will not be split into 'act + ion'
 as long as the 'act' and 'ion' do not co-occur in the dictionaryField of a
 document.
 
-
-.. rst-class:: solr
-
-.. raw:: html
-
- <div>
-
-Words provided on the list of ``protectedWords`` will be exempt from
-decompounding.
-
-.. raw:: html
-
- </div>
-
+.. hint:: When using Solr, words provided on the list of ``protectedWords`` will be exempt from decompounding.
 
 
 By default, it is assumed that words that together form compound word
@@ -234,42 +203,40 @@ Reference
 Configuration
 -------------
 
-.. include:: ../se-section.txt
 
-.. rst-class:: elasticsearch
+.. tabs::
 
-.. raw:: html
+   .. group-tab:: Elasticsearch/OpenSearch
 
- <div>
+      ``PUT  /_querqy/rewriter/word_break``
+      
+      .. code-block:: JSON
+        :linenos:
+      
+        {
+            "class": "querqy.elasticsearch.rewriter.WordBreakCompoundRewriterFactory",
+            "config": {
+                  "dictionaryField" :  "dictionary",
+                  "minSuggestionFreq": 3,
+                  "minBreakLength": 4,
+                  "maxCombineLength": 30,
+                  "lowerCaseInput": true,
+                  "decompound": {
+                      "maxExpansions": 5,
+                      "verifyCollation": true
+                  },
+                  "morphology": "GERMAN",
+                  "reverseCompoundTriggerWords": ["for", "from", "of"],
+                  "alwaysAddReverseCompounds": true
+      
+            }
+        }
+      
 
-``PUT  /_querqy/rewriter/word_break``
+   .. group-tab:: Solr
 
-.. code-block:: JSON
-   :linenos:
-
-   {
-       "class": "querqy.elasticsearch.rewriter.WordBreakCompoundRewriterFactory",
-       "config": {
-            "dictionaryField" :  "dictionary",
-            "minSuggestionFreq": 3,
-            "minBreakLength": 4,
-            "maxCombineLength": 30,
-            "lowerCaseInput": true,
-            "decompound": {
-                "maxExpansions": 5,
-                "verifyCollation": true
-            },
-            "morphology": "GERMAN",
-            "reverseCompoundTriggerWords": ["for", "from", "of"],
-            "alwaysAddReverseCompounds": true
-
-       }
-   }
-
-.. raw:: html
-
- </div>
-
+      Needs example
+      
 
 dictionaryField
   The field containing the words for splitting compounds. Should be lowercased.

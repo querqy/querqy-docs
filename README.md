@@ -49,3 +49,39 @@ Browse the docs at [http://localhost:8000](http://localhost:8000):
 ```
 docker run -it -p 8000:80 -v $PWD/docs/build/html:/usr/share/caddy/ caddy
 ```
+
+
+### Tabs Structure
+
+Here is a template for the tabs:
+
+```
+.. tabs::
+
+   .. group-tab:: Elasticsearch
+
+      Elasticsearch tab content - tab set 1
+
+   .. group-tab:: OpenSearch
+
+      OpenSearch tab content - tab set 1
+
+   .. group-tab:: Solr
+
+      Solr tab content - tab set 1
+```
+
+or
+
+
+```
+.. tabs::
+
+   .. group-tab:: Elasticsearch/OpenSearch
+
+      Elasticsearch/OpenSearch tab content - tab set 1
+
+   .. group-tab:: Solr
+
+      Solr tab content - tab set 1
+```
