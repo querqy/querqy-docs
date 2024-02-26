@@ -164,8 +164,7 @@ word splits. For example, the word 'action' will not be split into 'act + ion'
 as long as the 'act' and 'ion' do not co-occur in the dictionaryField of a
 document.
 
-.. hint:: When using Solr, words provided on the list of ``protectedWords`` will be exempt from
-decompounding.
+.. hint:: When using Solr, words provided on the list of ``protectedWords`` will be exempt from decompounding.
 
 
 By default, it is assumed that words that together form compound word
