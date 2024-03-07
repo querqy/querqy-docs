@@ -200,6 +200,9 @@ The following settings are optional and define the general SMUI behaviour:
    * - ``smui.target-environment.config``
      - Target environment configuration (e.g. for preview links). See below for details.
      - Empty target environment. **NOTE:** There will come a dummy config showcasing this feature withz upcoming (majo) releases.
+   * - ``smui.rule-usage-statistics``
+     - Enable reporting of rules usage.
+     - No rules usage report.
 
 .. note::
 
