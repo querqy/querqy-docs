@@ -41,68 +41,52 @@ For Solr, the JSON file is put into the ZooKeeper; for Elasticsearch/OpenSearch,
 the JSON is put into a string value for the property ``config``.
 
 
-.. include:: ../se-section.txt
+.. tabs::
 
-.. rst-class:: elasticsearch
+   .. group-tab:: Elasticsearch/OpenSearch
 
-.. raw:: html
+      ``PUT  /_querqy/rewriter/numberunit``
+      
+      .. code-block:: JSON
+        :linenos:
+      
+        {
+            "class": "querqy.elasticsearch.rewriter.NumberUnitRewriterFactory",
+            "config": {
+                  "config":  "{ \"numberUnitDefinitions\": [ ... ] }"
+            }
+        }
+      
+      .. include:: hint-opensearch.txt
 
- <div>
+   .. group-tab:: Solr
 
-``PUT  /_querqy/rewriter/numberunit``
-
-.. code-block:: JSON
-   :linenos:
-
-   {
-       "class": "querqy.elasticsearch.rewriter.NumberUnitRewriterFactory",
-       "config": {
-            "config":  "{ \"numberUnitDefinitions\": [ ... ] }"
-       }
-   }
-
-.. include:: hint-opensearch.txt
-
-.. raw:: html
-
- </div>
-
-.. rst-class:: solr
-
-.. raw:: html
-
- <div>
-
-**Querqy 5**
-
-| :code:`POST /solr/mycollection/querqy/rewriter/number_unit?action=save`
-| :code:`Content-Type: application/json`
-
-.. code-block:: JSON
-   :linenos:
-
-   {
-       "class": "querqy.solr.rewriter.numberunit.NumberUnitRewriterFactory",
-       "config": {
-            "config":  "{ \"numberUnitDefinitions\": [ ... ] }"
-       }
-   }
-
-
-**Querqy 4**
-
-.. code-block:: xml
-   :linenos:
-
-   <lst name="rewriter">
-     <str name="class">querqy.solr.contrib.NumberUnitRewriterFactory</str>
-     <str name="config">number-unit-config.json</str>
-   </lst>
-
-.. raw:: html
-
-    </div>
-
+      **Querqy 5**
+      
+      | :code:`POST /solr/mycollection/querqy/rewriter/number_unit?action=save`
+      | :code:`Content-Type: application/json`
+      
+      .. code-block:: JSON
+        :linenos:
+      
+        {
+            "class": "querqy.solr.rewriter.numberunit.NumberUnitRewriterFactory",
+            "config": {
+                  "config":  "{ \"numberUnitDefinitions\": [ ... ] }"
+            }
+        }
+      
+      
+      **Querqy 4**
+      
+      .. code-block:: xml
+        :linenos:
+      
+        <lst name="rewriter">
+          <str name="class">querqy.solr.contrib.NumberUnitRewriterFactory</str>
+          <str name="config">number-unit-config.json</str>
+        </lst>
+      
 
 Configuring filter queries
 ==========================
