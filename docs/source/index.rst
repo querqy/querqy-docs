@@ -68,6 +68,7 @@ OpenSearch, :ref:`get started here <querqy-index>`!
    smui/index
    smui/quickstart
    smui/config
+   smui/smui_feature_highlights
    smui/using-smui
    smui/dev-setup
    smui/release-notes
