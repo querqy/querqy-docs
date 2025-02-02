@@ -50,7 +50,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'querqy.org'
-copyright = '2020-24, querqy.org documentation authors'
+copyright = '2020-25, querqy.org documentation authors'
 author = 'René Kriegler'
 
 # The version info for the project you're documenting, acts as replacement for
