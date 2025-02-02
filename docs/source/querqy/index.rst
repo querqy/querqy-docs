@@ -43,7 +43,10 @@ Installation
       
         <select class="es-url-select"
           onChange="setESURL(this.options[this.selectedIndex].value);">
-          <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.7.es892.0/querqy-elasticsearch-1.7.es892.0.zip">Elasticsearch 8.9.2</option>
+          <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.7.es8171.0/querqy-elasticsearch-1.7.es8171.0.zip">Elasticsearch 8.17.1</option>
+          <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.7.es8150.0/querqy-elasticsearch-1.7.es8150.0.zip">8.15.0</option>
+          <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.7.es8114.0/querqy-elasticsearch-1.7.es8114.0.zip">8.11.4</option>
+          <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.7.es892.0/querqy-elasticsearch-1.7.es892.0.zip">8.9.2</option>
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.7.es853.0/querqy-elasticsearch-1.7.es853.0.zip">8.5.3</option>
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es843.0/querqy-elasticsearch-1.6.es843.0.zip">8.4.3</option>
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es841.0/querqy-elasticsearch-1.6.es841.0.zip">8.4.1</option>
@@ -96,14 +99,14 @@ Installation
         </select>
         <br/>
         <br/>
-      
+
+      .. rst-class:: elasticsearch-version
       
       .. code-block:: shell
       
-      
         ./bin/elasticsearch-plugin install \
-          "https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.7.es892.0/querqy-elasticsearch-1.7.es892.0.zip"      
-          
+          "https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.7.es8171.0/querqy-elasticsearch-1.7.es8171.0.zip"
+
       * Answer :code:`yes` to the security related questions (Querqy needs special
         permissions to load query rewriters dynamically).
       * When you start Elasticsearch, you should see an INFO log message
