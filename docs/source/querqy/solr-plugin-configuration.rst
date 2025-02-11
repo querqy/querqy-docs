@@ -399,3 +399,201 @@ next time when rewriters are saved.
 .. [1] The queryParser class in the example below is
   :code:`querqy.solr.QuerqyDismaxQParserPlugin` for Query 5 and
   :code:`querqy.solr.DefaultQuerqyDismaxQParserPlugin` for Query 4.
+
+Selecting rewriter storage (Querqy 5.9+)
+----------------------------------------
+
+By default querqy automatically selects a suitable rewriter storage depending
+if your Solr instance is running in SolrCloud mode or standalone mode.
+
+Beginning with Querqy 5.9, you can override the rewriter storage defaults by setting the
+optional :code:`rewriterStorage` property of the querqy request handler.
+
+.. code-block:: xml
+
+   <requestHandler name="/querqy/rewriter" class="querqy.solr.QuerqyRewriterRequestHandler">
+     <str name="rewriterStorage">index</str>
+   </requestHandler>
+
+.. list-table:: Available storage options
+   :header-rows: 1
+
+   * - rewriterStorage
+     - Purpose
+   * - zk
+     - ZooKeeper based storage, default for SolrCloud
+   * - confDir
+     - File based storage, default for standalone Solr
+   * - index
+     - Index based storage, suitable for user managed clusters (classic index replication)
+   * - inMemory
+     - Ephemeral in-memory storage, suitable for testing or when using the ClassicRewriteChainLoader
+
+.. note::
+   Prior to Querqy 5.9 in-memory storage was enabled by :code:`<bool name="inMemory">true</bool>` in the querqy request handler. This configuration optional is still available but will be removed in a future release.
+
+Index based storage (Querqy 5.9+)
+---------------------------------
+
+Querqy 5.9 introduces a new rewriter storage option that stores rewriter configuration
+in a Solr index.
+
+Scenarios where index based storage is suitable:
+
+* User managed clusters (classic index replication)
+* Solr is deployed with self-contained container images, with Solr home (not data) residing in read-only filesystem
+
+The index based storage is enabled by setting the :code:`rewriterStorage`
+property of the querqy request handler to :code:`index`.
+
+.. code-block:: xml
+
+   <requestHandler name="/querqy/rewriter" class="querqy.solr.QuerqyRewriterRequestHandler">
+     <str name="rewriterStorage">index</str>
+   </requestHandler>
+
+When enabled, the querqy request handler will save the rewriter configuration in a solr index named :code:`querqy`.
+
+.. list-table:: Advanced configuration options
+   :header-rows: 1
+
+   * - Option
+     - Default value
+     - Purpose
+   * - configIndexName
+     - querqy
+     - Name of the Solr index used for storing rewriter configurations
+   * - configPollingInterval
+     - PT20S
+     - Interval for polling the rewriter configuration index for changes on follower nodes
+
+The querqy configuration index must be configured to use the following configuration:
+
+schema.xml:
+
+.. code-block:: xml
+   :linenos:
+
+   <?xml version="1.0" encoding="UTF-8" ?>
+   <schema name="querqy" version="1.6">
+       <fields>
+           <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+           <field name="_version_" type="plong" indexed="false" stored="false" />
+           <field name="core" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+           <field name="rewriterId" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+           <field name="data" type="binary" indexed="false" stored="true" required="true" multiValued="false" />
+           <field name="confVersion" type="pint" indexed="false" stored="true" required="true" multiValued="false" />
+       </fields>
+       <uniqueKey>id</uniqueKey>
+       <types>
+           <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
+           <fieldType name="pint" class="solr.IntPointField" docValues="true"/>
+           <fieldType name="plong" class="solr.LongPointField" docValues="true"/>
+           <fieldType name="binary" class="solr.BinaryField"/>
+       </types>
+   </schema>
+
+solrconfig.xml:
+
+.. code-block:: xml
+   :linenos:
+
+   <?xml version="1.0" encoding="UTF-8" ?>
+   <config>
+
+       <luceneMatchVersion>9.0.0</luceneMatchVersion>
+
+       <dataDir>${solr.data.dir:}</dataDir>
+
+       <directoryFactory name="DirectoryFactory"
+                         class="${solr.directoryFactory:solr.NRTCachingDirectoryFactory}"/>
+
+       <codecFactory class="solr.SchemaCodecFactory"/>
+
+       <schemaFactory class="ClassicIndexSchemaFactory"/>
+
+       <indexConfig>
+           <lockType>${solr.lock.type:native}</lockType>
+           <infoStream>true</infoStream>
+       </indexConfig>
+
+       <updateHandler class="solr.DirectUpdateHandler2">
+           <updateLog>
+               <str name="dir">${solr.ulog.dir:}</str>
+           </updateLog>
+           <autoCommit>
+               <maxTime>${solr.autoCommit.maxTime:15000}</maxTime>
+               <openSearcher>false</openSearcher>
+           </autoCommit>
+           <autoSoftCommit>
+               <maxTime>${solr.autoSoftCommit.maxTime:-1}</maxTime>
+           </autoSoftCommit>
+       </updateHandler>
+
+       <query>
+           <maxBooleanClauses>1024</maxBooleanClauses>
+           <filterCache size="512"
+                        initialSize="512"
+                        autowarmCount="0"/>
+           <queryResultCache size="512"
+                             initialSize="512"
+                             autowarmCount="0"/>
+           <documentCache size="512"
+                          initialSize="512"
+                          autowarmCount="0"/>
+           <cache name="perSegFilter"
+                  size="10"
+                  initialSize="0"
+                  autowarmCount="10"
+                  regenerator="solr.NoOpRegenerator"/>
+           <enableLazyFieldLoading>true</enableLazyFieldLoading>
+           <queryResultWindowSize>20</queryResultWindowSize>
+           <queryResultMaxDocsCached>200</queryResultMaxDocsCached>
+           <listener event="newSearcher" class="solr.QuerySenderListener">
+               <arr name="queries">
+                   <!--
+                      <lst><str name="q">solr</str><str name="sort">price asc</str></lst>
+                      <lst><str name="q">rocks</str><str name="sort">weight asc</str></lst>
+                     -->
+               </arr>
+           </listener>
+           <listener event="firstSearcher" class="solr.QuerySenderListener">
+               <arr name="queries">
+                   <lst>
+                       <str name="q">static firstSearcher warming in solrconfig.xml</str>
+                   </lst>
+               </arr>
+           </listener>
+           <useColdSearcher>false</useColdSearcher>
+       </query>
+
+       <requestDispatcher handleSelect="false">
+           <requestParsers enableRemoteStreaming="true"
+                           multipartUploadLimitInKB="2048000"
+                           formdataUploadLimitInKB="2048"
+                           addHttpRequestToContext="false"/>
+           <httpCaching never304="true"/>
+       </requestDispatcher>
+
+       <requestHandler name="/select" class="solr.SearchHandler">
+           <lst name="defaults">
+               <str name="echoParams">explicit</str>
+               <int name="rows">10</int>
+               <str name="df">id</str>
+           </lst>
+       </requestHandler>
+
+       <queryResponseWriter name="json" class="solr.JSONResponseWriter"/>
+
+       <requestHandler name="/replication" class="solr.ReplicationHandler">
+           <lst name="leader">
+               <str name="replicateAfter">commit</str>
+           </lst>
+           <lst name="follower">
+               <str name="enable">${solr.replication.follower.enabled:false}</str>
+               <str name="leaderUrl">${solr.replication.leader.url:}</str>
+               <str name="pollInterval">00:00:01</str>
+           </lst>
+       </requestHandler>
+
+   </config>

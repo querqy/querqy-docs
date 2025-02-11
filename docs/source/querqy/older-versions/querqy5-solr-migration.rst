@@ -103,7 +103,7 @@ transition to Querqy 5, we provide a way to configure a static rewrite chain in
      </listener>
    </query>
    <requestHandler name="/querqy/rewriter" class="querqy.solr.QuerqyRewriterRequestHandler">
-     <bool name="inMemory">true</bool>
+     <str name="rewriterStorage">inMemory</str>
    </requestHandler>
 
 
@@ -115,8 +115,8 @@ terms into that cache. To update a rewriter configuration or an artefact
 ('rules.txt') you will have to reload the collection (SolrCloud) or the core
 (standalone Solr) and cannot use the rewriter API.
 
-The :code:`inMemory` flag of the :code:`QuerqyRewriterRequestHandler` must be
-set to :code:`true`. Internally, the request handler is still responsible for
+The :code:`rewriterStorage` setting of the :code:`QuerqyRewriterRequestHandler` must be
+set to :code:`inMemory`. Internally, the request handler is still responsible for
 managing the rewriters but it will not try to persist the configuration as it is
 already kept in :code:`solrconfig.xml`.
 
