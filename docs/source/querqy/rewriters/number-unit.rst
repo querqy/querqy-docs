@@ -108,7 +108,7 @@ The default for both properties is ``20``.
       "numberUnitDefinitions": [
          {
             "units": [ { "term": "inch" } ],
-            "fields": [ { "fieldName": "screen_size" } ],
+            "fields": [ { "fieldName": "screen_size", "scale": 1 } ],
             "filter": {
                "percentageLowerBoundary": 20,
                "percentageUpperBoundary": 10
@@ -121,6 +121,11 @@ By using this definition, number-unit part of the query ``notebook 15 inch`` is 
 filter query with a lower bound of ``15 - 3 = 12`` and an upper bound of
 ``15 + 1.5 = 16.5``. Consequently, all notebooks with a screen size between ``12 - 16.5 inch``
 are included in the results (boundaries are inclusive).
+
+The field definition takes a ``scale`` property in addition to the ``fieldName``. It defines
+to how many digits after the decimal point values should be rounded. In the example above,
+we are rounding to ``1`` digit after the decimal point, which makes sure that the ``16.5`` 
+above is not rounded to the full integer. The default scale is ``0``. 
 
 
 Configuring boost queries
@@ -139,7 +144,7 @@ to appear at the top. The boost properties are all defined in the JSON object ``
       "numberUnitDefinitions": [
          {
             "units": [ { "term": "inch" } ],
-            "fields": [ { "fieldName": "screen_size" } ],
+            "fields": [ { "fieldName": "screen_size", "scale": 1 } ],
             "boost": {
                "percentageLowerBoundary": 10,
                "percentageUpperBoundary": 10,
@@ -203,7 +208,7 @@ range. Products that are within this range will also benefit from the boost that
       "numberUnitDefinitions": [
          {
             "units": [ { "term": "inch" } ],
-            "fields": [ { "fieldName": "screen_size" } ],
+            "fields": [ { "fieldName": "screen_size", "scale": 1 } ],
             "boost": {
                "percentageLowerBoundary": 10,
                "percentageUpperBoundary": 10,
@@ -245,7 +250,7 @@ be suitable for the respective field. The adjusted value will be used for all fi
                { "term": "inch", "multiplier": 1.0 },
                { "term": "cm",   "multiplier": 0.393701 }
             ],
-            "fields": [ { "fieldName": "screen_size" } ]
+            "fields": [ { "fieldName": "screen_size", "scale": 1 } ]
          }
       ]
    }
@@ -274,7 +279,7 @@ wrapped by a max() function, which means that the highest boost is applied for t
                { "term": "inch", "multiplier": 1.0 },
                { "term": "cm",   "multiplier": 0.393701 }
             ],
-            "fields": [ { "fieldName": "screen_size" } ]
+            "fields": [ { "fieldName": "screen_size", "scale": 1 } ]
          },
          {
             "units": [
