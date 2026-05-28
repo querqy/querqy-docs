@@ -115,27 +115,40 @@ Installation
    .. group-tab:: OpenSearch
 
       .. rubric:: Installation under OpenSearch
-      
+
       * Stop OpenSearch if it is running.
       * Open a shell and :code:`cd` into your OpenSearch directory.
       * Run OpenSearch's plugin install script:
-      
+
       .. code-block:: shell
-      
+
         ./bin/opensearch-plugin install <URL>
-        
-      Querqy is available for OpenSearch 2.3.0.
-      
+
+      Select your version below and we will generate the install command for you:
+
+      .. raw:: html
+
+        <select class="os-url-select"
+          onChange="setOSURL(this.options[this.selectedIndex].value);">
+          <option value="https://repo1.maven.org/maven2/org/querqy/opensearch-querqy/1.1.os3.4.0/opensearch-querqy-1.1.os3.4.0.zip">OpenSearch 3.4.0</option>
+          <option value="https://repo1.maven.org/maven2/org/querqy/opensearch-querqy/1.1.os3.1.0/opensearch-querqy-1.1.os3.1.0.zip">3.1.0</option>
+          <option value="https://repo1.maven.org/maven2/org/querqy/opensearch-querqy/1.1.os2.19.2/opensearch-querqy-1.1.os2.19.2.zip">2.19.2</option>
+          <option value="https://repo1.maven.org/maven2/org/querqy/opensearch-querqy/1.0.os2.3.0/opensearch-querqy-1.0.os2.3.0.zip">2.3.0</option>
+        </select>
+        <br/>
+        <br/>
+
+      .. rst-class:: opensearch-version
+
       .. code-block:: shell
-      
-      
+
         ./bin/opensearch-plugin install \
-          "https://repo1.maven.org/maven2/org/querqy/opensearch-querqy/1.0.os2.3.0/opensearch-querqy-1.0.os2.3.0.zip"
-      
+          "https://repo1.maven.org/maven2/org/querqy/opensearch-querqy/1.1.os3.4.0/opensearch-querqy-1.1.os3.4.0.zip"
+
       * Answer :code:`yes` to the security related questions (Querqy needs special
         permissions to load query rewriters dynamically).
       * When you start OpenSearch, you should see an INFO log message
-        :code:`loaded plugin [querqy]`.   
+        :code:`loaded plugin [querqy]`.
 
    .. group-tab:: Solr
    
