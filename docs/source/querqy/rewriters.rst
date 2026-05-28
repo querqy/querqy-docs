@@ -26,52 +26,50 @@ search engine below.
 
 .. tabs::
 
-   .. group-tab:: Elasticsearch/OpenSearch
-      
-      Querqy adds a REST endpoint to Elasticsearch/OpenSearch for managing rewriters at
-      
+   .. group-tab:: Elasticsearch
+
+      Querqy adds a REST endpoint to Elasticsearch for managing rewriters at
+
       :code:`/_querqy/rewriter`
-      
+
       Creating/configuring a 'Common Rules rewriter':
-      
-      
+
+
       :code:`PUT  /_querqy/rewriter/common_rules`
-      
+
       .. code-block:: JSON
         :linenos:
-      
+
         {
             "class": "querqy.elasticsearch.rewriter.SimpleCommonRulesRewriterFactory",
             "config": {
                 "rules" : "notebook =>\nSYNONYM: laptop"
             }
         }
-      
-      .. include:: rewriters/hint-opensearch.txt
-      
+
       Rewriter definitions are uploaded by sending a PUT request to the rewriter
       endpoint. The last part of the request URL path (:code:`common_rules`) will
       become the name of the rewriter.
-      
+
       A rewriter definition must contain a class element (line #2). Its value
       references an implementation of a querqy.elasticsearch.ESRewriterFactory which
       will provide the rewriter that we want to use.
-      
+
       The rewriter definition can also have a config object (#3) which contains the
       rewriter-specific configuration.
-      
+
       In the case of the SimpleCommonRulesRewriter, the configuration must contain the
       rewriting rules (#4). Remember to escape line breaks etc. when you include your
       rules in a JSON document.
-      
-      
+
+
       We can now apply one or more rewriters to a query:
-      
+
       :code:`POST /myindex/_search`
-      
+
       .. code-block:: JSON
         :linenos:
-      
+
         {
           "query": {
               "querqy": {
@@ -83,24 +81,24 @@ search engine below.
               }
           }
         }
-      
+
       The rewriters are added to the
       :ref:`minimal query that we constructed earlier <querqy-making-queries>` using a
       list of named :code:`rewriters` (line #8). This list contains the rewrite chain
       - the list of rewriters in the order in which they will be applied and in which
       they will manipulate the query. The above example contains only a single
       rewriter.
-      
+
       Rewriters are referenced in the :code:`rewriters` element either just by their
       name or by the :code:`name` property of an object which allows to pass request
       parameters to the rewriter. The following example shows two rewriters, one of
       them with additional parameters:
-      
+
       :code:`POST /myindex/_search`
-      
+
       .. code-block:: JSON
         :linenos:
-      
+
         {
           "query": {
               "querqy": {
@@ -122,35 +120,157 @@ search engine below.
               }
             }
         }
-      
-      
+
+
       The first rewriter, word_break (line #9), is just referenced by its name (we
       will see a 'word break rewriter' configuration later. The second rewriter
       is called in a JSON object. Its :code:`name` property references the rewriter
       definition by the rewriter name, 'common_rules' (#11). The :code:`params` object
       (#12) is passed to the rewriter.
-      
+
       In the example, params contains a :code:`criteria` object (#13). This parameter
       is specific to the Common Rules rewriter. The filter expression in the example
       ensures that only rules that either have a prio property set to 1 or that don't
       have any prio property at all will be applied.
-      
+
       In the above example rewrite chain, the word_break rewriter will be applied
       before the common_rules rewriter due to the order of the rewriters in the
       :code:`rewriters` JSON list element.
-      
+
       .. rubric:: Updating and deleting rewriters
-      
+
       To update a rewriter configuration, just send the updated configuration in a
       :code:`PUT` request to the same rewriter URL again.
-      
+
       To delete a rewriter, send a request with HTTP method :code:`DELETE` to the
       rewriter URL. For example,
-      
+
       :code:`DELETE  /_querqy/rewriter/common_rules`
-      
+
       will delete your common_rules rewriter.
-      
+
+   .. group-tab:: OpenSearch
+
+      Querqy adds a REST endpoint to OpenSearch for managing rewriters at
+
+      :code:`/_plugins/_querqy/rewriter`
+
+      Creating/configuring a 'Common Rules rewriter':
+
+
+      :code:`PUT  /_plugins/_querqy/rewriter/common_rules`
+
+      .. code-block:: JSON
+        :linenos:
+
+        {
+            "class": "querqy.opensearch.rewriter.SimpleCommonRulesRewriterFactory",
+            "config": {
+                "rules" : "notebook =>\nSYNONYM: laptop"
+            }
+        }
+
+      Rewriter definitions are uploaded by sending a PUT request to the rewriter
+      endpoint. The last part of the request URL path (:code:`common_rules`) will
+      become the name of the rewriter.
+
+      A rewriter definition must contain a class element (line #2). Its value
+      references an implementation of a querqy.opensearch.OpenSearchRewriterFactory which
+      will provide the rewriter that we want to use.
+
+      The rewriter definition can also have a config object (#3) which contains the
+      rewriter-specific configuration.
+
+      In the case of the SimpleCommonRulesRewriter, the configuration must contain the
+      rewriting rules (#4). Remember to escape line breaks etc. when you include your
+      rules in a JSON document.
+
+
+      We can now apply one or more rewriters to a query:
+
+      :code:`POST /myindex/_search`
+
+      .. code-block:: JSON
+        :linenos:
+
+        {
+          "query": {
+              "querqy": {
+                  "matching_query": {
+                      "query": "notebook"
+                  },
+                  "query_fields": [ "title^3.0", "brand^2.1", "shortSummary"],
+                  "rewriters": ["common_rules"]
+              }
+          }
+        }
+
+      The rewriters are added to the
+      :ref:`minimal query that we constructed earlier <querqy-making-queries>` using a
+      list of named :code:`rewriters` (line #8). This list contains the rewrite chain
+      - the list of rewriters in the order in which they will be applied and in which
+      they will manipulate the query. The above example contains only a single
+      rewriter.
+
+      Rewriters are referenced in the :code:`rewriters` element either just by their
+      name or by the :code:`name` property of an object which allows to pass request
+      parameters to the rewriter. The following example shows two rewriters, one of
+      them with additional parameters:
+
+      :code:`POST /myindex/_search`
+
+      .. code-block:: JSON
+        :linenos:
+
+        {
+          "query": {
+              "querqy": {
+                  "matching_query": {
+                      "query": "notebook"
+                  },
+                  "query_fields": [ "title^3.0", "brand^2.1", "shortSummary"],
+                  "rewriters": [
+                      "word_break",
+                      {
+                          "name": "common_rules",
+                          "params": {
+                              "criteria": {
+                                  "filter": "$[?(!@.prio || @.prio == 1)]"
+                              }
+                          }
+                      }
+                  ]
+              }
+            }
+        }
+
+
+      The first rewriter, word_break (line #9), is just referenced by its name (we
+      will see a 'word break rewriter' configuration later. The second rewriter
+      is called in a JSON object. Its :code:`name` property references the rewriter
+      definition by the rewriter name, 'common_rules' (#11). The :code:`params` object
+      (#12) is passed to the rewriter.
+
+      In the example, params contains a :code:`criteria` object (#13). This parameter
+      is specific to the Common Rules rewriter. The filter expression in the example
+      ensures that only rules that either have a prio property set to 1 or that don't
+      have any prio property at all will be applied.
+
+      In the above example rewrite chain, the word_break rewriter will be applied
+      before the common_rules rewriter due to the order of the rewriters in the
+      :code:`rewriters` JSON list element.
+
+      .. rubric:: Updating and deleting rewriters
+
+      To update a rewriter configuration, just send the updated configuration in a
+      :code:`PUT` request to the same rewriter URL again.
+
+      To delete a rewriter, send a request with HTTP method :code:`DELETE` to the
+      rewriter URL. For example,
+
+      :code:`DELETE  /_plugins/_querqy/rewriter/common_rules`
+
+      will delete your common_rules rewriter.
 
 
    .. group-tab:: Solr

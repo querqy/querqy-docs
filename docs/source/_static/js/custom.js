@@ -28,9 +28,24 @@ function applySearchEngine() {
   if (searchEngine == 'elasticsearch') {
 
     $('.elasticsearch').css('display', 'inline');
+    $('.opensearch').css('display', 'none');
     $('.solr').css('display', 'none');
     $('.se-tab-elasticsearch').removeClass('se-tab-deselected')
     $('.se-tab-elasticsearch').addClass('se-tab-selected')
+    $('.se-tab-opensearch').addClass('se-tab-deselected')
+    $('.se-tab-opensearch').removeClass('se-tab-selected')
+    $('.se-tab-solr').addClass('se-tab-deselected')
+    $('.se-tab-solr').removeClass('se-tab-selected')
+
+  } else if (searchEngine == 'opensearch') {
+
+    $('.opensearch').css('display', 'inline');
+    $('.elasticsearch').css('display', 'none');
+    $('.solr').css('display', 'none');
+    $('.se-tab-opensearch').removeClass('se-tab-deselected')
+    $('.se-tab-opensearch').addClass('se-tab-selected')
+    $('.se-tab-elasticsearch').addClass('se-tab-deselected')
+    $('.se-tab-elasticsearch').removeClass('se-tab-selected')
     $('.se-tab-solr').addClass('se-tab-deselected')
     $('.se-tab-solr').removeClass('se-tab-selected')
 
@@ -38,8 +53,11 @@ function applySearchEngine() {
 
     $('.solr').css('display', 'inline');
     $('.elasticsearch').css('display', 'none');
+    $('.opensearch').css('display', 'none');
     $('.se-tab-elasticsearch').removeClass('se-tab-selected')
     $('.se-tab-elasticsearch').addClass('se-tab-deselected')
+    $('.se-tab-opensearch').removeClass('se-tab-selected')
+    $('.se-tab-opensearch').addClass('se-tab-deselected')
     $('.se-tab-solr').addClass('se-tab-selected')
     $('.se-tab-solr').removeClass('se-tab-deselected')
 
@@ -55,6 +73,9 @@ function changeSearchEngine(engine) {
   } else if (engine == 'elasticsearch') {
     setCookie('se', 'elasticsearch')
     searchEngine = 'elasticsearch'
+  } else if (engine == 'opensearch') {
+    setCookie('se', 'opensearch')
+    searchEngine = 'opensearch'
   } else {
     searchEngine = defaultSearchEngine
   }
@@ -66,7 +87,7 @@ function changeSearchEngine(engine) {
 
 $( document ).ready(function() {
   var seCookie = getCookie('se')
-  searchEngine = ((seCookie != 'elasticsearch') && (seCookie != 'solr'))
+  searchEngine = ((seCookie != 'elasticsearch') && (seCookie != 'opensearch') && (seCookie != 'solr'))
                 ? defaultSearchEngine : seCookie
 
 
@@ -78,6 +99,10 @@ $( document ).ready(function() {
     if (loc.indexOf('-solr', hash) > -1) {
       searchEngine = 'solr'
       setCookie('se', 'solr')
+
+    } else if (loc.indexOf('-opensearch', hash) > -1) {
+      searchEngine = 'opensearch'
+      setCookie('se', 'opensearch')
 
     } else if (loc.indexOf('-elasticsearch', hash) > -1) {
       searchEngine = 'elasticsearch'
@@ -97,6 +122,10 @@ $(window).on('hashchange', function(e){
     if (loc.indexOf('-solr', hash) > -1) {
       searchEngine = 'solr'
       setCookie('se', 'solr')
+
+    } else if (loc.indexOf('-opensearch', hash) > -1) {
+      searchEngine = 'opensearch'
+      setCookie('se', 'opensearch')
 
     } else if (loc.indexOf('-elasticsearch', hash) > -1) {
       searchEngine = 'elasticsearch'

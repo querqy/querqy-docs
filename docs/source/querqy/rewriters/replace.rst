@@ -33,14 +33,14 @@ As a first step, the Replace Rewriter is configured
 
 .. tabs::
 
-   .. group-tab:: Elasticsearch/OpenSearch
+   .. group-tab:: Elasticsearch
 
       ``PUT  /_querqy/rewriter/replace``
-      
+
       .. code-block:: JSON
         :linenos:
         :emphasize-lines: 4-7
-      
+
         {
             "class": "querqy.elasticsearch.rewriter.ReplaceRewriterFactory",
             "config": {
@@ -50,8 +50,24 @@ As a first step, the Replace Rewriter is configured
                   "querqyParser": "querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory"
             }
         }
-      
-      .. include:: hint-opensearch.txt
+
+   .. group-tab:: OpenSearch
+
+      ``PUT  /_plugins/_querqy/rewriter/replace``
+
+      .. code-block:: JSON
+        :linenos:
+        :emphasize-lines: 4-7
+
+        {
+            "class": "querqy.opensearch.rewriter.ReplaceRewriterFactory",
+            "config": {
+                  "rules":  "mobiles => mobile",
+                  "ignoreCase": true,
+                  "inputDelimiter": ";",
+                  "querqyParser": "querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory"
+            }
+        }
 
    .. group-tab:: Solr
 

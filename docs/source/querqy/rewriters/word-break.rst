@@ -34,14 +34,14 @@ Setting up a Word Break Rewriter
 
 .. tabs::
 
-   .. group-tab:: Elasticsearch/OpenSearch
+   .. group-tab:: Elasticsearch
 
       ``PUT  /_querqy/rewriter/word_break``
-      
+
       .. code-block:: JSON
         :linenos:
         :emphasize-lines: 4-11
-      
+
         {
             "class": "querqy.elasticsearch.rewriter.WordBreakCompoundRewriterFactory",
             "config": {
@@ -55,8 +55,28 @@ Setting up a Word Break Rewriter
                   "morphology": "GERMAN"
             }
         }
-      
-      .. include:: hint-opensearch.txt
+
+   .. group-tab:: OpenSearch
+
+      ``PUT  /_plugins/_querqy/rewriter/word_break``
+
+      .. code-block:: JSON
+        :linenos:
+        :emphasize-lines: 4-11
+
+        {
+            "class": "querqy.opensearch.rewriter.WordBreakCompoundRewriterFactory",
+            "config": {
+                  "dictionaryField" :  "dictionary",
+                  "lowerCaseInput": true,
+                  "decompound": {
+                      "maxExpansions": 5,
+                      "verifyCollation": true
+                  },
+                  "reverseCompoundTriggerWords": ["for"],
+                  "morphology": "GERMAN"
+            }
+        }
 
    .. group-tab:: Solr
 
@@ -206,13 +226,13 @@ Configuration
 
 .. tabs::
 
-   .. group-tab:: Elasticsearch/OpenSearch
+   .. group-tab:: Elasticsearch
 
       ``PUT  /_querqy/rewriter/word_break``
-      
+
       .. code-block:: JSON
         :linenos:
-      
+
         {
             "class": "querqy.elasticsearch.rewriter.WordBreakCompoundRewriterFactory",
             "config": {
@@ -228,10 +248,35 @@ Configuration
                   "morphology": "GERMAN",
                   "reverseCompoundTriggerWords": ["for", "from", "of"],
                   "alwaysAddReverseCompounds": true
-      
+
             }
         }
-      
+
+   .. group-tab:: OpenSearch
+
+      ``PUT  /_plugins/_querqy/rewriter/word_break``
+
+      .. code-block:: JSON
+        :linenos:
+
+        {
+            "class": "querqy.opensearch.rewriter.WordBreakCompoundRewriterFactory",
+            "config": {
+                  "dictionaryField" :  "dictionary",
+                  "minSuggestionFreq": 3,
+                  "minBreakLength": 4,
+                  "maxCombineLength": 30,
+                  "lowerCaseInput": true,
+                  "decompound": {
+                      "maxExpansions": 5,
+                      "verifyCollation": true
+                  },
+                  "morphology": "GERMAN",
+                  "reverseCompoundTriggerWords": ["for", "from", "of"],
+                  "alwaysAddReverseCompounds": true
+
+            }
+        }
 
    .. group-tab:: Solr
 

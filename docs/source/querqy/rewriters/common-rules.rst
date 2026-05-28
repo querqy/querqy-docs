@@ -22,27 +22,43 @@ Configuring rules
 
 .. tabs::
 
-   .. group-tab:: Elasticsearch/OpenSearch
+   .. group-tab:: Elasticsearch
 
       The rules for the 'Common Rules Rewriter' are passed as the value of the
       ``rules`` element when you create a configuration with the
-      SimpleCommonRulesRewriterFactory in Elasticsearch/OpenSearch.
-      
+      SimpleCommonRulesRewriterFactory in Elasticsearch.
+
       ``PUT  /_querqy/rewriter/common_rules``
-      
+
       .. code-block:: JSON
         :linenos:
         :emphasize-lines: 4
-      
+
         {
             "class": "querqy.elasticsearch.rewriter.SimpleCommonRulesRewriterFactory",
             "config": {
                 "rules" : "notebook =>\nSYNONYM: laptop"
             }
         }
-      
-      .. include:: hint-opensearch.txt
-      
+
+   .. group-tab:: OpenSearch
+
+      The rules for the 'Common Rules Rewriter' are passed as the value of the
+      ``rules`` element when you create a configuration with the
+      SimpleCommonRulesRewriterFactory in OpenSearch.
+
+      ``PUT  /_plugins/_querqy/rewriter/common_rules``
+
+      .. code-block:: JSON
+        :linenos:
+        :emphasize-lines: 4
+
+        {
+            "class": "querqy.opensearch.rewriter.SimpleCommonRulesRewriterFactory",
+            "config": {
+                "rules" : "notebook =>\nSYNONYM: laptop"
+            }
+        }
 
    .. group-tab:: Solr
 
@@ -987,13 +1003,13 @@ Configuration
 
 .. tabs::
 
-   .. group-tab:: Elasticsearch/OpenSearch
+   .. group-tab:: Elasticsearch
 
       ``PUT  /_querqy/rewriter/common_rules``
-      
+
       .. code-block:: JSON
         :linenos:
-      
+
         {
           "class": "querqy.elasticsearch.rewriter.SimpleCommonRulesRewriterFactory",
           "config": {
@@ -1002,21 +1018,53 @@ Configuration
               "querqyParser": "querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory"
           }
         }
-      
+
       rules
         The rule definitions
-      
+
         Default: (empty = no rules)
-      
+
       ignoreCase
         Ignore case in input matching for rules?
-      
+
         Default: ``true``
-      
+
       querqyParser
         The querqy.rewrite.commonrules.QuerqyParserFactory to use for parsing strings
         from the right-hand side of rules into query objects
-      
+
+        Default: ``querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory``
+
+   .. group-tab:: OpenSearch
+
+      ``PUT  /_plugins/_querqy/rewriter/common_rules``
+
+      .. code-block:: JSON
+        :linenos:
+
+        {
+          "class": "querqy.opensearch.rewriter.SimpleCommonRulesRewriterFactory",
+          "config": {
+              "rules" : "notebook =>\nSYNONYM: laptop",
+              "ignoreCase": true,
+              "querqyParser": "querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory"
+          }
+        }
+
+      rules
+        The rule definitions
+
+        Default: (empty = no rules)
+
+      ignoreCase
+        Ignore case in input matching for rules?
+
+        Default: ``true``
+
+      querqyParser
+        The querqy.rewrite.commonrules.QuerqyParserFactory to use for parsing strings
+        from the right-hand side of rules into query objects
+
         Default: ``querqy.rewrite.commonrules.WhiteSpaceQuerqyParserFactory``
 
    .. group-tab:: Solr

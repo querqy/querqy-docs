@@ -405,15 +405,15 @@ Making queries using Querqy
       minimal query, which does not use any rewriter, then adding a 'Common Rules
       Rewriter' and finally explaining the full set of parameters, many of them not
       related to query rewriting but to search relevance tuning in general.
-      
-      
+
+
       .. rubric:: Minimal Query
-      
+
       :code:`POST /myindex/_search`
-      
+
       .. code-block:: JSON
         :linenos:
-      
+
         {
             "query": {
                 "querqy": {
@@ -424,9 +424,9 @@ Making queries using Querqy
                 }
             }
         }
-      
+
       Querqy provides a new query builder, :code:`querqy` (line #3), that can be used
-      in a query just like any other Elasticsearch query type. The
+      in a query just like any other OpenSearch query type. The
       :code:`matching_query` (#4) defines the query for which documents will be
       matched and retrieved.
       

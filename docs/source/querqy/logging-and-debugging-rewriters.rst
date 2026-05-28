@@ -39,19 +39,19 @@ search engine produces from its query DSL.
 
 .. tabs::
 
-   .. group-tab:: Elasticsearch/OpenSearch
+   .. group-tab:: Elasticsearch
 
-      In Elasticsearch/OpenSearch this means that you can call
+      In Elasticsearch this means that you can call
       ``https://<MYHOST>:<PORT>/<INDEX>/_validate/query?explain=true`` and submit the
       usual Querqy search query in the request body. For example:
-      
-      
+
+
       | :code:`GET https://<MYHOST>:<PORT>/<INDEX>/_validate/query?explain=true`
       | :code:`Content-Type: application/json`
-      
-      
+
+
       .. code-block:: JSON
-      
+
         {
           "query":{
             "querqy":{
@@ -69,22 +69,22 @@ search engine produces from its query DSL.
             }
           }
         }
-      
+
       If the above case had a CommonRulesRewriter ``common_rules`` defined with rules
-      
+
       .. code-block::
-      
+
         laptop =>
           SYNONYM: notebook
           UP(100): AMD
           DOWN(50): sleeve
-      
+
       the output of ``_validate/query?explain=true`` will look like this:
-      
+
       .. code-block:: JSON
         :linenos:
         :emphasize-lines: 12
-      
+
         {
           "_shards":{
             "total":1,
@@ -100,7 +100,77 @@ search engine produces from its query DSL.
             }
           ]
         }
-      
+
+      Line 12 contains the string representation of the parsed Lucene query and you
+      will probably recognise the notebook / laptop synonyms. It also shows
+      AdditiveBoostFunction sub-queries. ``AdditiveBoostFunction`` is a custom Lucene
+      query that is provided by Querqy to deal with UP/DOWN boosting. It especially
+      avoids producing negative document scores, which are not allowed by Lucene, and
+      it guarantees that documents that match for both UP(100) and DOWN(100) yield
+      the same score like documents that match neither UP(100) nor DOWN(100).
+
+   .. group-tab:: OpenSearch
+
+      In OpenSearch this means that you can call
+      ``https://<MYHOST>:<PORT>/<INDEX>/_validate/query?explain=true`` and submit the
+      usual Querqy search query in the request body. For example:
+
+
+      | :code:`GET https://<MYHOST>:<PORT>/<INDEX>/_validate/query?explain=true`
+      | :code:`Content-Type: application/json`
+
+
+      .. code-block:: JSON
+
+        {
+          "query":{
+            "querqy":{
+              "matching_query":{
+                "query":"laptop"
+              },
+              "query_fields":[
+                "title^23",
+                "name",
+                "shortSummary"
+              ],
+              "rewriters":[
+                "common_rules"
+              ]
+            }
+          }
+        }
+
+      If the above case had a CommonRulesRewriter ``common_rules`` defined with rules
+
+      .. code-block::
+
+        laptop =>
+          SYNONYM: notebook
+          UP(100): AMD
+          DOWN(50): sleeve
+
+      the output of ``_validate/query?explain=true`` will look like this:
+
+      .. code-block:: JSON
+        :linenos:
+        :emphasize-lines: 12
+
+        {
+          "_shards":{
+            "total":1,
+            "successful":1,
+            "failed":0
+          },
+          "valid":true,
+          "explanations":[
+            {
+              "index":"myindex",
+              "valid":true,
+              "explanation":"+(+(name:notebook | shortSummary:laptop | title:laptop^23.0 | title:notebook^23.0 | shortSummary:notebook | name:laptop) AdditiveBoostFunction(100.0,query(+(name:amd | shortSummary:amd | title:amd^23.0),def=0.0)) AdditiveBoostFunction(-50.0,query(+(shortSummary:sleeve name:sleeve title:sleeve^23.0),def=0.0)))"
+            }
+          ]
+        }
+
       Line 12 contains the string representation of the parsed Lucene query and you
       will probably recognise the notebook / laptop synonyms. It also shows
       AdditiveBoostFunction sub-queries. ``AdditiveBoostFunction`` is a custom Lucene
@@ -267,14 +337,14 @@ within the rewriter definition:
 
 .. tabs::
 
-   .. group-tab:: Elasticsearch/OpenSearch
+   .. group-tab:: Elasticsearch
 
       ``PUT  /_querqy/rewriter/common_rules``
-      
+
       .. code-block:: JSON
         :linenos:
         :emphasize-lines: 6-8
-      
+
         {
             "class": "querqy.elasticsearch.rewriter.SimpleCommonRulesRewriterFactory",
             "config": {
@@ -284,31 +354,27 @@ within the rewriter definition:
               "sinks": ["log4j"]
             }
         }
-      
-      .. include:: rewriters/hint-opensearch.txt
-      
-      
-      
+
       As you probably recognise at this stage, the example shows the configuration for
       a Common Rules Rewriter. Lines 6-8 are new. They contain the configuration for
       Info Logging. The ``sink`` property is a list of named sinks to which this
       rewriter should send its log messages.
-      
+
       In this case, the list contains only one
       element, ``log4j``, which is a predefined sink that routes the output to the
-      Log4j logging framework, which is used in Elasticsearch and Opensearch and which
+      Log4j logging framework, which is used in Elasticsearch and which
       can be configured further. At the current stage, ``log4j`` is the only available
-      sink for Info Logging under Elasticsearch/Opensearch and it is not possible
+      sink for Info Logging under Elasticsearch and it is not possible
       (yet) to provide a custom sink implementation.
-      
+
       The output in Log4j will look like this (using a file appender):
-      
+
       .. code-block:: text
         :linenos:
-      
+
         [2021-03-26T13:23:43,006][INFO ][q.e.i.Log4jSink ] [node_s_0]DETAIL[ QUERQY ] {"id":"id-1001","msg":{"common_rules1":[{"APPLIED_RULES":["msg1"]}],"common_rules2":[{"APPLIED_RULES":["msg2"]}]}}
         [2021-03-26T13:28:47,454][INFO ][q.e.i.Log4jSink ] [node_s_0]REWRITER_ID[ QUERQY ] {"id":"id-1002","msg":["common_rules"]}
-      
+
       Let's decompose this. ``DETAIL[ QUERQY ]`` (line 1) and ``REWRITER_ID[ QUERQY ]``
       (line 2) are `Log4j markers
       <https://logging.apache.org/log4j/2.x/manual/markers.html>`_ that Querqy
@@ -316,15 +382,69 @@ within the rewriter definition:
       The `DETAIL` and `REWRITER_ID` markers correspond to the output types that you
       can set per request and that are described below. They are both children of a
       common parent marker `QUERQY`.
-      
+
       The log message itself is a small JSON document. The ``msg`` element contains
       the messages as they were produced by the rewriters with the rewriter IDs
       (such as `common_rules1`) as keys and further rewriter-specific information as
       values.
-      
+
       The ``id`` element is an ID that can be passed per request to help trace
       requests across nodes (see below).
-      
+
+   .. group-tab:: OpenSearch
+
+      ``PUT  /_plugins/_querqy/rewriter/common_rules``
+
+      .. code-block:: JSON
+        :linenos:
+        :emphasize-lines: 6-8
+
+        {
+            "class": "querqy.opensearch.rewriter.SimpleCommonRulesRewriterFactory",
+            "config": {
+                "rules" : "notebook =>\nSYNONYM: laptop"
+            },
+            "info_logging": {
+              "sinks": ["log4j"]
+            }
+        }
+
+      As you probably recognise at this stage, the example shows the configuration for
+      a Common Rules Rewriter. Lines 6-8 are new. They contain the configuration for
+      Info Logging. The ``sink`` property is a list of named sinks to which this
+      rewriter should send its log messages.
+
+      In this case, the list contains only one
+      element, ``log4j``, which is a predefined sink that routes the output to the
+      Log4j logging framework, which is used in OpenSearch and which
+      can be configured further. At the current stage, ``log4j`` is the only available
+      sink for Info Logging under OpenSearch and it is not possible
+      (yet) to provide a custom sink implementation.
+
+      The output in Log4j will look like this (using a file appender):
+
+      .. code-block:: text
+        :linenos:
+
+        [2021-03-26T13:23:43,006][INFO ][q.e.i.Log4jSink ] [node_s_0]DETAIL[ QUERQY ] {"id":"id-1001","msg":{"common_rules1":[{"APPLIED_RULES":["msg1"]}],"common_rules2":[{"APPLIED_RULES":["msg2"]}]}}
+        [2021-03-26T13:28:47,454][INFO ][q.e.i.Log4jSink ] [node_s_0]REWRITER_ID[ QUERQY ] {"id":"id-1002","msg":["common_rules"]}
+
+      Let's decompose this. ``DETAIL[ QUERQY ]`` (line 1) and ``REWRITER_ID[ QUERQY ]``
+      (line 2) are `Log4j markers
+      <https://logging.apache.org/log4j/2.x/manual/markers.html>`_ that Querqy
+      provides and that you can use to `filter log messages <https://logging.apache.org/log4j/2.x/manual/configuration.html#Filters>`_.
+      The `DETAIL` and `REWRITER_ID` markers correspond to the output types that you
+      can set per request and that are described below. They are both children of a
+      common parent marker `QUERQY`.
+
+      The log message itself is a small JSON document. The ``msg`` element contains
+      the messages as they were produced by the rewriters with the rewriter IDs
+      (such as `common_rules1`) as keys and further rewriter-specific information as
+      values.
+
+      The ``id`` element is an ID that can be passed per request to help trace
+      requests across nodes (see below).
+
    .. group-tab:: Solr
 
       | :code:`POST /solr/mycollection/querqy/rewriter/common_rules?action=save`

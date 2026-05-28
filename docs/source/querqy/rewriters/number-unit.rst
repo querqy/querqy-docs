@@ -43,21 +43,33 @@ the JSON is put into a string value for the property ``config``.
 
 .. tabs::
 
-   .. group-tab:: Elasticsearch/OpenSearch
+   .. group-tab:: Elasticsearch
 
       ``PUT  /_querqy/rewriter/numberunit``
-      
+
       .. code-block:: JSON
         :linenos:
-      
+
         {
             "class": "querqy.elasticsearch.rewriter.NumberUnitRewriterFactory",
             "config": {
                   "config":  "{ \"numberUnitDefinitions\": [ ... ] }"
             }
         }
-      
-      .. include:: hint-opensearch.txt
+
+   .. group-tab:: OpenSearch
+
+      ``PUT  /_plugins/_querqy/rewriter/numberunit``
+
+      .. code-block:: JSON
+        :linenos:
+
+        {
+            "class": "querqy.opensearch.rewriter.NumberUnitRewriterFactory",
+            "config": {
+                  "config":  "{ \"numberUnitDefinitions\": [ ... ] }"
+            }
+        }
 
    .. group-tab:: Solr
 

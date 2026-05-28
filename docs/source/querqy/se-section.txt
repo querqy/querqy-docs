@@ -5,7 +5,8 @@
 
   <div style="font-size:10pt;margin-bottom:10px;display:table;">
     <div style="display:table-row;">
-      <div class="se-tab se-tab-elasticsearch se-tab-selected" onClick="changeSearchEngine('elasticsearch');">Elasticsearch/OpenSearch</div>
+      <div class="se-tab se-tab-elasticsearch se-tab-selected" onClick="changeSearchEngine('elasticsearch');">Elasticsearch</div>
+      <div class="se-tab se-tab-opensearch se-tab-deselected" onClick="changeSearchEngine('opensearch');">OpenSearch</div>
       <div class="se-tab se-tab-solr se-tab-deselected" onClick="changeSearchEngine('solr');">Solr</div>
     </div>
   </div>
