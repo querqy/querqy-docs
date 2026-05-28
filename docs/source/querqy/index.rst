@@ -43,7 +43,10 @@ Installation
       
         <select class="es-url-select"
           onChange="setESURL(this.options[this.selectedIndex].value);">
-          <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.7.es8171.0/querqy-elasticsearch-1.7.es8171.0.zip">Elasticsearch 8.17.1</option>
+          <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.8.es924.0/querqy-elasticsearch-1.8.es924.0.zip">Elasticsearch 9.2.4</option>
+          <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.8.es904.0/querqy-elasticsearch-1.8.es904.0.zip">9.0.4</option>
+          <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.7.es8184.0/querqy-elasticsearch-1.7.es8184.0.zip">8.18.4</option>
+          <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.7.es8171.0/querqy-elasticsearch-1.7.es8171.0.zip">8.17.1</option>
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.7.es8150.0/querqy-elasticsearch-1.7.es8150.0.zip">8.15.0</option>
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.7.es8114.0/querqy-elasticsearch-1.7.es8114.0.zip">8.11.4</option>
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.7.es892.0/querqy-elasticsearch-1.7.es892.0.zip">8.9.2</option>
@@ -54,58 +57,34 @@ Installation
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es823.0/querqy-elasticsearch-1.6.es823.0.zip">8.2.3</option>
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es813.0/querqy-elasticsearch-1.6.es813.0.zip">8.1.3</option>
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.6.es801.0/querqy-elasticsearch-1.6.es801.0.zip">8.0.1</option>
-      
+
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.5.es71711.0/querqy-elasticsearch-1.5.es71711.0.zip">7.17.11</option>
-      
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.5.es7162.0/querqy-elasticsearch-1.5.es7162.0.zip">7.16.2</option>
-      
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.5.es7140.0/querqy-elasticsearch-1.5.es7140.0.zip">7.14.0</option>
-      
-      
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es7134.0/querqy-elasticsearch-1.4.es7134.0.zip">7.13.4</option>
-      
-      
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es7121.1/querqy-elasticsearch-1.4.es7121.1.zip">7.12.1</option>
-      
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es7112.2/querqy-elasticsearch-1.4.es7112.2.zip">7.11.2</option>
-      
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es7102.1/querqy-elasticsearch-1.4.es7102.1.zip">7.10.2</option>
-      
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es793.1/querqy-elasticsearch-1.4.es793.1.zip">7.9.3</option>
-      
-      
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es781.1/querqy-elasticsearch-1.4.es781.1.zip">7.8.1</option>
-      
-      
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es771.1/querqy-elasticsearch-1.4.es771.1.zip">7.7.1</option>
-      
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es762.1/querqy-elasticsearch-1.4.es762.1.zip">7.6.2</option>
-      
-      
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es752.1/querqy-elasticsearch-1.4.es752.1.zip">7.5.2</option>
-      
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es742.1/querqy-elasticsearch-1.4.es742.1.zip">7.4.2</option>
-      
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es732.1/querqy-elasticsearch-1.4.es732.1.zip">7.3.2</option>
-      
-      
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.4.es721.1/querqy-elasticsearch-1.4.es721.1.zip">7.2.1</option>
-      
-      
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.0.es711.0/querqy-elasticsearch-1.0.es711.0.zip">7.1.1 (deprecated)</option>
-      
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.0.es701.0/querqy-elasticsearch-1.0.es701.0.zip">7.0.1 (deprecated)</option>
-      
         </select>
         <br/>
         <br/>
 
       .. rst-class:: elasticsearch-version
-      
+
       .. code-block:: shell
-      
+
         ./bin/elasticsearch-plugin install \
-          "https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.7.es8171.0/querqy-elasticsearch-1.7.es8171.0.zip"
+          "https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.8.es924.0/querqy-elasticsearch-1.8.es924.0.zip"
 
       * Answer :code:`yes` to the security related questions (Querqy needs special
         permissions to load query rewriters dynamically).
