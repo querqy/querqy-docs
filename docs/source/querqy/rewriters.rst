@@ -534,6 +534,7 @@ List of available rewriters
 
    rewriters/common-rules
    rewriters/replace
+   rewriters/regex-replace
    rewriters/word-break
    rewriters/number-unit
    rewriters/shingle
@@ -551,6 +552,11 @@ rewriter name to see the documentation.
   Replace query terms. Used as a query normalisation step, usually applied
   before the query is processed further, for example, before the Common Rules
   Rewriter is applied
+
+:ref:`Regex Replace Rewriter <querqy-rewriters-regex-replace>`
+  Replace query terms using regular expression rules. Supports grouping,
+  backreferences, quantifiers, and alternatives for expressive pattern-based
+  query normalisation.
 
 :ref:`Word Break Rewriter <querqy-rewriters-word-break>`
   (De)compounds query tokens. Splits compound words or creates compounds from
