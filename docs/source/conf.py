@@ -36,6 +36,14 @@ extensions = ['sphinx.ext.intersphinx',
     'sphinx_tabs.tabs',
     'sphinx.ext.ifconfig']
 
+from docutils import nodes
+from docutils.parsers.rst import roles
+
+def raw_html_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
+    return [nodes.raw('', text, format='html')], []
+
+roles.register_canonical_role('raw-html', raw_html_role)
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
