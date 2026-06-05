@@ -43,7 +43,8 @@ Installation
       
         <select class="es-url-select"
           onChange="setESURL(this.options[this.selectedIndex].value);">
-          <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.8.es924.0/querqy-elasticsearch-1.8.es924.0.zip">Elasticsearch 9.2.4</option>
+          <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.9.es933.0/querqy-elasticsearch-1.9.es933.0.zip">Elasticsearch 9.3.3</option>
+          <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.8.es924.0/querqy-elasticsearch-1.8.es924.0.zip">9.2.4</option>
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.8.es904.0/querqy-elasticsearch-1.8.es904.0.zip">9.0.4</option>
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.7.es8184.0/querqy-elasticsearch-1.7.es8184.0.zip">8.18.4</option>
           <option value="https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.7.es8171.0/querqy-elasticsearch-1.7.es8171.0.zip">8.17.1</option>
@@ -84,7 +85,7 @@ Installation
       .. code-block:: shell
 
         ./bin/elasticsearch-plugin install \
-          "https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.8.es924.0/querqy-elasticsearch-1.8.es924.0.zip"
+          "https://repo1.maven.org/maven2/org/querqy/querqy-elasticsearch/1.9.es933.0/querqy-elasticsearch-1.9.es933.0.zip"
 
       * Answer :code:`yes` to the security related questions (Querqy needs special
         permissions to load query rewriters dynamically).
