@@ -61,7 +61,30 @@ Setup
 
    .. group-tab:: OpenSearch
 
-      Coming soon
+      ``PUT  /_plugins/_querqy/rewriter/regex_replace``
+
+      .. code-block:: JSON
+        :linenos:
+
+        {
+            "class": "querqy.opensearch.rewriter.RegexReplaceRewriterFactory",
+            "config": {
+                "rules": "(\\d+) ?x ?(\\d+) => ${1}x${2}",
+                "ignoreCase": true
+            }
+        }
+
+      The ``class`` property (line #2) references the OpenSearch factory
+      implementation.
+
+      The ``config`` object (line #3) accepts the following properties:
+
+      ``rules`` (required)
+        A string containing the rewriting rules, one rule per line.
+        Remember to JSON-escape the value (e.g. escape backslashes as ``\\``).
+
+      ``ignoreCase`` (optional, default: ``true``)
+        When ``true``, pattern matching is case-insensitive.
 
    .. group-tab:: Solr
 
